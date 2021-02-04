@@ -81,7 +81,8 @@ export default {
     ignoreNotFoundWarnings: true,
   },
   router: {
-    middleware: ["auth", "upgrade"],
+    //TODO(nuri): Uncomment after working on auth
+    //middleware: ["auth", "upgrade"],
   },
   axios: {
     baseURL: envSettings.BASE_URL,
