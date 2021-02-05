@@ -132,6 +132,14 @@
 </template>
 
 <script>
+import Vue from 'vue';
+import VueFormGenerator from 'vue-form-generator';
+import fieldUploadFile from '../components/file_upload.vue';
+
+Vue.component('fieldUploadFile', fieldUploadFile);
+
+Vue.use(VueFormGenerator);
+
 export default {
   middleware: "auth",
   auth: false,

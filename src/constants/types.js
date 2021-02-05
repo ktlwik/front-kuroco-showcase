@@ -5,7 +5,7 @@ export const types = Object.freeze({
   "4": "select",
   "5": "selectEx",
   "6": "dateTimePicker",
-  "7": "input",
+  "7": "uploadFile",
   "8": "input",
   "9": "input",
 })

@@ -80,6 +80,7 @@
               schema['fields'].push(result)
     
             }
+          
             schema['fields'].push({
                'type': 'submit',
                'buttonText': 'submit'
