@@ -54,7 +54,6 @@
               if (columns.hasOwnProperty(key)) {
                 result = self.$parse(columns[key], key)
                 if (typeof result != 'undefined' && Object.keys(result).length != 0) {
-                   console.log("111")
                    schema['fields'].push(result)
                 }
               }

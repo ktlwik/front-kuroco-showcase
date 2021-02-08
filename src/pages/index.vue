@@ -136,10 +136,14 @@ import Vue from 'vue';
 import VueFormGenerator from 'vue-form-generator';
 import fieldUploadFile from '../components/vuetify_file_upload.vue';
 import fieldVuetifyText from '../components/vuetify_input.vue';
+import fieldVuetifyDate from '../components/vuetify_date.vue';
+import fieldVuetifyJson from '../components/vuetify_json.vue';
 import KurocoParser from '../plugins/parser.js';
 
 Vue.component('fieldUploadFile', fieldUploadFile);
+Vue.component('fieldVuetifyDate', fieldVuetifyDate);
 Vue.component('fieldVuetifyText', fieldVuetifyText);
+Vue.component('fieldVuetifyJson', fieldVuetifyJson);
 
 Vue.use(KurocoParser);
 Vue.use(VueFormGenerator);
