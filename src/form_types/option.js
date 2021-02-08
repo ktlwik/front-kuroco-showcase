@@ -1,5 +1,5 @@
 export const types = Object.freeze({
-  "1": "input",
+  "1": "vuetifyText",
   "2": "select",
   "3": "select",
   "4": "select",

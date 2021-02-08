@@ -7,10 +7,7 @@
 <script>
   import Vue from 'vue'
   import VueFormGenerator from 'vue-form-generator'
-  import 'vue-form-generator/dist/vfg-core.css'
-  import {types} from '../constants/types.js'
-  import {inputTypes} from '../constants/input_types.js'
-  import {required} from '../constants/required.js'
+  import '../assets/form.css'
 
   Vue.use(VueFormGenerator)
 
@@ -32,7 +29,7 @@
             var columns = response.data.cols
             for (var key in columns) {
               if (columns.hasOwnProperty(key)) {
-                //console.log(key)
+
                 if (columns[key].hasOwnProperty('attribute')) {
                   if (columns[key]['attribute'].hasOwnProperty('placeholder')) {
                     model[key] = columns[key]['attribute']['placeholder']
@@ -40,7 +37,6 @@
                 }
               }
             }
-            console.log(model)
             self.model = model
           })
        },
@@ -56,38 +52,22 @@
             for (var key in columns) {
               var result = {}
               if (columns.hasOwnProperty(key)) {
-                if (columns[key].hasOwnProperty('type')) {
-                    var type_id = columns[key]['type']
-                    console.log(type_id)
-                    result['model'] = key
-                    result['type'] = types[type_id]
-                    if (inputTypes.hasOwnProperty(type_id)) {
-                      result['inputType'] = inputTypes[type_id]
-                    }
+                result = self.$parse(columns[key], key)
+                if (typeof result != 'undefined' && Object.keys(result).length != 0) {
+                   console.log("111")
+                   schema['fields'].push(result)
                 }
               }
-              if (columns[key].hasOwnProperty('title')) {
-                result['label'] = columns[key]['title']
-              }        
-
-              if (columns[key].hasOwnProperty('required')) {
-                var required_type = columns[key]['required']
-                if (required.hasOwnProperty(required_type)) {
-                  result['required'] =  required[required_type]
-                }
-              }
-
-              schema['fields'].push(result)
-    
             }
           
             schema['fields'].push({
                'type': 'submit',
-               'buttonText': 'submit'
+               'buttonText': 'submit',
+               'onSubmit': {},
+               'validateBeforeSubmit': true
             })
             console.log(schema['fields'])
             self.schema = schema
-            //self.schema = response.data
           })
 
        },

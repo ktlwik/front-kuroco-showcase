@@ -134,10 +134,14 @@
 <script>
 import Vue from 'vue';
 import VueFormGenerator from 'vue-form-generator';
-import fieldUploadFile from '../components/file_upload.vue';
+import fieldUploadFile from '../components/vuetify_file_upload.vue';
+import fieldVuetifyText from '../components/vuetify_input.vue';
+import KurocoParser from '../plugins/parser.js';
 
 Vue.component('fieldUploadFile', fieldUploadFile);
+Vue.component('fieldVuetifyText', fieldVuetifyText);
 
+Vue.use(KurocoParser);
 Vue.use(VueFormGenerator);
 
 export default {
