@@ -7,6 +7,13 @@ export default function createTextSchema(json, key) {
 	    result['type'] = 'vuetifyText'
 	    result['inputType'] = 'text'
 	    result['label'] = json['title']
+	    if (json['validate'].hasOwnProperty('type') && json['validate']['type'].length > 0) {
+	    	result['texttype'] = json['validate']['type']
+	    	if (result['texttype'] == 'regex' && json['validate'].hasOwnProperty('regex')) {
+	    		result['regex'] = json['validate']['regex']
+	    	}
+	    	console.log(result['texttype'])
+		}
 
 	    if (json['attribute']['max_length'] != '') {
 	    	result['counter'] = json['attribute']['max_length']

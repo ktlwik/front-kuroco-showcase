@@ -8,9 +8,7 @@
   import Vue from 'vue'
   import VueFormGenerator from 'vue-form-generator'
   import '../assets/form.css'
-
   Vue.use(VueFormGenerator)
-
   export default {
     components: {
      "vue-form-generator": VueFormGenerator.component
@@ -29,7 +27,6 @@
             var columns = response.data.cols
             for (var key in columns) {
               if (columns.hasOwnProperty(key)) {
-
                 if (columns[key].hasOwnProperty('attribute')) {
                   if (columns[key]['attribute'].hasOwnProperty('placeholder')) {
                     model[key] = columns[key]['attribute']['placeholder']
@@ -42,7 +39,6 @@
        },
        getSchema() {
         let self = this
-
         this.$axios
           .get("http://my-json-server.typicode.com/ktlwik/devapi/details")
           .then(function (response) {
@@ -68,7 +64,6 @@
             console.log(schema['fields'])
             self.schema = schema
           })
-
        },
     },
     data () {
@@ -81,4 +76,3 @@
     }
   }
 </script>
-

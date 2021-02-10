@@ -8,7 +8,8 @@
       :readonly="schema.readonly"
       :disabled="schema.disabled"
       :rules='[v => v.length >= schema.min || "minimum " + schema.min + " characters",
-      		   v => v.length <= schema.max || "maximum " + schema.max + " characters"
+      		   v => v.length <= schema.max || "maximum " + schema.max + " characters",
+      		   v => isValid(schema, v),
       ]'
       :placeholder="schema.placeholder"
 	  :counter="schema.counter"
@@ -18,9 +19,44 @@
 
 
 <script>
-   import { abstractField } from "vue-form-generator";
+    import { abstractField } from "vue-form-generator";
+	import validator from 'validator';
 
-   export default {
-         mixins: [ abstractField ]
-   };
+    export default {
+        mixins: [ abstractField ], 
+        methods: {
+     	  	isValid: function(schema, value) {
+     			console.log(value)
+     			if (schema.texttype == 'email') {
+	 				if (!validator.isEmail(value)) {
+	 					return "Wrong email format."
+	 				}
+ 				} else if (schema.texttype == 'tel') {
+ 					if (!validator.isMobilePhone(value)) {
+ 						return "Wrong telephone format.";
+ 					}
+ 				} else if (schema.texttype == 'zip') {
+ 					if (!validator.isPostalCode(value)) {
+ 						return "Wrong zip format.";
+ 					}
+ 				} else if (schema.texttype == 'number') {
+ 					if (!validator.isNumeric(value)) {
+ 						return "Wrong numeric format.";
+ 					}
+ 				} else if (schema.texttype == 'url') {
+ 					console.log('here')
+ 					if (!validator.isURL(value)) {
+ 						return "Wrong url format.";
+ 					}
+ 				} else if (schema.texttype == 'regex') {
+ 					var regex = new RegExp(schema.regex)
+ 					if (!regex.test(value)) {
+ 						return "Wrong regex format. " + regex;
+ 					}
+ 				}
+     			
+     			return true
+     		},
+     	}
+	};
 </script>
