@@ -12,14 +12,22 @@ export default function createDateSchema(json, key) {
 			}
 		}
 		if (json.hasOwnProperty('attribute') && json['attribute'].hasOwnProperty('minYear')) {
-			result['minYear'] = json['attribute']['minYear']
+			result['minYear'] = json['attribute']['minYear'].concat("-01-01")
+		} else {
+			result['minYear'] = undefined
 		}
 		if (json.hasOwnProperty('attribute') && json['attribute'].hasOwnProperty('maxYear')) {
-			result['maxYear'] = json['attribute']['maxYear']
+			result['maxYear'] = (parseInt(json['attribute']['maxYear']) + 1).toString(10).concat("-01")
+		} else {
+			result['maxYear'] = undefined
 		}
 	 }
 
-	console.log(result)
+	 console.log(toString(parseInt(json['attribute']['maxYear']) + 1))
+
+
+	console.log("min: ", result['minYear'])
+	console.log("max: ", result['maxYear'])
 	return result
 };
 

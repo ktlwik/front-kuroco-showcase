@@ -1,6 +1,6 @@
 <template>
   <div>
-  <vue-form-generator :schema="schema" :model="model"></vue-form-generator>
+  <vue-form-generator :schema="schema" :model="model" @model-updated='onInput'></vue-form-generator>
   </div>
 </template>
 
@@ -58,13 +58,21 @@
             schema['fields'].push({
                'type': 'submit',
                'buttonText': 'submit',
-               'onSubmit': {},
+                onSubmit(model) {
+                  console.log("Form submitted!", model);
+                  console.log(self.checkedCategories)
+                },
                'validateBeforeSubmit': true
             })
             console.log(schema['fields'])
             self.schema = schema
           })
        },
+       onInput: function(value, fieldName) {
+        console.log("fieldName: ", fieldName)
+        console.log("value: ", value)
+        this.$set(this.model, fieldName, value)
+      }
     },
     data () {
       return {

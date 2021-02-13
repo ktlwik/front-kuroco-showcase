@@ -4,9 +4,11 @@
   >
     <v-checkbox
       v-for="item in schema.contents"
-      v-model="item.key"
+      ref="mul"
+      v-model="checkedCategories"
       :label="item.value"
       :value="item.value"
+      @change="check($event)"
     ></v-checkbox>
   </v-container>
 </template>
@@ -18,8 +20,14 @@
    export default {
       data: function() {
          return {
-            radioGroup: 1
+            checkedCategories: []
          }
+      },
+      methods: {
+        check: function(e) {
+          console.log(this.checkedCategories)
+          this.$emit('model-updated', this.checkedCategories, this.schema.model)
+        }
       },
       mixins: [ abstractField ],
    };

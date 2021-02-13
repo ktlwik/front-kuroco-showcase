@@ -2,7 +2,7 @@
 	<v-textarea
 	  outlined
 	  dense
-      v-model="schema.model"
+      v-model="textarea"
       ref="schema.model"
       :required="schema.required"
       :readonly="schema.readonly"
@@ -14,6 +14,8 @@
       :placeholder="schema.placeholder"
 	  :counter="schema.counter"
 	  :hint="schema.hint"	  
+    @change="check($event)"
+
 	></v-textarea>
 </template>
 
@@ -24,6 +26,11 @@
 
   export default {
         mixins: [ abstractField ], 
+        data: function() {
+           return {
+              textarea: ""
+           }
+        },
         methods: {
      	  	isValid: function(schema, value) {
      			  console.log(value)
@@ -36,6 +43,10 @@
      			
      			return true
      		},
+        check: function(e) {
+          console.log(this.textarea)
+          this.$emit('model-updated', this.textarea, this.schema.model)
+        }
      	}
 	};
 </script>

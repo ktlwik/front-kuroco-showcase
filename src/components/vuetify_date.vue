@@ -20,6 +20,8 @@
      <v-date-picker
        v-model="date"
        mode="dateTime"
+       :min="schema.minYear"
+       :max="schema.maxYear"
         is24hr
        scrollable
      >
@@ -101,6 +103,8 @@
         <v-date-picker
           v-model="date"
           mode="dateTime"
+          :min="schema.minYear"
+          :max="schema.maxYear"
            is24hr
           scrollable
         >

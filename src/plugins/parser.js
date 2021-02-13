@@ -12,7 +12,7 @@ const KurocoParser = {}
 
 KurocoParser.install = function (Vue, options) {
     Vue.prototype.$parse = (json, key) => {
-    	if (json.hasOwnProperty('type')) {
+    	if (json.hasOwnProperty('type') && json.hasOwnProperty('required') && json['required'] != '0') {
   			var result = {}
     		var type_id = json['type']
     		if (type_id == "1") {

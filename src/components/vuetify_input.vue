@@ -2,7 +2,7 @@
 	<v-text-field
 	  outlined
 	  dense
-      v-model="schema.model"
+      v-model="text"
       ref="schema.model"
       :required="schema.required"
       :readonly="schema.readonly"
@@ -13,7 +13,8 @@
       ]'
       :placeholder="schema.placeholder"
 	  :counter="schema.counter"
-	  :hint="schema.hint"	  
+	  :hint="schema.hint"	
+      @change="check($event)"  
 	></v-text-field>
 </template>
 
@@ -24,6 +25,11 @@
 
     export default {
         mixins: [ abstractField ], 
+        data: function() {
+         return {
+            text: ""
+         }
+      	},
         methods: {
      	  	isValid: function(schema, value) {
      			console.log(value)
@@ -57,6 +63,10 @@
      			
      			return true
      		},
+     		check: function(e) {
+	          console.log(this.text)
+	          this.$emit('model-updated', this.text, this.schema.model)
+	        }
      	}
 	};
 </script>

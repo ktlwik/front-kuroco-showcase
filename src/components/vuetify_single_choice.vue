@@ -9,6 +9,7 @@
         :key="item.key"
         :label="item.value"
         :value="item.value"
+         @change="check($event)"
       ></v-radio>
     </v-radio-group>
   </v-container>
@@ -23,6 +24,12 @@
          return {
             radioGroup: 1
          }
+      },
+      methods: {
+        check: function(e) {
+          console.log(this.radioGroup)
+          this.$emit('model-updated', this.radioGroup, this.schema.model)
+        }
       },
       mixins: [ abstractField ],
    };
