@@ -4,13 +4,16 @@ export default function createPrefectureSchema(json, key) {
 	if (json.hasOwnProperty('type') && json['type'] == '9') {
 	    var type_id = json['type']
 	    result['model'] = key
+	    if (json['required'] == '2') {
+	    	result['required'] = true
+		} else {
+			result['required'] = false
+		}
 	    result['type'] = 'vuetifyPrefecture'
 	    result['label'] = json['title']
 	    result['options'] = Object.values(json['options'])
- 		console.log(Object.values(json['options']))
  	}
 
-	console.log(result)
 	return result
 };
 

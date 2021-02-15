@@ -6,7 +6,11 @@ export default function createMultipleChoiceSchema(json, key) {
 	    result['model'] = key
 	    result['label'] = json['title']
 	    result['contents'] = json['contents']
-	  
+	   	if (json['required'] == '2') {
+	    	result['required'] = true
+		} else {
+			result['required'] = false
+		}
 	    if (json.hasOwnProperty('attribute') && json['attribute'].hasOwnProperty('random')) {
 	    	if (json['attribute']['random'] == '1') {
 	    		var list = result['contents']

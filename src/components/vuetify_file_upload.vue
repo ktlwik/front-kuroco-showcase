@@ -1,12 +1,34 @@
 <template>
 	<!-- https://vuetifyjs.com/en/api/v-file-input/#props for more information 
 		add schema based properties -->   
- 	<v-file-input ref="schema.model"></v-file-input>
+	<v-form v-model="formValid" ref="myForm">
+ 		<v-file-input ref="schema.model"
+ 		v-model="file"
+ 		 :rules='[v => (schema.required == false || (schema.required == true && !!v)) || "need to upload file"]'
+ 		@change="check($event)"  
+ 		></v-file-input>
+ 	</v-form>
 </template>
 
 <script>
    import { abstractField } from "vue-form-generator";
    export default {
-         mixins: [ abstractField ]
+   		 data: function() {
+	         return {
+	      		formValid: true,
+	      		file: null
+	         }
+      	 },
+      	 methods: {
+     		check: function(e) {
+     		  console.log(e)
+	        }
+      	 },
+         mixins: [ abstractField ],
+         mounted() {
+     		this.formValid = this.$refs.myForm.validate()
+     		console.log(this.formValid)
+            //this.$emit("validated", this.formValid, ["asds"], this)
+     	}
    };
 </script>

@@ -1,6 +1,9 @@
 <template>
   <div>
-  <vue-form-generator :schema="schema" :model="model" @model-updated='onInput'></vue-form-generator>
+  <vue-form-generator ref="form"
+    :schema="schema" :model="model" @model-updated='onInput'
+  >    
+  </vue-form-generator>
   </div>
 </template>
 
@@ -59,10 +62,24 @@
                'type': 'submit',
                'buttonText': 'submit',
                 onSubmit(model) {
+
+                  self.$children[0].$children.map(function(key, child) {
+                    console.log(child)
+                    self.disabled = false
+                    console.log(key.$children[0].formValid)
+                    if (key.$children[0].formValid == false) {
+                      self.disabled = true 
+                    }
+                  });
+                 
+                  //console.log(self.$children)
                   console.log("Form submitted!", model);
-                  console.log(self.checkedCategories)
+                  //console.log(self.checkedCategories)
                 },
-               'validateBeforeSubmit': true
+                disabled() {
+                  return self.disabled
+                },
+               'validateBeforeSubmit': false
             })
             console.log(schema['fields'])
             self.schema = schema
@@ -76,10 +93,11 @@
     },
     data () {
       return {
+        disabled: true,
         model: {
         },
         schema: {
-        }
+        }, 
       }
     }
   }

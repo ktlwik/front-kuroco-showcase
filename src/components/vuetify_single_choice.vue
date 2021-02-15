@@ -1,9 +1,6 @@
-<template>
-  <v-container
-    class="px-0"
-    fluid
-  >
-    <v-radio-group v-model="radioGroup">
+<template> 
+  <v-form v-model="formValid" ref="myForm">
+    <v-radio-group v-model="radioGroup" :rules="[v => (schema.required == false || (schema.required == true && !!v)) || 'required field']">
       <v-radio
         v-for="item in schema.contents"
         :key="item.key"
@@ -12,7 +9,7 @@
          @change="check($event)"
       ></v-radio>
     </v-radio-group>
-  </v-container>
+  </v-form>
 </template>
 
 
@@ -22,14 +19,20 @@
    export default {
       data: function() {
          return {
-            radioGroup: 1
+            formValid: false,
+            radioGroup: null
          }
       },
       methods: {
         check: function(e) {
-          console.log(this.radioGroup)
-          this.$emit('model-updated', this.radioGroup, this.schema.model)
+          this.formValid = this.$refs.myForm.validate()
+          if (this.formValid) {
+            this.$emit('model-updated', this.radioGroup, this.schema.model)
+          }
         }
+      },
+      mounted() {
+        this.formValid = this.$refs.myForm.validate()
       },
       mixins: [ abstractField ],
    };

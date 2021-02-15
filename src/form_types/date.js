@@ -6,6 +6,11 @@ export default function createDateSchema(json, key) {
 	    result['model'] = key
 	    result['type'] = 'vuetifyDate'
 	    result['time'] = '0';
+	    if (json['required'] == '2') {
+	    	result['required'] = true
+		} else {
+			result['required'] = true
+		}
 		if (json.hasOwnProperty('attribute') && json['attribute'].hasOwnProperty('add_time')) {
 			if (json['attribute']['add_time'] == '1') {
 				result['time'] = '1';
