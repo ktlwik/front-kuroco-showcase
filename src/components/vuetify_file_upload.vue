@@ -24,7 +24,7 @@
       	 methods: {
      		check: function(e) {
      			let self = this
-     			this.$axios
+     			this.$store.$auth.ctx.$axios
 			        .post("/rcms-api/1/upload", {
 			          file: this.file
 			        })

@@ -105,6 +105,11 @@ export default {
           title: "お問い合わせ",
           to: "/inquiry",
         },
+        {
+          icon: "mdi-send",
+          title: "inquiry form",
+          to: "/testkuroschema"
+        }
       ],
       miniVariant: false,
       right: true,

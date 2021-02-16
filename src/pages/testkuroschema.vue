@@ -1,9 +1,12 @@
 <template>
-  <div>
+  <div class="theme--light v-stepper">
+
+  <v-container fluid>
   <vue-form-generator ref="form"
     :schema="schema" :model="model" @model-updated='onInput'
   >    
   </vue-form-generator>
+  </v-container>
   </div>
 </template>
 
@@ -34,6 +37,7 @@
 
   Vue.use(VueFormGenerator);
   Vue.use(KurocoParser);
+
   export default {
     components: {
      "vue-form-generator": VueFormGenerator.component
