@@ -8,6 +8,7 @@ export default function createUploadFileSchema(json, key) {
 		} else {
 			result['required'] = false
 		}
+		result['accept'] = json['extensions'].toString()
 	    result['model'] = key
 	    result['type'] = 'uploadFile'
 	 }

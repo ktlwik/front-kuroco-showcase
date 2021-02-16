@@ -77,7 +77,7 @@
                   //console.log(self.checkedCategories)
                 },
                 disabled() {
-                  return self.disabled
+                  return false
                 },
                'validateBeforeSubmit': false
             })

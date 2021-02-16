@@ -27,6 +27,7 @@
           :max="schema.maxYear"
            is24hr
           scrollable
+          @change="checkdate($event)"  
         >
           <v-spacer></v-spacer>
           <v-btn
@@ -67,6 +68,7 @@
              v-if="modal2"
              v-model="time"
              full-width
+             @change="checkdatetime($event)"  
            >
              <v-spacer></v-spacer>
              <v-btn
@@ -110,8 +112,9 @@
              mode="dateTime"
              :min="schema.minYear"
              :max="schema.maxYear"
-              is24hr
+             is24hr
              scrollable
+             @change="checkdate($event)"  
            >
              <v-spacer></v-spacer>
              <v-btn
@@ -146,6 +149,31 @@
                time: null, 
                modal: false,
                modal2: false
+            }
+         },
+         methods: {
+            checkdate: function(e) {
+               this.formValid = this.$refs.myForm.validate()
+               if (this.formValid) {
+                  if (this.date && this.time) {
+                     console.log(this.date + ' ' + this.time)
+                     this.$emit('model-updated', this.date + ' ' + this.time + ' +0900', this.schema.model)
+                  } else {
+                     this.$emit('model-updated', this.date, this.schema.model)
+                  }
+               }
+            },
+            checkdatetime: function(e) {
+               console.log(e)
+               this.formValid = this.$refs.myForm.validate()
+               if (this.formValid) {
+                  if (this.date && this.time) {
+                     console.log(this.date + ' ' + this.time)
+                     this.$emit('model-updated', this.date + ' ' + this.time + ' +0900', this.schema.model)
+                  } else {
+                     this.$emit('model-updated', this.date, this.schema.model)
+                  }
+               }
             }
          },
          mounted() {

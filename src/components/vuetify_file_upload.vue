@@ -5,7 +5,9 @@
  		<v-file-input ref="schema.model"
  		v-model="file"
  		 :rules='[v => (schema.required == false || (schema.required == true && !!v)) || "need to upload file"]'
- 		@change="check($event)"  
+ 		 :label="schema.accept"
+ 		 :accept="schema.accept"
+ 		@change="check($event)" 
  		></v-file-input>
  	</v-form>
 </template>
