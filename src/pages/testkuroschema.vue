@@ -10,8 +10,30 @@
 <script>
   import Vue from 'vue'
   import VueFormGenerator from 'vue-form-generator'
+  import KurocoParser from '../plugins/parser.js';
   import '../assets/form.css'
-  Vue.use(VueFormGenerator)
+  import fieldUploadFile from '../components/vuetify_file_upload.vue';
+  import fieldVuetifyText from '../components/vuetify_input.vue';
+  import fieldVuetifyTextArea from '../components/vuetify_textarea.vue';
+  import fieldVuetifyDate from '../components/vuetify_date.vue';
+  import fieldVuetifyJson from '../components/vuetify_json.vue';
+  import fieldVuetifyPrefecture from '../components/vuetify_prefecture.vue';
+  import fieldVuetifyMultipleChoice from '../components/vuetify_multiple_choice.vue';
+  import fieldVuetifySingleChoice from '../components/vuetify_single_choice.vue';
+  import fieldVuetifySingleOption from '../components/vuetify_single_option.vue';
+
+  Vue.component('fieldUploadFile', fieldUploadFile);
+  Vue.component('fieldVuetifyDate', fieldVuetifyDate);
+  Vue.component('fieldVuetifyText', fieldVuetifyText);
+  Vue.component('fieldVuetifyTextArea', fieldVuetifyTextArea);
+  Vue.component('fieldVuetifyJson', fieldVuetifyJson);
+  Vue.component('fieldVuetifyPrefecture', fieldVuetifyPrefecture);
+  Vue.component('fieldVuetifySingleOption', fieldVuetifySingleOption);
+  Vue.component('fieldVuetifySingleChoice', fieldVuetifySingleChoice);
+  Vue.component('fieldVuetifyMultipleChoice', fieldVuetifyMultipleChoice);
+
+  Vue.use(VueFormGenerator);
+  Vue.use(KurocoParser);
   export default {
     components: {
      "vue-form-generator": VueFormGenerator.component
@@ -93,6 +115,7 @@
     },
     data () {
       return {
+        auth: false,
         disabled: true,
         model: {
         },

@@ -45,7 +45,7 @@ export default {
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
    */
-  plugins: [],
+  plugins: ['@/plugins/parser'],
   /*
    ** Auto import components
    ** See https://nuxtjs.org/api/configuration-components
@@ -82,7 +82,7 @@ export default {
   },
   router: {
     //TODO(nuri): Uncomment after working on auth
-    //middleware: ["auth", "upgrade"],
+    middleware: ["auth", "upgrade"],
   },
   axios: {
     baseURL: envSettings.BASE_URL,

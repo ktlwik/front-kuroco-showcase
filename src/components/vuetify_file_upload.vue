@@ -23,7 +23,16 @@
       	 },
       	 methods: {
      		check: function(e) {
-     		  console.log(e)
+     			let self = this
+     			this.$axios
+			        .post("/rcms-api/1/upload", {
+			          file: this.file
+			        })
+			        .then(function (response) {
+			          console.log(response)
+			        }).catch(function (error) {
+			          console.log(error)
+			        })
 	        }
       	 },
          mixins: [ abstractField ],

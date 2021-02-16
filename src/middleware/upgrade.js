@@ -3,7 +3,8 @@ export default function ({ store, redirect, route }) {
   if (
     store.$auth.loggedIn &&
     route.path !== "/upgrade" &&
-    route.path !== "/inquiry"
+    route.path !== "/inquiry" &&
+    route.path !== "/testkuroschema"
   ) {
     const group_ids = JSON.parse(JSON.stringify(store.$auth.user.group_ids))
     let upgraded_flg = false
