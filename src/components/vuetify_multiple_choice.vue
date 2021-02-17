@@ -9,6 +9,7 @@
       :value="item.value"
       :rules="rules"
       @change="check($event)"
+      return-object
     ></v-checkbox>
   </v-form>
 </template>
@@ -34,8 +35,12 @@
       methods: {
         check: function(e) {
           this.formValid = this.$refs.myForm.validate()
+          var checkedJson = []
+          for (var key in this.checkedCategories) {
+            checkedJson.push({"key": key, "label": this.checkedCategories[key]})
+          }
           if (this.formValid) {
-            this.$emit('model-updated', this.checkedCategories, this.schema.model)
+            this.$emit('model-updated', checkedJson, this.schema.model)
           }
         }
       },

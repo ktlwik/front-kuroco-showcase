@@ -93,6 +93,7 @@ export default {
           self.loading = false
         })
         .catch(function (error) {
+          console.log(error)
           self.$store.dispatch(
             "snackbar/setError",
             error.response.data.errors?.[0]

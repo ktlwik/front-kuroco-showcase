@@ -6,8 +6,9 @@
        menu-props="auto"
        item-text="value"
        item-value="key"
-      :rules="[v => (schema.required == false || (schema.required == true && !!v)) || 'required field']"
+       :rules="[v => (schema.required == false || (schema.required == true && !!v)) || 'required field']"
        @change="check($event)"
+       return-object
    ></v-select>
   </v-form>
 </template>
@@ -27,8 +28,12 @@
       methods: {
         check: function(e) {
           this.formValid = this.$refs.myForm.validate()
+          console.log(this.option)
           if (this.formValid) {
-            this.$emit('model-updated', this.option, this.schema.model)
+            this.$emit('model-updated', {
+              "key": this.option.key,
+              "label": this.option.value
+            }, this.schema.model)
           }
         }
       },

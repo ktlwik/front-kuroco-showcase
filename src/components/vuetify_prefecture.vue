@@ -5,9 +5,11 @@
        :items="schema.options"
        append-outer-icon="mdi-map"
        menu-props="auto"
-       :label="schema.options[0]"
+       item-text="text"
+       item-value="value"
        :rules="[v => (schema.required == false || (schema.required == true && !!v)) || 'required field']"
        @change="check($event)"
+       return-object
    ></v-select>
   </v-form>
 </template>
@@ -21,14 +23,17 @@
       data: function() {
          return {
             formValid: false,
-            option: ""
+            option: {}
          }
       },
       methods: {
-        check: function(e) {
+        check: function(e, value) {
           this.formValid = this.$refs.myForm.validate()
           if (this.formValid) {
-            this.$emit('model-updated', this.option, this.schema.model)
+            this.$emit('model-updated', {
+               "tdfk_cd": this.option.value,
+               "tdfk_nm": this.option.text
+            }, this.schema.model)
           }
         }
       },

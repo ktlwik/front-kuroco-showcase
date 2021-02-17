@@ -1,12 +1,11 @@
 <template> 
   <v-form v-model="formValid" ref="myForm">
-    <v-radio-group v-model="radioGroup" :rules="[v => (schema.required == false || (schema.required == true && !!v)) || 'required field']">
+    <v-radio-group v-model="radioGroup" :rules="[v => (schema.required == false || (schema.required == true && !!v)) || 'required field']" @change="check($event)">
       <v-radio
         v-for="item in schema.contents"
         :key="item.key"
         :label="item.value"
-        :value="item.value"
-         @change="check($event)"
+        :value="item"
       ></v-radio>
     </v-radio-group>
   </v-form>
@@ -25,9 +24,13 @@
       },
       methods: {
         check: function(e) {
+          console.log(this.radioGroup)
           this.formValid = this.$refs.myForm.validate()
           if (this.formValid) {
-            this.$emit('model-updated', this.radioGroup, this.schema.model)
+            this.$emit('model-updated', {
+              "key": this.radioGroup.key,
+              "label": this.radioGroup.value
+            }, this.schema.model)
           }
         }
       },

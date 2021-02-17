@@ -49,11 +49,12 @@
     methods: {
       getModel() {
         let self = this
-        this.$axios
-          .get("http://my-json-server.typicode.com/ktlwik/devapi/details")
+        this.$store.$auth.ctx.$axios
+          .get('/rcms-api/1/inquiry_info/8')
           .then(function (response) {
             var model = {};
-            var columns = response.data.cols
+            console.log(response.data.details.cols)
+            var columns = response.data.details.cols
             for (var key in columns) {
               if (columns.hasOwnProperty(key)) {
                 if (columns[key].hasOwnProperty('attribute')) {
@@ -64,16 +65,24 @@
               }
             }
             self.model = model
+          }).catch(function (error) {
+                console.log(error)
+                self.$store.dispatch(
+                  "snackbar/setError",
+                  error.response.data.errors?.[0]
+                )
+                self.$store.dispatch("snackbar/snackOn")
+                self.loading = false
           })
        },
        getSchema() {
         let self = this
-        this.$axios
-          .get("http://my-json-server.typicode.com/ktlwik/devapi/details")
+        this.$store.$auth.ctx.$axios
+          .get('/rcms-api/1/inquiry_info/8')
           .then(function (response) {
             var schema = {};
             schema['fields'] = []
-            var columns = response.data.cols
+            var columns = response.data.details.cols
             for (var key in columns) {
               var result = {}
               if (columns.hasOwnProperty(key)) {
@@ -86,7 +95,6 @@
           
             schema['fields'].push({
                'type': 'submit',
-               'buttonText': 'submit',
                 onSubmit(model) {
 
                   self.$children[0].$children.map(function(key, child) {
@@ -98,9 +106,19 @@
                     }
                   });
                  
-                  //console.log(self.$children)
+                  console.log(self.disabled)
+                  if (!self.disabled) {
+                    var send_model = JSON.parse(JSON.stringify(model))
+                    send_model['body'] = 'example message'
+                    console.log(send_model)
+                    self.$store.$auth.ctx.$axios
+                      .post('/rcms-api/1/inquiry/8', send_model)
+                      .then(function (response) { 
+                        console.log(response.data)
+                      })
+                  }
+
                   console.log("Form submitted!", model);
-                  //console.log(self.checkedCategories)
                 },
                 disabled() {
                   return false
@@ -109,7 +127,16 @@
             })
             console.log(schema['fields'])
             self.schema = schema
-          })
+          }).catch(function (error) {
+                console.log(error)
+                self.$store.dispatch(
+                  "snackbar/setError",
+                  error.response.data.errors?.[0]
+                )
+                self.$store.dispatch("snackbar/snackOn")
+                self.loading = false
+              })
+
        },
        onInput: function(value, fieldName) {
         console.log("fieldName: ", fieldName)
