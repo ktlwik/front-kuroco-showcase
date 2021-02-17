@@ -6,6 +6,15 @@
     :schema="schema" :model="model" @model-updated='onInput'
   >    
   </vue-form-generator>
+  <v-btn
+    type="submit"
+    block
+    x-large
+    color="success"
+    class="white--text"
+    @click="submitF()"
+    :disabled="disabled"
+  >submit</v-btn>
   </v-container>
   </div>
 </template>
@@ -92,40 +101,7 @@
                 }
               }
             }
-          
-            schema['fields'].push({
-               'type': 'submit',
-                onSubmit(model) {
-
-                  self.$children[0].$children.map(function(key, child) {
-                    console.log(child)
-                    self.disabled = false
-                    console.log(key.$children[0].formValid)
-                    if (key.$children[0].formValid == false) {
-                      self.disabled = true 
-                    }
-                  });
-                 
-                  console.log(self.disabled)
-                  if (!self.disabled) {
-                    var send_model = JSON.parse(JSON.stringify(model))
-                    send_model['body'] = 'example message'
-                    console.log(send_model)
-                    self.$store.$auth.ctx.$axios
-                      .post('/rcms-api/1/inquiry/8', send_model)
-                      .then(function (response) { 
-                        console.log(response.data)
-                      })
-                  }
-
-                  console.log("Form submitted!", model);
-                },
-                disabled() {
-                  return false
-                },
-               'validateBeforeSubmit': false
-            })
-            console.log(schema['fields'])
+      
             self.schema = schema
           }).catch(function (error) {
                 console.log(error)
@@ -142,12 +118,38 @@
         console.log("fieldName: ", fieldName)
         console.log("value: ", value)
         this.$set(this.model, fieldName, value)
+      },
+      submitF: function() {
+        let self = this
+        console.log(this.model)
+        this.validForm = true
+        for (var key in self.$children[0].$children) {
+          if (self.$children[0].$children[key].$children[0].formValid == false) {
+            this.validForm = false
+          }
+        }
+        console.log(this.validForm)
+       
+        if (this.validForm) {
+          var send_model = JSON.parse(JSON.stringify(self.model))
+          send_model['body'] = 'example message'
+          self.$store.$auth.ctx.$axios
+            .post('/rcms-api/1/inquiry/8', send_model)
+            .then(function (response) { 
+              console.log(response.data)
+            })
+          console.log("Form submitted!", self.model);
+        } else {
+          console.log("Fill all the fields")
+        }
+
       }
     },
     data () {
       return {
         auth: false,
-        disabled: true,
+        disabled: false,
+        validForm: true,
         model: {
         },
         schema: {
