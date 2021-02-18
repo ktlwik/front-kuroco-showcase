@@ -67,6 +67,14 @@
           	{"date": "2012/01/01", "label": "right", "link": "http://google.com", "icon": "excel"}, 
           	{"date": "2012/01/01", "label": "up", "link": "http://google.com", "icon": "word"}, 
           	{"date": "2012/01/01", "label": "down", "link": "http://google.com", "icon": ""}, 
+          	{"date": "2012/01/01", "label": "left", "link": "http://google.com", "icon": ""}, 
+          	{"date": "2012/01/01", "label": "left", "link": "http://google.com", "icon": ""}, 
+          	{"date": "2012/01/01", "label": "left", "link": "http://google.com", "icon": "pdf"}, 
+          	{"date": "2012/01/01", "label": "left", "link": "http://google.com", "icon": "pdf"}, 
+          	{"date": "2012/01/01", "label": "left", "link": "http://google.com", "icon": "pdf"}, 
+          	{"date": "2012/01/01", "label": "left", "link": "http://google.com", "icon": "pdf"}, 
+          	{"date": "2012/01/01", "label": "left", "link": "http://google.com", "icon": "pdf"}, 
+          	{"date": "2012/01/01", "label": "left", "link": "http://google.com", "icon": "pdf"}, 
           ],
 	      page: 1,
 	      perPage: 10,
@@ -141,6 +149,8 @@
                 )
                 self.$store.dispatch("snackbar/snackOn")
 	        })
+
+	  	 this.updateTopics()
 	  },
 	  computed: {
 	    visiblePages () {
