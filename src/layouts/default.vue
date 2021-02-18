@@ -109,6 +109,11 @@ export default {
           icon: "mdi-send",
           title: "inquiry form",
           to: "/testkuroschema"
+        },
+        {
+          icon: "mdi-newspaper-variant",
+          title: "topics",
+          to: "/topics"
         }
       ],
       miniVariant: false,

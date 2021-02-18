@@ -4,7 +4,9 @@ export default function ({ store, redirect, route }) {
     store.$auth.loggedIn &&
     route.path !== "/upgrade" &&
     route.path !== "/inquiry" &&
-    route.path !== "/testkuroschema"
+    route.path !== "/testkuroschema" &&
+    route.path !== "/topics" &&
+    route.path !== "/topic/${id}"
   ) {
     const group_ids = JSON.parse(JSON.stringify(store.$auth.user.group_ids))
     let upgraded_flg = false
@@ -13,8 +15,8 @@ export default function ({ store, redirect, route }) {
         upgraded_flg = true
       }
     })
-    if (!upgraded_flg) {
-      return redirect("/upgrade")
-    }
+   // if (!upgraded_flg) {
+   //   return redirect("/upgrade")
+   // }
   }
 }

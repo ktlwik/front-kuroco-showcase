@@ -1,4 +1,7 @@
 <template>
+  <div>
+
+  <h1>Inquiry</h1>
   <div class="theme--light v-stepper">
 
   <v-container fluid>
@@ -16,6 +19,7 @@
     :disabled="disabled"
   >submit</v-btn>
   </v-container>
+  </div>
   </div>
 </template>
 
@@ -59,7 +63,7 @@
       getModel() {
         let self = this
         this.$store.$auth.ctx.$axios
-          .get('/rcms-api/1/inquiry_info/8')
+          .get('/rcms-api/1/inquiry/get/6')
           .then(function (response) {
             var model = {};
             console.log(response.data.details.cols)
@@ -87,7 +91,7 @@
        getSchema() {
         let self = this
         this.$store.$auth.ctx.$axios
-          .get('/rcms-api/1/inquiry_info/8')
+          .get('/rcms-api/1/inquiry/get/6')
           .then(function (response) {
             var schema = {};
             schema['fields'] = []
@@ -126,6 +130,7 @@
         for (var key in self.$children[0].$children) {
           if (self.$children[0].$children[key].$children[0].formValid == false) {
             this.validForm = false
+            console.log("invalid key", key)
           }
         }
         console.log(this.validForm)
@@ -134,7 +139,7 @@
           var send_model = JSON.parse(JSON.stringify(self.model))
           send_model['body'] = 'example message'
           self.$store.$auth.ctx.$axios
-            .post('/rcms-api/1/inquiry/8', send_model)
+            .post('/rcms-api/1/inquiry/6', send_model)
             .then(function (response) { 
               console.log(response.data)
             })
@@ -144,6 +149,9 @@
         }
 
       }
+    },
+    title() {
+      return 'Inquiry'
     },
     data () {
       return {
