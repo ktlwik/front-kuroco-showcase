@@ -30,7 +30,7 @@
     	{{item.label}}
     	</v-col>
     	<v-col> 
-    	<NuxtLink :to="item.link" no-prefetch>{{item.link}}</NuxtLink>
+    	<NuxtLink :to="{ path: '/topic/' + item.link }" no-prefetch>{{item.link}}</NuxtLink>
     	<v-icon v-if="item.icon=='pdf'">mdi-pdf-box</v-icon>
     	<v-icon v-else-if="item.icon=='excel'">mdi-file-excel</v-icon>
     	<v-icon v-else-if="item.icon=='word'">mdi-file-word</v-icon>
@@ -56,25 +56,10 @@
           auth: false,
           group_id: 11,
           categories: [
-          	{"key": "1", "value": "all"},
-          	{"key": "2", "value": "right"},
-          	{"key": "3", "value": "up"},
-          	{"key": "4", "value": "down"},
-          	{"key": "5", "value": "left"},
+       
           ],
           topics: [
-          	{"date": "2012/01/01", "label": "left", "link": "http://google.com", "icon": "pdf"}, 
-          	{"date": "2012/01/01", "label": "right", "link": "http://google.com", "icon": "excel"}, 
-          	{"date": "2012/01/01", "label": "up", "link": "http://google.com", "icon": "word"}, 
-          	{"date": "2012/01/01", "label": "down", "link": "http://google.com", "icon": ""}, 
-          	{"date": "2012/01/01", "label": "left", "link": "http://google.com", "icon": ""}, 
-          	{"date": "2012/01/01", "label": "left", "link": "http://google.com", "icon": ""}, 
-          	{"date": "2012/01/01", "label": "left", "link": "http://google.com", "icon": "pdf"}, 
-          	{"date": "2012/01/01", "label": "left", "link": "http://google.com", "icon": "pdf"}, 
-          	{"date": "2012/01/01", "label": "left", "link": "http://google.com", "icon": "pdf"}, 
-          	{"date": "2012/01/01", "label": "left", "link": "http://google.com", "icon": "pdf"}, 
-          	{"date": "2012/01/01", "label": "left", "link": "http://google.com", "icon": "pdf"}, 
-          	{"date": "2012/01/01", "label": "left", "link": "http://google.com", "icon": "pdf"}, 
+   
           ],
 	      page: 1,
 	      perPage: 10,
