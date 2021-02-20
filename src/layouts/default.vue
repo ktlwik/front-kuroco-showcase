@@ -95,6 +95,11 @@ export default {
       fixed: false,
       items: [
         {
+          icon: "mdi-send", 
+          title: "top", 
+          to: "/top"
+        },
+        {
           icon: "mdi-home",
           title: "HOME",
           title_loggedIn: "マイページ",
@@ -114,7 +119,7 @@ export default {
           icon: "mdi-newspaper-variant",
           title: "topics",
           to: "/topics"
-        }
+        }, 
       ],
       miniVariant: false,
       right: true,

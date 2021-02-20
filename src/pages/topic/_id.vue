@@ -17,7 +17,6 @@
 		    color="success"
 		    class="white--text"
 		    @click="back()"
-		    :disabled="disabled"
 		> Back to List
 		</v-btn>
 	</div>

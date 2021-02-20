@@ -6,7 +6,8 @@ export default function ({ store, redirect, route }) {
     route.path !== "/inquiry" &&
     route.path !== "/testkuroschema" &&
     route.path !== "/topics" &&
-    route.path !== "/topic/${id}"
+    route.path !== "/topic/${id}" &&
+    route.path !== "/top"
   ) {
     const group_ids = JSON.parse(JSON.stringify(store.$auth.user.group_ids))
     let upgraded_flg = false
