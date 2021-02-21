@@ -95,7 +95,7 @@ export default {
       fixed: false,
       items: [
         {
-          icon: "mdi-send", 
+          icon: "mdi-account-box", 
           title: "top", 
           to: "/top"
         },
@@ -120,6 +120,11 @@ export default {
           title: "topics",
           to: "/topics"
         }, 
+        {
+          icon: "mdi-account-tie",
+          title: "members",
+          to: "/members"
+        }
       ],
       miniVariant: false,
       right: true,

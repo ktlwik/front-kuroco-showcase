@@ -1,0 +1,105 @@
+<template>
+ <div> 
+   <v-row>
+   <v-col cols="6">
+     <v-autocomplete
+        v-model="member"
+        :items="members"
+        dense
+        filled
+        label="Search member"
+      ></v-autocomplete>
+    </v-col>
+    <v-col cols="5">
+      <v-autocomplete
+        v-model="department"
+        :items="departments"
+        dense
+        filled
+        label="Deparment"
+      ></v-autocomplete>
+    </v-col>
+    <v-col>
+      <v-btn @click="filterByMembersDepartment()">
+          search
+      </v-btn>
+    </v-col>
+    </v-row>
+    <v-data-table
+      :headers="headers"
+      :items="filteredItems"
+      :items-per-page="10"
+      class="elevation-1"
+    > 
+
+    <template v-slot:item.name="{ item }">
+      <NuxtLink :to="{ path: '/member/' + item.name }" no-prefetch>{{item.name}}</NuxtLink>
+    </template>
+    <template v-slot:item.phone="{ item }">
+      <NuxtLink :to="{ path: '/phone/' + item.phone }" no-prefetch>{{item.phone}}</NuxtLink>
+    </template>
+    </v-data-table>
+  </div>
+</template>
+<script>
+export default {
+  computed: {
+    headers () {
+      return [
+        { text: 'Name', value: 'name', sortable: false },
+        { text: 'Deparment', value: 'department', sortable: false },
+        { text: 'Position', value: 'position', sortable: false, },
+        { text: 'Phone', value: 'phone', sortable: false},
+      ]
+    }
+  },
+  data () {
+    return {
+      items: [{
+        name: 'Nuri', department: 'Computer Science', position: 'Manager', phone: '+77016054171'
+      }, {
+        name: 'Assel', department: 'Math Science', position: 'Manager', phone: '+7777054171'
+      }],
+      filteredItems: [{
+        name: 'Nuri', department: 'Computer Science', position: 'Manager', phone: '+77016054171'
+      }, {
+        name: 'Assel', department: 'Math Science', position: 'Manager', phone: '+7777054171'
+      }],
+      members: ['Nuri', 'Assel'],
+      departments: ['Computer Science', 'Math Science'],
+      member: '',
+      department: ''
+    }
+  },
+  methods: {
+    filterByMembersDepartment () {
+      if (this.department == undefined) {
+        this.department = ''
+      } 
+      if (this.member == undefined) {
+        this.member = ''
+      }
+      if (this.department == '' && this.member == '') {
+        this.filteredItems = this.items
+      } else if (this.department == '') {
+        let self = this
+        this.filteredItems = this.items.filter(function(obj) {
+           return obj.name.includes(self.member)
+        })
+      } else if (this.member == '') {
+        let self = this
+        this.filteredItems = this.items.filter(function(obj) {
+           return obj.department.includes(self.department)
+        })
+      } else {
+        let self = this
+        this.filteredItems = this.items.filter(function(obj) {
+           return obj.department.includes(self.department) && obj.name.includes(self.member)
+        })
+      }
+
+      console.log(this.filteredItems)
+    },
+  }
+}
+</script>
