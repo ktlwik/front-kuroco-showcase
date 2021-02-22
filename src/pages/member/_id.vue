@@ -33,10 +33,17 @@
 			      <tbody>
 			        <tr
 			          v-for="item in profile"
-			          :key="item.name"
 			        >
 			          <td width="200">{{ item.name }}</td>
-			          <td width="1000">{{ item.value }}</td>
+			          <td v-if="item.name=='Phone'" width="1000">
+			          	<a :href="'tel:' + item.value">{{item.value}}</a>
+			          </td>
+			          <td v-else-if="item.name=='Email'" width="1000">
+			          	<a :href="'mailto:' + item.value">{{item.value}}</a>
+			          </td>
+			          <td v-else width="1000">
+			          	{{ item.value }}
+			          </td>
 			        </tr>
 			      </tbody>
 			    </template>
@@ -72,8 +79,8 @@
 		        	"department": "Computer Department", 
 		        	"position": "Programmer",
 		        	"url": "https://astutegraphics.com/assets/training/How-to-create-filled-line-avatars-with-Scott-Lewis/11_how-to-create-filled-line-avatars-with-scott-lewis.jpg", 
-		        	"zip": "111-1111", "location": 
-		        	"1-1-1 Shinjuku, Tokyo Japan", 
+		        	"zip": "111-1111", 
+		        	"location": "1-1-1 Shinjuku, Tokyo Japan", 
 		        	"phone": "03-0000-0000", 
 		        	"email": "nuri@sample.co.jp", 
 		        	"text": "Here is the first message"

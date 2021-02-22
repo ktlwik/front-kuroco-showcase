@@ -36,7 +36,7 @@
       <NuxtLink :to="{ path: '/member/' + item.name }" no-prefetch>{{item.name}}</NuxtLink>
     </template>
     <template v-slot:item.phone="{ item }">
-      <NuxtLink :to="{ path: '/phone/' + item.phone }" no-prefetch>{{item.phone}}</NuxtLink>
+      <a :href="'tel:' + item.phone">{{item.phone}}</a>
     </template>
     </v-data-table>
   </div>
@@ -56,16 +56,16 @@ export default {
   data () {
     return {
       items: [{
-        name: 'Nuri', department: 'Computer Science', position: 'Manager', phone: '+77016054171'
+        name: 'Peter', department: 'Computer Science', position: 'Manager', phone: '+77016054171'
       }, {
-        name: 'Assel', department: 'Math Science', position: 'Manager', phone: '+7777054171'
+        name: 'Kate', department: 'Math Science', position: 'Manager', phone: '+7777054171'
       }],
       filteredItems: [{
-        name: 'Nuri', department: 'Computer Science', position: 'Manager', phone: '+77016054171'
+        name: 'Peter', department: 'Computer Science', position: 'Manager', phone: '+77016054171'
       }, {
-        name: 'Assel', department: 'Math Science', position: 'Manager', phone: '+7777054171'
+        name: 'Kate', department: 'Math Science', position: 'Manager', phone: '+7777054171'
       }],
-      members: ['Nuri', 'Assel'],
+      members: ['Peter', 'Kate'],
       departments: ['Computer Science', 'Math Science'],
       member: '',
       department: ''
