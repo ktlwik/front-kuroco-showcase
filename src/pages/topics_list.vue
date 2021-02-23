@@ -21,22 +21,7 @@
       </v-btn-toggle>
     </v-col>
     <v-col>
-    <v-row v-for="item in visiblePages">
-    	<br/>
-    	<v-col>
-    	{{item.date}}
-    	</v-col>
-    	<v-col> 
-    	{{item.label}}
-    	</v-col>
-    	<v-col> 
-    	<NuxtLink :to="{ path: '/topic/' + item.link }" no-prefetch>{{item.link}}</NuxtLink>
-    	<v-icon v-if="item.icon=='pdf'">mdi-pdf-box</v-icon>
-    	<v-icon v-else-if="item.icon=='excel'">mdi-file-excel</v-icon>
-    	<v-icon v-else-if="item.icon=='word'">mdi-file-word</v-icon>
-    	<v-icon v-else>mdi-launch</v-icon>
-    	</v-col>
-    </v-row>
+    	<v-topics :topics="visiblePages"></v-topics>
     </v-col>
     <br/>
 	<br/>
@@ -50,7 +35,11 @@
 </template>
 
 <script>
+	import topicList from '../components/topics'
 	export default {
+	   components: {
+		'v-topics': topicList
+	   },
 	   data () {
 	    return {
           auth: false,

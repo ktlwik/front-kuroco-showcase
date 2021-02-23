@@ -23,7 +23,7 @@
 </template>
 
 <script>
-	import item from '../../components/item'
+	import item from '../../components/topic_detail'
 	export default {
 		components: {
 			'v-item': item

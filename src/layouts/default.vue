@@ -118,12 +118,17 @@ export default {
         {
           icon: "mdi-newspaper-variant",
           title: "topics",
-          to: "/topics"
+          to: "/topics_list"
         }, 
         {
           icon: "mdi-account-tie",
-          title: "members",
-          to: "/members"
+          title: "member",
+          to: "/member"
+        },
+        {
+          icon: "mdi-account-box",
+          title: "mypage", 
+          to: "/mypage"
         }
       ],
       miniVariant: false,

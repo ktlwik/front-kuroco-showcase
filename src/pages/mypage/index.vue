@@ -1,17 +1,26 @@
 <template>
   <div fluid>
-    <v-carousel>
-      <v-carousel-item
-        v-for="(item,i) in items"
-        :key="i"
-        :src="item.src"
-        reverse-transition="fade-transition"
-        transition="fade-transition"
-      ></v-carousel-item>
-    </v-carousel>
+    <v-tabs
+    fixed-tabs
+    background-color="indigo"
+    dark
+    height="70"
+    class="rounded-xl"
+    >
+    <v-tab @click="go_page('/mypage/')">
+      My page
+    </v-tab>
+    <v-tab @click="go_page('/mypage/favorite_list/')">
+      Favorite List
+    </v-tab>
+    
+    <v-tab @click="go_page('/mypage/profile/edit/')">
+      Profile Edit
+    </v-tab>
+    </v-tabs>
     
     <br/>
-    <h1 class="text-center">Topics</h1>
+    <h1 class="text-center">Favorite list </h1>
     <br/>
     <v-topics :topics="topics"></v-topics>
     <br/>
@@ -22,7 +31,7 @@
           x-large
           color="success"
           class="white--text"
-          @click="back()"
+          @click="favorite_list()"
       > View more
       </v-btn>
     </v-col>
@@ -30,7 +39,7 @@
 </template>
 
 <script>
- import topicList from '../components/topics'
+  import topicList from '../../components/topics'
   export default {
     components: {
       'v-topics': topicList
@@ -61,8 +70,12 @@
       }
     },
     methods: {  
-        back() {
-          this.$router.push("/topics_list");
+        go_page(path) {
+          console.log(path)
+          this.$router.push(path)
+        },
+        favorite_list() {
+          this.$router.push("/mypage/favorite_list");
         },
         updateTopics() {
           var url = '/rcms-api/1/topics?topics_group_id=' + this.group_id + '&cnt=5' 

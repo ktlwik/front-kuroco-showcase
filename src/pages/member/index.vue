@@ -33,7 +33,7 @@
     > 
 
     <template v-slot:item.name="{ item }">
-      <NuxtLink :to="{ path: '/member/' + item.name }" no-prefetch>{{item.name}}</NuxtLink>
+      <NuxtLink :to="{ path: '/member/detail/' + item.name }" no-prefetch>{{item.name}}</NuxtLink>
     </template>
     <template v-slot:item.phone="{ item }">
       <a :href="'tel:' + item.phone">{{item.phone}}</a>
