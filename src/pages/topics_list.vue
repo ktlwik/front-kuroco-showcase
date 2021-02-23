@@ -21,14 +21,15 @@
       </v-btn-toggle>
     </v-col>
     <v-col>
-    	<v-topics :topics="visiblePages"></v-topics>
+    	<v-topics :topics="topics"></v-topics>
     </v-col>
     <br/>
 	<br/>
 	<div class="text-center">
 	  <v-pagination
 	    v-model="page"
-	    :length="Math.ceil(topics.length/perPage)"
+	    :length="Math.ceil(totalCnt/perPage)"
+	    @input="next"
 	  ></v-pagination>
 	</div>
 </v-container>
@@ -42,6 +43,7 @@
 	   },
 	   data () {
 	    return {
+	      text: "",
           auth: false,
           group_id: 11,
           categories: [
@@ -52,10 +54,14 @@
           ],
 	      page: 1,
 	      perPage: 10,
-	      category_key: null
+	      category_key: null,
+          totalCnt: 0
 	    }
 	  },
 	  methods: {
+	  	next(page) {
+	  		this.updateTopics()
+	  	},
 	  	changeCategoryAll() {
 	  		this.category_key = null
 	  		this.page = 1
@@ -77,7 +83,7 @@
     		this.$store.$auth.ctx.$axios
      			.get(url)
      			.then(function (response) {
-     				console.log(response.data.list)
+              		self.totalCnt = response.data.pageInfo.totalCnt
      				var topics = []
      				for (var key in response.data.list) {
      					var item = response.data.list[key]
@@ -125,12 +131,6 @@
 	        })
 
 	  	 this.updateTopics()
-	  },
-	  computed: {
-	    visiblePages () {
-	    
-	      	return this.topics.slice((this.page - 1)* this.perPage, this.page* this.perPage)
-	    }
 	  }
 	}
 </script>
