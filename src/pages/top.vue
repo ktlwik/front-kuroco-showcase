@@ -76,10 +76,11 @@
               for (var key in response.data.list) {
                 var item = response.data.list[key]
                 topics.push({
-                  "date": item['inst_ymdhi'].substring(0, 10),
+                    "date": item['inst_ymdhi'].substring(0, 10),
                     "label": item['contents_type_nm'],
                     "link": item['subject'],
-                    'icon': ""
+                    'icon': "",
+                    "id": item['topics_id']
                 })
               }
               self.topics = topics

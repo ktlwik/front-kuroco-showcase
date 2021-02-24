@@ -33,7 +33,7 @@
     > 
 
     <template v-slot:item.name="{ item }">
-      <NuxtLink :to="{ path: '/member/detail/' + item.name }" no-prefetch>{{item.name}}</NuxtLink>
+      <NuxtLink :to="{ path: '/member/detail/' + item.id }" no-prefetch>{{item.name}}</NuxtLink>
     </template>
     <template v-slot:item.phone="{ item }">
       <a :href="'tel:' + item.phone">{{item.phone}}</a>
@@ -55,18 +55,10 @@ export default {
   },
   data () {
     return {
-      items: [{
-        name: 'Peter', department: 'Computer Science', position: 'Manager', phone: '+77016054171'
-      }, {
-        name: 'Kate', department: 'Math Science', position: 'Manager', phone: '+7777054171'
-      }],
-      filteredItems: [{
-        name: 'Peter', department: 'Computer Science', position: 'Manager', phone: '+77016054171'
-      }, {
-        name: 'Kate', department: 'Math Science', position: 'Manager', phone: '+7777054171'
-      }],
-      members: ['Peter', 'Kate'],
-      departments: ['Computer Science', 'Math Science'],
+      items: [],
+      filteredItems: [],
+      members: [],
+      departments: [],
       member: '',
       department: ''
     }
@@ -100,6 +92,41 @@ export default {
 
       console.log(this.filteredItems)
     },
+  },
+  mounted() {
+      var url = '/rcms-api/1/members'
+      let self = this
+      this.$store.$auth.ctx.$axios
+        .get(url)
+        .then(function (response) {
+          var items = []
+          var members = []
+          var departments = []
+          console.log(response.data.list)
+          for (var key in response.data.list) {
+            var item = response.data.list[key]
+            items.push({
+                "name": item['name1'] + ' ' + item['name2'],
+                "department": 'Diverta Inc',
+                "position": 'Engineer',
+                'phone': item['tel'],
+                'id': item['member_id']
+            })
+            members.push(item['name1'] + ' ' + item['name2'])
+            departments.push('Diverta Inc')
+          }
+          self.filteredItems = items
+          self.items = items
+          self.members = members
+          self.departments = departments
+        }).catch(function (error) {
+            console.log(error)
+              self.$store.dispatch(
+                "snackbar/setError",
+                error.response.data.errors?.[0]
+              )
+              self.$store.dispatch("snackbar/snackOn")
+        })
   }
 }
 </script>

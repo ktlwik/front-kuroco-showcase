@@ -91,6 +91,7 @@
      						"date": item['inst_ymdhi'].substring(0, 10),
         					"label": item['contents_type_nm'],
         					"link": item['subject'],
+        					"id": item['topics_id'],
         					'icon': ""
      					})
      				}

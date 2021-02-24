@@ -22,8 +22,7 @@
     },
     data () {
       return {
-        topics: [
-        ],
+        topics: [],
         group_id: 11,
         page: 1,
         perPage: 10,
@@ -47,10 +46,11 @@
               for (var key in response.data.list) {
                 var item = response.data.list[key]
                 topics.push({
-                  "date": item['inst_ymdhi'].substring(0, 10),
+                    "date": item['inst_ymdhi'].substring(0, 10),
                     "label": item['contents_type_nm'],
                     "link": item['subject'],
-                    'icon': ""
+                    'icon': "",
+        			"id": item['topics_id']
                 })
               }
               self.topics = topics
@@ -62,7 +62,7 @@
                       error.response.data.errors?.[0]
                     )
                     self.$store.dispatch("snackbar/snackOn")
-              })
+            })
        }
     },
     mounted() {

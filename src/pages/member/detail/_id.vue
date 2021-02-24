@@ -74,6 +74,7 @@
 		},
 		data() {
 			return {
+				member_id: null,
 		        detail: {
 		        	"name": "Nuri Yergozha", 
 		        	"department": "Computer Department", 
@@ -118,7 +119,43 @@
 		     }
 		},
 		mounted() {
-
+	      this.member_id = this.$route.params.id
+	  	  var url = '/rcms-api/1/members?id=' + this.member_id
+	      let self = this
+	      console.log(url)
+	      this.$store.$auth.ctx.$axios
+	        .get(url)
+	        .then(function (response) {
+	          var detail = {}
+	          var profile = []
+	          console.log(response)
+	          var details_obj = response.data.list[0]
+	          detail['name'] = details_obj.name1 + ' ' + details_obj.name2
+	          detail['department'] = "Computer Department" 
+		      detail['position'] = "Programmer"
+		      detail['zip'] = details_obj.zip_code
+		      if (details_obj.address1 == null) {
+		      	detail['location'] = ''
+		      } else {
+		      	detail['location'] = details_obj.address1 + ', ' + details_obj.address2 + ' ' + details_obj.address3
+		      }
+		      detail['phone'] = details_obj.tel
+		      detail['email'] = details_obj.email
+		      detail['url'] = 'https://astutegraphics.com/assets/training/How-to-create-filled-line-avatars-with-Scott-Lewis/11_how-to-create-filled-line-avatars-with-scott-lewis.jpg'
+		      self.detail = detail
+		      self.profile[0]['value'] = detail['zip']
+		      self.profile[1]['value'] = detail['location']
+		      self.profile[2]['value'] = detail['phone']
+		      self.profile[3]['value'] = detail['email']
+	          console.log(response.data)
+	        }).catch(function (error) {
+	            console.log(error)
+	              self.$store.dispatch(
+	                "snackbar/setError",
+	                error.response.data.errors?.[0]
+	              )
+	              self.$store.dispatch("snackbar/snackOn")
+	        })
 		}
 	}
 </script>

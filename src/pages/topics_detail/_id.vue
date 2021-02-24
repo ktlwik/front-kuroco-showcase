@@ -36,17 +36,50 @@
 		data() {
 			return {
 		        items: [ 	
-  					{"text": "first News", "pattern": 1, "image_url": "https://bit.ly/3azDwkY", "text_size": "H2", "subtitle": "type 1"},
-  					{"text": "second News", "pattern": 2, "image_url": "https://bit.ly/3azDwkY", "text_size": "H3", "subtitle": "type 2"},
-  					{"text": "third News", "pattern": 3, "image_url": "https://bit.ly/3azDwkY", "text_size": "H2", "subtitle": "type 3"},
-  					{"text": "fourth News", "pattern": 4, "image_url": "https://bit.ly/3azDwkY", "text_size": "H4", "subtitle": "type 4"},
-  					{"text": "fifth News", "pattern": 5, "image_url": "https://bit.ly/3azDwkY", "text_size": "H5", "subtitle": "type 5"},
-  					{"text": "five News", "pattern": 6, "image_url": "https://bit.ly/3azDwkY", "text_size": "H2", "subtitle": "type 6"},
-		        ]
+  					{"text": "", "pattern": 1, "image_url": "", "text_size": "H2", "subtitle": "type 1"},
+		        ],
+		        topic_id: 957
 		     }
 		},
 		mounted() {
-
+			//this.topic_id = this.$route.params.id
+			var url = 'https://dev-nuxt-auth.a.kuroco.app/rcms-api/1/topic/detail/' + this.topic_id
+			let self = this
+		    this.$store.$auth.ctx.$axios
+		        .get(url)
+		        .then(function (response) {
+		          var items = []
+		          var positions = response.data.details.ext_col_04
+		          var image_urls = response.data.details.ext_col_05
+		          var text_size = response.data.details.ext_col_06
+		          var texts = response.data.details.ext_col_07
+		          console.log(text_size)
+		          for (var i = 0; i < texts.length; i++) {
+		          	var textSize = null
+		          	var imageUrl = null
+		          	if (text_size[i] != undefined && text_size[i].hasOwnProperty('label')) {
+		          		textSize = text_size[i]['label']
+		          	}
+		          	if (image_urls[i] != undefined && image_urls[i].hasOwnProperty('url')) {
+		          		imageUrl = image_urls[i]['url']
+		          	}
+		          	items.push({
+		          		"text":texts[i] ,
+		          		"pattern": 2,
+		          		"image_url": imageUrl,
+		          		"text_size": textSize
+		          	})
+		          }
+		          console.log(items)
+		          self.items = items
+		    }).catch(function (error) {
+	            console.log(error)
+				self.$store.dispatch(
+					"snackbar/setError",
+					error.response.data.errors?.[0]
+				)
+				self.$store.dispatch("snackbar/snackOn")
+	        })
 		}
 	}
 </script>
