@@ -1,14 +1,12 @@
 <template>
-  <v-app light>
+  <v-app light >
     <v-navigation-drawer
       v-model="drawer"
       :mini-variant="miniVariant"
       :clipped="clipped"
-      color="#333"
-      dark
-      fixed
-      app
-      right
+      absolute
+      bottom
+      temporary
     >
       <v-list>
         <v-list-item
@@ -34,6 +32,7 @@
       </v-list>
     </v-navigation-drawer>
     <v-app-bar :clipped-left="clipped" color="#1414A0" dense dark fixed app>
+      <v-app-bar-nav-icon v-if="auth.loggedIn" @click.stop="drawer = !drawer" />
       <v-toolbar-title>
         <a href="/">
           Sample Site
@@ -51,7 +50,6 @@
       <v-btn icon to="/faq" nuxt>
         <v-icon>mdi-help</v-icon>
       </v-btn>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
     </v-app-bar>
     <v-main>
       <v-container>
@@ -61,8 +59,8 @@
 
     <v-footer color="#1414A0" padless app absolute inset>
       <v-row justify="center" no-gutters>
-        <v-btn color="white" text rounded class="my-2" to="/inquiry">
-          お問い合わせ
+        <v-btn color="white" text rounded class="my-2">
+          Copy right
         </v-btn>
         <v-col class="#1414A0 text-center white--text" cols="12">
         </v-col>
@@ -95,14 +93,9 @@ export default {
       fixed: false,
       items: [
         {
-          icon: "mdi-account-box", 
-          title: "top", 
-          to: "/top"
-        },
-        {
           icon: "mdi-home",
-          title: "HOME",
-          title_loggedIn: "マイページ",
+          title: "TOP",
+          title_loggedIn: "TOP",
           to: "/",
         },
         {

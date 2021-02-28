@@ -2,6 +2,7 @@
   <div>
 
   <h1>Inquiry</h1>
+  <br/>
   <div class="theme--light v-stepper">
 
   <v-container fluid>

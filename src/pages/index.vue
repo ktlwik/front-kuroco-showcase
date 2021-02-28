@@ -66,75 +66,45 @@
       </div>
 
       <div v-else class="mypage">
-        <v-row>
-          <v-col cols="12" sm="3">
-            <v-card class="mx-auto" outlined>
-              <v-card-text>
-                <div class="pro-inner">
-                  <p>
-                    <strong>名前</strong><span>{{ user.name1 }} {{ user.name2 }}</span>
-                  </p>
-                </div>
-              </v-card-text>
-              <v-card-actions>
-                <v-btn text color="deep-purple accent-4" to="/profile_edit">
-                  プロフィール変更はこちら
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-
-            <v-card v-if="can_upgrade" class="mx-auto" outlined>
-              <v-card-text>
-                <h3>アップグレードのご案内</h3>
-                <p class="body-1 ug-p">
-                  <NuxtLink to="/upgrade">
-                    アップグレードはこちら
-                  </NuxtLink>
-                </p>
-              </v-card-text>
-            </v-card>
+          <v-carousel>
+            <v-carousel-item
+              v-for="(item,i) in items"
+              :key="i"
+              :src="item.src"
+              reverse-transition="fade-transition"
+              transition="fade-transition"
+            ></v-carousel-item>
+          </v-carousel>
+          
+          <br/>
+          <h1 class="text-center">Topics</h1>
+          <br/>
+          <v-topics :topics="topics"></v-topics>
+          <br/>
+          <v-col class="text-right">
+            <v-btn
+                type="submit"
+                block
+                x-large
+                color="success"
+                class="white--text"
+                @click="back()"
+            > View more
+            </v-btn>
           </v-col>
-          <v-col cols="12" sm="6">
-            <v-card class="mx-auto" outlined>
-              <v-card-text>
-                <h3>お知らせ</h3>
-
-                <v-simple-table :fixed-header="false">
-                  <template v-slot:default>
-                    <tbody>
-                      <router-link
-                        v-for="item in topics_list1"
-                        :key="item.topics_id"
-                        :to="'/info/' + item.topics_id"
-                        tag="tr"
-                      >
-                        <td class="date">
-                          {{ item.ymd }}
-                        </td>
-                        <td>{{ item.subject }}</td>
-                        <td class="arw">
-                          <v-btn icon :to="'/info/' + item.topics_id" nuxt>
-                            <v-icon>mdi-chevron-right</v-icon>
-                          </v-btn>
-                        </td>
-                      </router-link>
-                    </tbody>
-                  </template>
-                </v-simple-table>
-              </v-card-text>
-            </v-card>
-          </v-col>
-          <v-col cols="12" sm="3" />
-        </v-row>
       </div>
     </client-only>
   </div>
 </template>
 
 <script>
+import topicList from '../components/topics'
 import Vue from 'vue';
 
 export default {
+  components: {
+    'v-topics': topicList
+  },
   middleware: "auth",
   auth: false,
   data: () => ({
@@ -146,6 +116,27 @@ export default {
       email: "",
       password: "",
     },
+    items: [
+      {
+        src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg',
+      },
+      {
+        src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg',
+      },
+      {
+        src: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg',
+      },
+      {
+        src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg',
+      }, 
+      {
+        src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg',
+      },
+    ],
+    topics: [
+
+    ],
+    group_id: 11,
   }),
   computed: {
     user() {
@@ -169,9 +160,43 @@ export default {
     },
   },
   mounted() {
+    this.updateTopics()
     this.getInfo()
   },
   methods: {
+    back() {
+        this.$router.push("/topics_list");
+    },
+    updateTopics() {
+      var url = '/rcms-api/1/topics?topics_group_id=' + this.group_id + '&cnt=5' 
+      console.log(url)
+      let self = this
+      this.$store.$auth.ctx.$axios
+        .get(url)
+        .then(function (response) {
+          console.log(response.data.list)
+          var topics = []
+          for (var key in response.data.list) {
+            var item = response.data.list[key]
+            topics.push({
+                "date": item['inst_ymdhi'].substring(0, 10),
+                "label": item['contents_type_nm'],
+                "link": item['subject'],
+                'icon': "",
+                "id": item['topics_id']
+            })
+          }
+          self.topics = topics
+          
+        }).catch(function (error) {
+              console.log(error)
+                self.$store.dispatch(
+                  "snackbar/setError",
+                  error.response.data.errors?.[0]
+                )
+                self.$store.dispatch("snackbar/snackOn")
+          })
+    },
     getInfo() {
       if (this.$auth.loggedIn) {
         let self = this

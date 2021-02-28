@@ -1,11 +1,13 @@
 <template>
-  <div fluid>
+  <div fluid> 
+    <h1>My page</h1>
+    <br/>
     <v-tabs
-    fixed-tabs
     background-color="indigo"
     dark
     height="70"
     class="rounded-xl"
+    centered
     >
     <v-tab @click="go_page('/mypage/')">
       My page
@@ -78,33 +80,58 @@
           this.$router.push("/mypage/favorite_list");
         },
         updateTopics() {
-          var url = '/rcms-api/1/topics?topics_group_id=' + this.group_id + '&cnt=5' 
-          console.log(url)
-          let self = this
-          this.$store.$auth.ctx.$axios
-            .get(url)
-            .then(function (response) {
-              console.log(response.data.list)
-              var topics = []
-              for (var key in response.data.list) {
+            let self = this
+            var favoritesUrl = '/rcms-api/1/favorites?member_id' + 
+              this.$auth.user.member_id +
+                  '&module_type=topics'
+              this.$store.$auth.ctx.$axios
+              .get(favoritesUrl)
+              .then(function (response) {
+                var topic_ids = []
+                for (var key in response.data.list) {
                 var item = response.data.list[key]
-                topics.push({
-                  "date": item['inst_ymdhi'].substring(0, 10),
-                    "label": item['contents_type_nm'],
-                    "link": item['subject'],
-                    'icon': ""
-                })
-              }
-              self.topics = topics
-              
-            }).catch(function (error) {
-                  console.log(error)
-                    self.$store.dispatch(
-                      "snackbar/setError",
-                      error.response.data.errors?.[0]
-                    )
-                    self.$store.dispatch("snackbar/snackOn")
-              })
+                  if (item.hasOwnProperty('module_id')) {
+                    topic_ids.push(item['module_id'])
+                  }
+                }
+                var url = '/rcms-api/1/topics?topics_group_id=' + self.group_id +  '&cnt=5'
+
+                if (topic_ids.length > 0) {
+                  for (var i = 0; i < topic_ids.length; ++i) {
+                    url += "&id[]=" + topic_ids[i]
+                  }
+
+                  console.log(url)
+                  self.$store.$auth.ctx.$axios
+                      .get(url)
+                      .then(function (response) {
+                        var topics = []
+                        self.totalCnt = response.data.pageInfo.totalCnt
+                        for (var key in response.data.list) {
+                          var item = response.data.list[key]
+                          topics.push({
+                              "date": item['inst_ymdhi'].substring(0, 10),
+                              "label": item['contents_type_nm'],
+                              "link": item['subject'],
+                              'icon': "",
+                        "id": item['topics_id']
+                          })
+                        }
+                        self.topics = topics
+                        
+                      }).catch(function (error) {
+                            console.log(error)
+                              self.$store.dispatch(
+                                "snackbar/setError",
+                                error.response.data.errors?.[0]
+                              )
+                              self.$store.dispatch("snackbar/snackOn")
+                      })
+                }
+              }).catch(function (error) {
+                console.log(error)
+            })
+        
        }
     },
     mounted() {

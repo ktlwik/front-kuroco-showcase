@@ -2,6 +2,7 @@
 
 <v-container fluid>
   	<h1>Topics</h1>
+    <br/>
   	<v-col
 	  cols="12"
       class="py-2"

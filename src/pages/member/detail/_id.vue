@@ -1,5 +1,7 @@
 <template>
 	<div>
+		<h1>Member detail</h1>
+   		<br/>
 		<v-col>
 			<v-row>
 			<v-col>

@@ -34,35 +34,60 @@
 	  		this.updateTopics()
 	  	},
         updateTopics() {
-          var url = '/rcms-api/1/topics?topics_group_id=' + this.group_id +
-	    				'&pageID=' + this.page + '&cnt=' + this.perPage
-          let self = this
-          this.$store.$auth.ctx.$axios
-            .get(url)
-            .then(function (response) {
-              console.log(response.data.list)
-              var topics = []
-              self.totalCnt = response.data.pageInfo.totalCnt
-              for (var key in response.data.list) {
-                var item = response.data.list[key]
-                topics.push({
-                    "date": item['inst_ymdhi'].substring(0, 10),
-                    "label": item['contents_type_nm'],
-                    "link": item['subject'],
-                    'icon': "",
-        			"id": item['topics_id']
-                })
-              }
-              self.topics = topics
-              
-            }).catch(function (error) {
-                  console.log(error)
-                    self.$store.dispatch(
-                      "snackbar/setError",
-                      error.response.data.errors?.[0]
-                    )
-                    self.$store.dispatch("snackbar/snackOn")
-            })
+          	let self = this
+		  	var favoritesUrl = '/rcms-api/1/favorites?member_id' + 
+		    	this.$auth.user.member_id +
+		    			'&module_type=topics'
+       		this.$store.$auth.ctx.$axios
+	    		.get(favoritesUrl)
+	    		.then(function (response) {
+	    			var topic_ids = []
+	    			for (var key in response.data.list) {
+						var item = response.data.list[key]
+	    				if (item.hasOwnProperty('module_id')) {
+	    					topic_ids.push(item['module_id'])
+	    				}
+	    			}
+
+	    			var url = '/rcms-api/1/topics?topics_group_id=' + self.group_id +
+	    				'&pageID=' + self.page + '&cnt=' + self.perPage
+
+	    			if (topic_ids.length > 0) {
+		    			for (var i = 0; i < topic_ids.length; ++i) {
+		    				url += "&id[]=" + topic_ids[i]
+		    			}
+
+		    			console.log(url)
+		    			self.$store.$auth.ctx.$axios
+			            .get(url)
+			            .then(function (response) {
+			              var topics = []
+			              self.totalCnt = response.data.pageInfo.totalCnt
+			              for (var key in response.data.list) {
+			                var item = response.data.list[key]
+			                topics.push({
+			                    "date": item['inst_ymdhi'].substring(0, 10),
+			                    "label": item['contents_type_nm'],
+			                    "link": item['subject'],
+			                    'icon': "",
+			        			"id": item['topics_id']
+			                })
+			              }
+			              self.topics = topics
+			              
+			            }).catch(function (error) {
+			                  console.log(error)
+			                    self.$store.dispatch(
+			                      "snackbar/setError",
+			                      error.response.data.errors?.[0]
+			                    )
+			                    self.$store.dispatch("snackbar/snackOn")
+			            })
+					}
+	    		}).catch(function (error) {
+	    			console.log(error)
+				})
+        
        }
     },
     mounted() {
