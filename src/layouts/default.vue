@@ -5,7 +5,7 @@
       :mini-variant="miniVariant"
       :clipped="clipped"
       absolute
-      bottom
+      left
       temporary
     >
       <v-list>
