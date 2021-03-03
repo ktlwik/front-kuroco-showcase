@@ -3,6 +3,10 @@
 
   <h1>Inquiry</h1>
   <br/>
+  <br/>
+  
+  <h3>Please provide your <br/> inquiry</h3>
+  <br/>
   <div class="theme--light v-stepper">
 
   <v-container fluid>
@@ -10,6 +14,14 @@
     :schema="schema" :model="model" @model-updated='onInput'
   >    
   </vue-form-generator>
+
+ <v-checkbox v-model="disabled">
+    <template v-slot:label>
+      <div>
+        I agree to the terms of Use.
+      </div>
+    </template>
+  </v-checkbox>
   <v-btn
     type="submit"
     block
@@ -17,8 +29,8 @@
     color="success"
     class="white--text"
     @click="submitF()"
-    :disabled="disabled"
-  >submit</v-btn>
+    :disabled="!disabled"
+  >SUBMIT</v-btn>
   </v-container>
   </div>
   </div>
@@ -64,7 +76,7 @@
       getModel() {
         let self = this
         this.$store.$auth.ctx.$axios
-          .get('/rcms-api/1/inquiry/get/6')
+          .get(this.inquirySchemaUrl)
           .then(function (response) {
             var model = {};
             console.log(response.data.details.cols)
@@ -92,7 +104,7 @@
        getSchema() {
         let self = this
         this.$store.$auth.ctx.$axios
-          .get('/rcms-api/1/inquiry/get/6')
+          .get(this.inquirySchemaUrl)
           .then(function (response) {
             var schema = {};
             schema['fields'] = []
@@ -140,13 +152,26 @@
           var send_model = JSON.parse(JSON.stringify(self.model))
           send_model['body'] = 'example message'
           self.$store.$auth.ctx.$axios
-            .post('/rcms-api/1/inquiry/6', send_model)
+            .post(this.inquirySubmitUrl, send_model)
             .then(function (response) { 
               console.log(response.data)
+               if (response.data.errors.length == 0) {
+                self.$store.dispatch(
+                  "snackbar/setMessage",
+                  "Thanks! Your inquiry submitted."
+                )
+                self.$store.dispatch("snackbar/snackOn")
+                self.$router.push("/")
+              }
             })
+
           console.log("Form submitted!", self.model);
         } else {
-          console.log("Fill all the fields")
+          self.$store.dispatch(
+            "snackbar/setError",
+            "Fill fields properly."
+          )
+          self.$store.dispatch("snackbar/snackOn")
         }
 
       }
@@ -156,6 +181,8 @@
     },
     data () {
       return {
+        inquirySubmitUrl: '/rcms-api/1/inquiry/9',
+        inquirySchemaUrl: '/rcms-api/1/inquiry/get/9',
         auth: false,
         disabled: false,
         validForm: true,

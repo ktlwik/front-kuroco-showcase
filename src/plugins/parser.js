@@ -1,5 +1,5 @@
-import createTextSchema from '../form_types/text_100.js'
-import createTextAreaSchema from '../form_types/text_400.js'
+import createTextSchema from '../form_types/text.js'
+import createTextAreaSchema from '../form_types/textarea.js'
 import createDateSchema from '../form_types/date.js'
 import createUploadFileSchema from '../form_types/file_upload.js'
 import createJsonSchema from '../form_types/json.js'

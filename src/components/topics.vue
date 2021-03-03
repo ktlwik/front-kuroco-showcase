@@ -9,12 +9,26 @@
 	{{item.label}}
 	</v-col>
 	<v-col> 
-	<NuxtLink :to="{ path: '/topics_detail/' + item.id }" no-prefetch>{{item.link}}</NuxtLink>
-	<v-icon v-if="item.icon=='pdf'">mdi-pdf-box</v-icon>
-	<v-icon v-else-if="item.icon=='excel'">mdi-file-excel</v-icon>
-	<v-icon v-else-if="item.icon=='word'">mdi-file-word</v-icon>
-	<v-icon v-else>mdi-launch</v-icon>
-	</v-col>
+    <div v-if="item.icon=='pdf'">
+       <a :href="item.fileurl">{{item.link}}</a>
+	   <v-icon>mdi-pdf-box</v-icon>
+    </div>
+    <div v-else-if="item.icon=='excel'">
+       <a :href="item.fileurl">{{item.link}}</a>
+	   <v-icon>mdi-file-excel</v-icon>
+    </div>
+    <div  v-else-if="item.icon=='word'">
+       <a :href="item.fileurl">{{item.link}}</a>
+	   <v-icon>mdi-file-word</v-icon>
+    </div>
+	<div  v-else-if="item.icon=='url'">
+        <a :href="item.linkurl">{{item.link}}</a>
+        <v-icon>mdi-launch</v-icon>
+    </div>
+    <div v-else>
+        <NuxtLink :to="{ path: '/topics_detail/' + item.id }" no-prefetch>{{item.link}}</NuxtLink>
+	</div>
+    </v-col>
 </v-row>
 </div>
 </template>

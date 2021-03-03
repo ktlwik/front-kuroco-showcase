@@ -23,7 +23,7 @@
     data () {
       return {
         topics: [],
-        group_id: 11,
+        group_id: 13,
         page: 1,
         perPage: 10,
         totalCnt: 0
@@ -66,7 +66,7 @@
 			              for (var key in response.data.list) {
 			                var item = response.data.list[key]
 			                topics.push({
-			                    "date": item['inst_ymdhi'].substring(0, 10),
+			                    "date": item['inst_ymdhi'].substring(0, 10).replaceAll("-", "/"),
 			                    "label": item['contents_type_nm'],
 			                    "link": item['subject'],
 			                    'icon': "",

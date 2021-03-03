@@ -68,7 +68,7 @@
         topics: [
    
         ],
-        group_id: 11,
+        group_id: 13,
       }
     },
     methods: {  

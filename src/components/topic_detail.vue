@@ -1,10 +1,11 @@
 <template>
   
-  <v-card
-    class="mx-auto"
-    max-width="7000"
+  <v-container fluid 
     v-if="pattern==1"
   >
+  <v-card
+    class="mx-auto"
+    max-width="7000"  >
     <v-card-title
         class="text-h2"
         v-text="subtitle"
@@ -15,11 +16,14 @@
       </div>
     </v-card-text>
   </v-card>
+  </v-container>
 
+ <v-container fluid 
+    v-else-if="pattern==2"
+  >
   <v-card
     class="mx-auto"
     max-width="7000"
-    v-else-if="pattern==2"
   >
     <v-card-title
         class="text-h3"
@@ -33,6 +37,7 @@
       </div>
     </v-card-text>
   </v-card>
+  </v-container>
   
   <v-card
     class="mx-auto"

@@ -35,7 +35,7 @@
       <v-app-bar-nav-icon v-if="auth.loggedIn" @click.stop="drawer = !drawer" />
       <v-toolbar-title>
         <a href="/">
-          Sample Site
+          Logo
         </a>
       </v-toolbar-title>
       <v-spacer />
@@ -46,9 +46,6 @@
 
       <v-btn v-if="auth.loggedIn" icon @click="logout">
         <v-icon>mdi-exit-to-app</v-icon>
-      </v-btn>
-      <v-btn icon to="/faq" nuxt>
-        <v-icon>mdi-help</v-icon>
       </v-btn>
     </v-app-bar>
     <v-main>

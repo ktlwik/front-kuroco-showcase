@@ -136,7 +136,7 @@ export default {
     topics: [
 
     ],
-    group_id: 11,
+    group_id: 13,
   }),
   computed: {
     user() {
@@ -178,12 +178,23 @@ export default {
           var topics = []
           for (var key in response.data.list) {
             var item = response.data.list[key]
+            var fileurl = ''
+            var linkurl = ''
+            if (item.hasOwnProperty('ext_col_02') && item['ext_col_02'].hasOwnProperty('url')) {
+              fileurl = item['ext_col_02']['url']
+            }
+            if (item.hasOwnProperty('ext_col_03') && item['ext_col_03'].hasOwnProperty('url')) {
+              linkurl = item['ext_col_03']['url']
+            }
             topics.push({
-                "date": item['inst_ymdhi'].substring(0, 10),
+                "date": item['inst_ymdhi'].substring(0, 10).replaceAll("-", "/"),
                 "label": item['contents_type_nm'],
                 "link": item['subject'],
                 'icon': "",
-                "id": item['topics_id']
+                "id": item['topics_id'],
+                'icon': item['ext_col_01']['key'],
+                'fileurl': fileurl,
+                'linkurl': linkurl
             })
           }
           self.topics = topics

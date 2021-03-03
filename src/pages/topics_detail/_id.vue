@@ -1,7 +1,26 @@
 <template>
 	<div>
-		<v-row>
-			<v-col v-for="item in items">
+		<v-col>
+			<v-card class = "d-flex justify-space-between mb-6" flat tile>
+				<v-card flat>
+					<v-row>
+					<v-col>
+						<v-btn disable>
+        				{{label}}
+        				</v-btn>
+					</v-col>
+					<v-col>
+        				<h3>
+						{{title}}
+						</h3>
+					</v-col>
+					</v-row>
+				</v-card>
+				<v-card flat>
+					{{date}}
+				</v-card>
+			</v-card>
+			<v-row v-for="item in items">
 				<v-item 
 					:text="item.text" 
 					:image_url="item.image_url" 
@@ -10,8 +29,8 @@
 					:text_size="item.text_size"
 				>
 				</v-item>
-			</v-col>
-		</v-row>
+			</v-row>
+		</v-col>
 		<v-row class="text-right">
 			<v-col>
 				<v-btn
@@ -79,6 +98,9 @@
 		},
 		data() {
 			return {
+				label: "",
+				date: "",
+				title: "",
 				color: "white",
 		        items: [ 	
   					{"text": "", "pattern": 1, "image_url": "", "text_size": "H2", "subtitle": "type 1"},
@@ -94,11 +116,14 @@
 		        .get(url)
 		        .then(function (response) {
 		          var items = []
+		          self.label =  response.data.details.contents_type_nm
+		          self.title = response.data.details.subject
+		          self.date = response.data.details['inst_ymdhi'].substring(0, 10).replaceAll("-", "/")
 		          var positions = response.data.details.ext_col_04
 		          var image_urls = response.data.details.ext_col_05
 		          var text_size = response.data.details.ext_col_06
 		          var texts = response.data.details.ext_col_07
-		          console.log(text_size)
+		          console.log(image_urls)
 		          for (var i = 0; i < texts.length; i++) {
 		          	var textSize = null
 		          	var imageUrl = null
