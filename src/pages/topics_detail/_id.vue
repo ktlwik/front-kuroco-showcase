@@ -1,5 +1,13 @@
 <template>
+	
 	<div>
+		<v-progress-linear
+        :active="loading"
+        :indeterminate="loading"
+        absolute
+        top
+        color="orange white-4"
+  		></v-progress-linear>
 		<v-col>
 			<v-card class = "d-flex justify-space-between mb-6" flat tile>
 				<v-card flat>
@@ -105,11 +113,13 @@
 		        items: [ 	
   					{"text": "", "pattern": 1, "image_url": "", "text_size": "H2", "subtitle": "type 1"},
 		        ],
+		        loading: true,
 		        topic_id: 957
 		     }
 		},
 		mounted() {
 			this.topic_id = this.$route.params.id
+			this.loading = true
 			var url = 'https://dev-nuxt-auth.a.kuroco.app/rcms-api/1/topic/detail/' + this.topic_id
 			let self = this
 		    this.$store.$auth.ctx.$axios
@@ -131,7 +141,7 @@
 		          		textSize = text_size[i]['label']
 		          	}
 		          	if (image_urls[i] != undefined && image_urls[i].hasOwnProperty('url')) {
-		          		imageUrl = image_urls[i]['url']
+		          		imageUrl = image_urls[i]['url'] + "?width=400&height=300"
 		          	}
 		          	items.push({
 		          		"text":texts[i] ,
@@ -142,6 +152,7 @@
 		          }
 		          console.log(items)
 		          self.items = items
+		          self.loading = false
 		    }).catch(function (error) {
 	            console.log(error)
 	        })

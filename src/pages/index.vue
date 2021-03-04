@@ -117,21 +117,6 @@ export default {
       password: "",
     },
     items: [
-      {
-        src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg',
-      },
-      {
-        src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg',
-      },
-      {
-        src: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg',
-      },
-      {
-        src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg',
-      }, 
-      {
-        src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg',
-      },
     ],
     topics: [
 
@@ -185,6 +170,9 @@ export default {
             }
             if (item.hasOwnProperty('ext_col_03') && item['ext_col_03'].hasOwnProperty('url')) {
               linkurl = item['ext_col_03']['url']
+            }
+            if (item.hasOwnProperty('ext_col_08') && item['ext_col_08'].hasOwnProperty('url')) {
+              self.items.push({src:item['ext_col_08']['url']})
             }
             topics.push({
                 "date": item['inst_ymdhi'].substring(0, 10).replaceAll("-", "/"),

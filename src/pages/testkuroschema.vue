@@ -1,6 +1,12 @@
 <template>
   <div>
-
+  <v-progress-linear
+        :active="loading"
+        :indeterminate="loading"
+        absolute
+        top
+        color="orange white-4"
+  ></v-progress-linear>
   <h1>Inquiry</h1>
   <br/>
   <br/>
@@ -98,11 +104,11 @@
                   error.response.data.errors?.[0]
                 )
                 self.$store.dispatch("snackbar/snackOn")
-                self.loading = false
           })
        },
        getSchema() {
         let self = this
+        this.loading = true
         this.$store.$auth.ctx.$axios
           .get(this.inquirySchemaUrl)
           .then(function (response) {
@@ -114,12 +120,15 @@
               if (columns.hasOwnProperty(key)) {
                 result = self.$parse(columns[key], key)
                 if (typeof result != 'undefined' && Object.keys(result).length != 0) {
+
+                    console.log(JSON.stringify(result))
                    schema['fields'].push(result)
                 }
               }
             }
       
             self.schema = schema
+            self.loading = false
           }).catch(function (error) {
                 console.log(error)
                 self.$store.dispatch(
@@ -127,7 +136,6 @@
                   error.response.data.errors?.[0]
                 )
                 self.$store.dispatch("snackbar/snackOn")
-                self.loading = false
               })
 
        },
@@ -140,8 +148,8 @@
         let self = this
         console.log(this.model)
         this.validForm = true
-        for (var key in self.$children[0].$children) {
-          if (self.$children[0].$children[key].$children[0].formValid == false) {
+        for (var key in self.$children[1].$children) {
+          if (self.$children[1].$children[key].$children[0].formValid == false) {
             this.validForm = false
             console.log("invalid key", key)
           }
@@ -186,6 +194,7 @@
         auth: false,
         disabled: false,
         validForm: true,
+        loading: true,
         model: {
         },
         schema: {

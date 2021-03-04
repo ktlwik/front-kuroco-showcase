@@ -78,15 +78,15 @@
 			return {
 				member_id: null,
 		        detail: {
-		        	"name": "Nuri Yergozha", 
-		        	"department": "Computer Department", 
-		        	"position": "Programmer",
-		        	"url": "https://astutegraphics.com/assets/training/How-to-create-filled-line-avatars-with-Scott-Lewis/11_how-to-create-filled-line-avatars-with-scott-lewis.jpg", 
-		        	"zip": "111-1111", 
-		        	"location": "1-1-1 Shinjuku, Tokyo Japan", 
-		        	"phone": "03-0000-0000", 
-		        	"email": "nuri@sample.co.jp", 
-		        	"text": "Here is the first message"
+		        	"name": "", 
+		        	"department": "", 
+		        	"position": "",
+		        	"url": "", 
+		        	"zip": "", 
+		        	"location": "", 
+		        	"phone": "", 
+		        	"email": "", 
+		        	"text": ""
 		        },
 		        profile: [
 			          {
@@ -143,12 +143,24 @@
 		      }
 		      detail['phone'] = details_obj.tel
 		      detail['email'] = details_obj.email
-		      detail['url'] = 'https://astutegraphics.com/assets/training/How-to-create-filled-line-avatars-with-Scott-Lewis/11_how-to-create-filled-line-avatars-with-scott-lewis.jpg'
+		      detail['url'] = 'https://dev-nuxt-auth.a.kuroco-img.app/v=1614168758' + 
+		      	details_obj.profileimage.url
+		      if (details_obj.hasOwnProperty(0) && details_obj[0].hasOwnProperty('role')) {
+		    	detail['position'] = details_obj[0].role
+		  	  }
+		  	  if (details_obj.hasOwnProperty(0) && details_obj[0].hasOwnProperty('department')) {
+	          	detail['department'] = details_obj[0].department
+		  	  }
+
+		  	  if (details_obj.hasOwnProperty(0) && details_obj[0].hasOwnProperty('notes')) {
+	          	detail['text'] =  details_obj[0].notes
+	      	  }
 		      self.detail = detail
 		      self.profile[0]['value'] = detail['zip']
 		      self.profile[1]['value'] = detail['location']
 		      self.profile[2]['value'] = detail['phone']
 		      self.profile[3]['value'] = detail['email']
+		      self.profile[6]['value'] = detail['text']
 	          console.log(response.data)
 	        }).catch(function (error) {
 	            console.log(error)

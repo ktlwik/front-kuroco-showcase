@@ -84,6 +84,9 @@
                 if (item.hasOwnProperty('ext_col_03') && item['ext_col_03'].hasOwnProperty('url')) {
                   linkurl = item['ext_col_03']['url']
                 }
+                if (item.hasOwnProperty('ext_col_08') && item['ext_col_08'].hasOwnProperty('url')) {
+                  self.items.push({src:item['ext_col_08']['url']})
+                }
                 topics.push({
                     "date": item['inst_ymdhi'].substring(0, 10).replaceAll("-", "/"),
                     "label": item['contents_type_nm'],
