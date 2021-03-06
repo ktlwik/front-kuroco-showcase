@@ -3,7 +3,7 @@
 		<v-text-field
 		  outlined
 		  dense
-	      v-model="text"
+	      v-model="schema.text"
 	      ref="schema.model"
 	      :readonly="schema.readonly"
 	      :disabled="schema.disabled"
@@ -31,12 +31,10 @@
         data: function() {
          return {
       		formValid: true,
-            text: ""
          }
       	},
         methods: {
      	  	isValid: function(schema, value) {
-     			console.log(value)
      			if (schema.texttype == 'email') {
 	 				if (!validator.isEmail(value)) {
 	 					return "Wrong email format."
@@ -46,8 +44,8 @@
  						return "Wrong telephone format.";
  					}
  				} else if (schema.texttype == 'zip') {
- 					if (!validator.isPostalCode(value)) {
- 						return "Wrong zip format.";
+ 					if (value.length != 7) {
+ 						return "Wrong zip format for Japan.";
  					}
  				} else if (schema.texttype == 'number') {
  					if (!validator.isNumeric(value)) {
@@ -70,7 +68,7 @@
      		check: function(e) {
      		  this.formValid = this.$refs.myForm.validate()
      		  if (this.formValid) {
-	          	this.$emit('model-updated', this.text, this.schema.model)
+	          	this.$emit('model-updated', this.schema.text, this.schema.model)
 	      	  }
 	        }
      	},

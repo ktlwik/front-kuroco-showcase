@@ -7,6 +7,7 @@ export default function createTextSchema(json, key) {
 	    result['type'] = 'vuetifyText'
 	    result['inputType'] = 'text'
 	    result['label'] = json['title']
+	    result['text'] = ''
 	    if (json['required'] == '2') {
 	    	result['required'] = true
 		} else {

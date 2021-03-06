@@ -1,7 +1,7 @@
 <template>
   <v-form v-model="formValid" ref="myForm">
    <v-select
-       v-model="option"
+       v-model="schema.option"
        :items="schema.options"
        append-outer-icon="mdi-map"
        menu-props="auto"
@@ -31,8 +31,8 @@
           this.formValid = this.$refs.myForm.validate()
           if (this.formValid) {
             this.$emit('model-updated', {
-               "tdfk_cd": this.option.value,
-               "tdfk_nm": this.option.text
+               "tdfk_cd": this.schema.option.value,
+               "tdfk_nm": this.schema.option.text
             }, this.schema.model)
           }
         }

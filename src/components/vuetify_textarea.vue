@@ -3,7 +3,7 @@
   	<v-textarea
   	  outlined
   	  dense
-        v-model="textarea"
+        v-model="schema.text"
         ref="schema.model"
         :required="schema.required"
         :readonly="schema.readonly"
@@ -32,7 +32,6 @@
         data: function() {
            return {
               formValid: false,
-              textarea: ""
            }
         },
         methods: {
@@ -50,7 +49,7 @@
           check: function(e) {
             this.formValid = this.$refs.myForm.validate()
             if (this.formValid) {
-              this.$emit('model-updated', this.textarea, this.schema.model)
+              this.$emit('model-updated', this.schema.text, this.schema.model)
             }
           },
         },

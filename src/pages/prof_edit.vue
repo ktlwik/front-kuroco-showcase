@@ -47,6 +47,7 @@
   import fieldVuetifyMultipleChoice from '../components/vuetify_multiple_choice.vue';
   import fieldVuetifySingleChoice from '../components/vuetify_single_choice.vue';
   import fieldVuetifySingleOption from '../components/vuetify_single_option.vue';
+  import fieldVuetifyPassword from '../components/vuetify_password.vue'
 
   Vue.component('fieldUploadFile', fieldUploadFile);
   Vue.component('fieldVuetifyDate', fieldVuetifyDate);
@@ -57,6 +58,7 @@
   Vue.component('fieldVuetifySingleOption', fieldVuetifySingleOption);
   Vue.component('fieldVuetifySingleChoice', fieldVuetifySingleChoice);
   Vue.component('fieldVuetifyMultipleChoice', fieldVuetifyMultipleChoice);
+  Vue.component('fieldVuetifyPassword', fieldVuetifyPassword);
 
   Vue.use(VueFormGenerator);
   Vue.use(KurocoParser);
@@ -85,9 +87,9 @@
        
         if (this.validForm) {
           var send_model = JSON.parse(JSON.stringify(self.model))
-          send_model['body'] = 'example message'
+          console.log(send_model)
           self.$store.$auth.ctx.$axios
-            .post(this.inquirySubmitUrl, send_model)
+            .post("/rcms-api/1/member/update", send_model)
             .then(function (response) { 
               console.log(response.data)
                if (response.data.errors.length == 0) {
@@ -111,8 +113,40 @@
 
       }
     },
+    mounted() {
+      if (this.$auth.loggedIn) {
+        let self = this
+        this.$auth.ctx.$axios
+          .get("/rcms-api/1/members/" + this.$auth.user.member_id)
+          .then(function (response) {
+            console.log(response.data)
+            self.schema.fields[2].text = response.data.details.email
+            self.schema.fields[0].text = response.data.details.name1
+            self.schema.fields[1].text = response.data.details.name2
+            self.schema.fields[4].text = response.data.details.zip_code
+            self.schema.fields[7].text = response.data.details.tel
+            self.schema.fields[8].text = response.data.details[0].department
+            self.schema.fields[11].text = response.data.details[0].notes
+            for (var i = 0; i < self.schema.fields[5].options.length; ++i) {
+              if (self.schema.fields[5].options[i].value == response.data.details.tdfk_cd) {
+                self.schema.fields[5].option = self.schema.fields[5].options[i]
+              }
+            }
+            self.schema.fields[6].text = response.data.details.address1
+            self.schema.fields[5].option.value = response.data.details.tdfk_cd
+            self.loading = false
+          })
+      }
+    },
     data () {
       return {
+        // form default values
+        email: "",
+        name1: "",
+        name2: "",
+        zip_code: "",
+        tel: "",
+        //
         inquirySubmitUrl: '/rcms-api/1/inquiry/9',
         inquirySchemaUrl: '/rcms-api/1/inquiry/get/9',
         auth: false,
@@ -125,28 +159,39 @@
             {
               type: 'vuetifyText',
               inputType: 'text',
+              min: 0,
+              max: 100,
               label: 'First Name',
-              model: 'fname',
+              model: 'name1',
+              text: '',
               required: true
             },
             {
               type: 'vuetifyText',
               inputType: 'text',
+              min: 0,
+              max: 100,
               label: 'Last Name',
-              model: 'lname',
+              text: '',
+              model: 'name2',
               required: true
             },
             {
               type: 'vuetifyText',
               inputType: 'text',
+              min: 0,
+              max: 100,
               label: 'Email address',
               model: 'email',
+              text: '',
+              texttype: 'email',
               required: true
             },
             {
-              type: 'vuetifyText',
+              type: 'vuetifyPassword',
               inputType: 'text',
               label: 'Password',
+              text: '',
               model: 'password',
               required: true
             },
@@ -154,14 +199,21 @@
               type: 'vuetifyText',
               inputType: 'text',
               label: 'Zip Code',
-              model: 'password',
+              texttype: 'zip',
+              text: '',
+              min: 0,
+              max: 100,
+              model: 'zip_code',
               required: true
             },
             {
               type: 'vuetifyPrefecture',
               inputType: 'text',
               label: 'Prefecture',
-              model: 'prefecture',
+              model: 'tdfk_cd',
+              option: {
+                value: "01", text: "北海道"
+              },
               options: [
                 { value: "01", text: "北海道" },
                 { value: "02", text: "青森県" },
@@ -216,29 +268,97 @@
             {
               type: 'vuetifyText',
               inputType: 'text',
+              text: '',
+              min: 0,
+              max: 100,
               label: 'Address',
-              model: 'address',
+              model: 'address1',
               required: true
             },
             {
               type: 'vuetifyText',
               inputType: 'text',
+              text: '',
+              min: 0,
+              max: 100,
               label: 'Phone',
-              model: 'phone',
+              model: 'tel',
+              texttype: 'tel',
               required: true
             },
             {
               type: 'vuetifyText',
               inputType: 'text',
+              text: '',
+              min: 0,
+              max: 100,
               label: 'Department',
               model: 'department',
               required: true
             },
-            {"model":"ext_01","label":"Label","contents":[{"key":1,"value":"Radio1","default":false,"attribute":{"group":"1"}},{"key":2,"value":"Radio2","default":false,"attribute":{"group":"1"}},{"key":3,"value":"Radio3","default":false,"attribute":{"group":"1"}}],"required":false,"type":"vuetifySingleChoice"},
             {
-              "model":"ext_02","label":"Label","contents":[{"key":1,"value":"Check1","default":false,"attribute":{"group":"1"}},{"key":2,"value":"Check2","default":false,"attribute":{"group":"1"}},{"key":3,"value":"Check3","default":false,"attribute":{"group":"1"}}],"required":false,"type":"vuetifyMultipleChoice"},
-
-             {"model":"body","type":"vuetifyTextArea","inputType":"text","label":"Notes","placeholder":"","required":false,"counter":400,"max":400,"min":0}
+                model: "ext_01",
+                label: "Label",
+                contents: [
+                    {
+                      key: 1,
+                      value: "Radio1",
+                      default: false,
+                      attribute:{"group":"1"}
+                    },
+                    {
+                      key: 2,
+                      value: "Radio2",
+                      default:false,
+                      attribute:{"group":"1"}
+                    },
+                    {
+                      key:3,
+                      value:"Radio3",
+                      default:false,
+                      attribute:{"group":"1"}
+                    }
+                ],
+                required:false,
+                type:"vuetifySingleChoice"
+            },
+            {
+              model: "ext_02",
+              label:"Label",
+              contents:[
+                {
+                  key:1,
+                  value:"Check1",
+                  default:false,
+                  attribute:{"group":"1"}
+                },
+                {
+                  key:2,
+                  value:"Check2",
+                  default:false,
+                  attribute:{"group":"1"}
+                },
+                {
+                  key:3,
+                  value:"Check3",
+                  default:false,
+                  attribute:{"group":"1"}
+              }],
+              required:false,
+              type:"vuetifyMultipleChoice"
+            },
+            {
+              model:"notes",
+              type:"vuetifyTextArea",
+              inputType:"text",
+              label:"Notes",
+              placeholder:"",
+              text: "",
+              required:false,
+              counter:400,
+              max:400,
+              min:0
+            }
 
           ]
         }, 

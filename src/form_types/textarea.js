@@ -8,6 +8,7 @@ export default function createTextAreaSchema(json, key) {
 	    result['inputType'] = 'text'
 	    result['label'] = json['title']
 	    result['placeholder'] = ''
+	    result['text'] = ''
 	    if (json['required'] == '2') {
 	    	result['required'] = true
 		} else {
