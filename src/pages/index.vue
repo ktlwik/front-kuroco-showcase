@@ -4,20 +4,23 @@
       <div v-if="!auth.loggedIn">
         <form class="login-page" @submit.prevent="login">
           <div class="login-screen lgn-left">
-            <h3 class="subtitle mb-3">
-              会員ログイン
-            </h3>
+            <br/>
+            <div align="center">
+            <v-btn disable align>
+              Logo Diverta Inc.
+            </v-btn>
+            </div>
+            <br/>
+            <h2 align="center">
+              Login
+            </h2>
+            <br/>
             <div class="inner">
               <form @submit.prevent="login">
-                <p class="pm">
-                  <strong>メールアドレスとパスワードを<br
-                    class="spbr"
-                  />入力してください。</strong>
-                </p>
                 <p>
                   <v-text-field
                     v-model="form.email"
-                    label="メールアドレス"
+                    label="Login ID or Email address"
                     type="email"
                     outlined
                   />
@@ -25,12 +28,18 @@
                 <p>
                   <v-text-field
                     v-model="form.password"
-                    label="パスワード"
+                    label="Password"
                     :type="show_pwd1 ? 'text' : 'password'"
                     :append-icon="show_pwd1 ? 'mdi-eye' : 'mdi-eye-off'"
                     outlined
                     @click:append="show_pwd1 = !show_pwd1"
                   />
+                </p>
+                <p>
+                If you can not remember your password click
+                <NuxtLink to="/reminder">
+                    here
+                </NuxtLink>
                 </p>
                 <v-btn
                   type="submit"
@@ -40,26 +49,10 @@
                   dark
                   :loading="loading"
                 >
-                  ログインする
+                  Login
                 </v-btn>
               </form>
-              <p>
-                <NuxtLink to="/reminder">
-                  パスワードを忘れた方はこちらから
-                </NuxtLink>
-              </p>
-            </div>
-          </div>
-          <div class="login-screen lgn-right">
-            <h3 class="subtitle mb-3">
-              新規入会はこちら
-            </h3>
-            <div class="inner">
-              <p class="body-1 new-btn">
-                <NuxtLink to="/form">
-                  会員新規入会登録
-                </NuxtLink>
-              </p>
+             
             </div>
           </div>
         </form>
@@ -145,7 +138,9 @@ export default {
     },
   },
   mounted() {
-    this.updateTopics()
+    if (this.$auth.loggedIn) {
+      this.updateTopics()
+    }
     this.getInfo()
   },
   methods: {
@@ -188,7 +183,6 @@ export default {
           self.topics = topics
           
         }).catch(function (error) {
-              console.log(error)
                 self.$store.dispatch(
                   "snackbar/setError",
                   error.response.data.errors?.[0]
@@ -209,29 +203,21 @@ export default {
     },
     async login() {
       this.loading = true
+      console.log(this)
       await this.$auth
         .loginWith("local", { data: this.form })
         .then(() => {
-          const group_ids = JSON.parse(
-            JSON.stringify(this.$auth.user.group_ids)
-          )
-          let upgraded_flg = false
-          Object.keys(group_ids).forEach(function (key) {
-            if (key == 110) {
-              upgraded_flg = true
-            }
-          })
-          if (!upgraded_flg) {
-            this.$router.push("/upgrade")
-          } else {
-            this.getInfo()
-            this.$router.push("/")
-          }
+          this.getInfo()
+          console.log("here")
           this.$store.dispatch("snackbar/setMessage", "ログインしました")
           this.$store.dispatch("snackbar/snackOn")
           this.loading = false
+          this.$router.push("/")
         })
         .catch(() => {
+          console.log(this.$route)
+          console.log("asdasdasd")
+          console.log(this.$auth)
           this.$store.dispatch("snackbar/setError", "ログインに失敗しました")
           this.$store.dispatch("snackbar/snackOn")
           this.loading = false

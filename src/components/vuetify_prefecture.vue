@@ -30,10 +30,10 @@
         check: function(e, value) {
           this.formValid = this.$refs.myForm.validate()
           if (this.formValid) {
-            this.$emit('model-updated', {
+            this.$emit('model-updated', /*{
                "tdfk_cd": this.schema.option.value,
                "tdfk_nm": this.schema.option.text
-            }, this.schema.model)
+            }*/ this.schema.option.value, this.schema.model)
           }
         }
       },

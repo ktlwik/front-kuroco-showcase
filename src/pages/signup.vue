@@ -10,16 +10,26 @@
   <br/>
   <br/>
   
-  <h1>Profile edit</h1>
+  <h1 align="center">Sign up</h1>
   <br/>
   <div class="theme--light v-stepper">
 
   <v-container fluid>
+  <br/><br/>
+  <h4 style="font-weight: normal;">Please complete the form below to sign up</h4>
+  <br/><br/>
   <vue-form-generator ref="form"
     :schema="schema" :model="model" @model-updated='onInput'
-  >    
+  >   
   </vue-form-generator>
 
+ <v-checkbox v-model="disabled">
+    <template v-slot:label>
+      <div>
+        I agree to the terms of Use.
+      </div>
+    </template>
+  </v-checkbox>
   <v-btn
     type="submit"
     block
@@ -27,6 +37,7 @@
     color="success"
     class="white--text"
     @click="submitF()"
+    :disabled="!disabled"
   >SUBMIT</v-btn>
   </v-container>
   </div>
@@ -88,19 +99,25 @@
         if (this.validForm) {
           var send_model = JSON.parse(JSON.stringify(self.model))
           console.log(send_model)
-          self.$store.$auth.ctx.$axios
-            .post("/rcms-api/1/member/update", send_model)
-            .then(function (response) { 
-              console.log(response.data)
-               if (response.data.errors.length == 0) {
-                self.$store.dispatch(
-                  "snackbar/setMessage",
-                  "Thanks! Your inquiry submitted."
-                )
-                self.$store.dispatch("snackbar/snackOn")
-                self.$router.push("/")
-              }
-            })
+          this.loading = true
+          this.$auth.ctx.$axios
+          .post("/rcms-api/1/member/regist", send_model)
+          .then(function (response) {
+            if (response.data.errors.length === 0) {
+              self.$store.dispatch("snackbar/setMessage", "会員登録しました")
+              self.$store.dispatch("snackbar/snackOn")
+            }
+            self.loading = false
+            self.$router.push("/")
+          })
+          .catch(function (error) {
+            self.$store.dispatch(
+              "snackbar/setError",
+              error.response.data.errors?.[0]
+            )
+            self.$store.dispatch("snackbar/snackOn")
+            self.loading = false
+          })
 
           console.log("Form submitted!", self.model);
         } else {
@@ -114,30 +131,9 @@
       }
     },
     mounted() {
-      if (this.$auth.loggedIn) {
-        let self = this
-        this.$auth.ctx.$axios
-          .get("/rcms-api/1/members/" + this.$auth.user.member_id)
-          .then(function (response) {
-            console.log(response.data)
-            self.schema.fields[2].text = response.data.details.email
-            self.schema.fields[0].text = response.data.details.name1
-            self.schema.fields[1].text = response.data.details.name2
-            self.schema.fields[4].text = response.data.details.zip_code
-            self.schema.fields[7].text = response.data.details.tel
-            self.schema.fields[8].text = response.data.details[0].department
-            self.schema.fields[11].text = response.data.details[0].notes
-            for (var i = 0; i < self.schema.fields[5].options.length; ++i) {
-              if (self.schema.fields[5].options[i].value == response.data.details.tdfk_cd) {
-                self.schema.fields[5].option = self.schema.fields[5].options[i]
-              }
-            }
-            self.schema.fields[6].text = response.data.details.address1
-            self.schema.fields[5].option.value = response.data.details.tdfk_cd
-            self.loading = false
-          })
-      }
+      
     },
+    auth: false,
     data () {
       return {
         // form default values
@@ -149,9 +145,9 @@
         //
         inquirySubmitUrl: '/rcms-api/1/inquiry/9',
         inquirySchemaUrl: '/rcms-api/1/inquiry/get/9',
-        auth: false,
         validForm: true,
         loading: true,
+        disabled: false,
         model: {
         },
         schema: {
@@ -192,7 +188,7 @@
               inputType: 'text',
               label: 'Password',
               text: '',
-              model: 'password',
+              model: 'login_pwd',
               required: true
             },
             {
@@ -211,9 +207,6 @@
               inputType: 'text',
               label: 'Prefecture',
               model: 'tdfk_cd',
-              option: {
-                value: "01", text: "北海道"
-              },
               options: [
                 { value: "01", text: "北海道" },
                 { value: "02", text: "青森県" },
@@ -294,7 +287,7 @@
               max: 100,
               label: 'Department',
               model: 'department',
-              required: true
+              required: false
             },
             {
                 model: "ext_01",

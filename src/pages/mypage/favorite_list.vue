@@ -35,12 +35,13 @@
 	  	},
         updateTopics() {
           	let self = this
-		  	var favoritesUrl = '/rcms-api/1/favorites?member_id' + 
+		  	var favoritesUrl = '/rcms-api/1/favorites?member_id=' + 
 		    	this.$auth.user.member_id +
 		    			'&module_type=topics'
        		this.$store.$auth.ctx.$axios
 	    		.get(favoritesUrl)
 	    		.then(function (response) {
+	    			console.log(response.data)
 	    			var topic_ids = []
 	    			for (var key in response.data.list) {
 						var item = response.data.list[key]

@@ -81,7 +81,7 @@
         },
         updateTopics() {
             let self = this
-            var favoritesUrl = '/rcms-api/1/favorites?member_id' + 
+            var favoritesUrl = '/rcms-api/1/favorites?member_id=' + 
               this.$auth.user.member_id +
                   '&module_type=topics'
               this.$store.$auth.ctx.$axios
@@ -114,7 +114,7 @@
                               "label": item['contents_type_nm'],
                               "link": item['subject'],
                               'icon': "",
-                        "id": item['topics_id']
+                              "id": item['topics_id']
                           })
                         }
                         self.topics = topics

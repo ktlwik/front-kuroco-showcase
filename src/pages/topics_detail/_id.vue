@@ -65,6 +65,7 @@
 <script>
 	import item from '../../components/topic_detail'
 	export default {
+    	auth: true,
 		components: {
 			'v-item': item
 		},
@@ -104,6 +105,7 @@
 				}	
 			}
 		},
+
 		data() {
 			return {
 				label: "",
@@ -129,11 +131,13 @@
 		          self.label =  response.data.details.contents_type_nm
 		          self.title = response.data.details.subject
 		          self.date = response.data.details['inst_ymdhi'].substring(0, 10).replaceAll("-", "/")
-		          var positions = response.data.details.ext_col_04
+				  var positions = response.data.details.ext_col_04
 		          var image_urls = response.data.details.ext_col_05
 		          var text_size = response.data.details.ext_col_06
 		          var texts = response.data.details.ext_col_07
-		          console.log(image_urls)
+		          var subtitle = response.data.details.ext_col_09
+				  console.log(response.data.details)
+
 		          for (var i = 0; i < texts.length; i++) {
 		          	var textSize = null
 		          	var imageUrl = null
@@ -143,12 +147,28 @@
 		          	if (image_urls[i] != undefined && image_urls[i].hasOwnProperty('url')) {
 		          		imageUrl = image_urls[i]['url'] + "?width=400&height=300"
 		          	}
-		          	items.push({
+		          	var pattern = 1
+		          	if (textSize == 'H2') {
+		          		pattern = 1
+		          	} else if (positions[i].label == 'Top' && textSize == 'H3') {
+		          		pattern = 2
+		          	} else if (positions[i].label == 'Bottom' && textSize == 'No level') {
+		          		pattern = 3
+		          	} else if (positions[i].label == 'Left' && textSize == 'H4') {
+		          		pattern = 4
+		          	} else if (positions[i].label == 'Right' && textSize == 'H5') {
+		          		pattern = 5
+		          	} else if (positions[i].label == 'Top' && textSize == 'No level') {
+		          		pattern = 6
+		          	}
+		          	console.log(pattern)
+ 		          	items.push({
 		          		"text":texts[i] ,
-		          		"pattern": 2,
+		          		"pattern": pattern,
 		          		"image_url": imageUrl,
-		          		"text_size": textSize
-		          	})
+		          		"text_size": textSize,
+		          		"subtitle": subtitle[i]
+					})
 		          }
 		          console.log(items)
 		          self.items = items

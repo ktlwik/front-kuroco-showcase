@@ -35,6 +35,7 @@
     components: {
       'v-topics': topicList
     },
+    auth: true,
     data () {
       return {
         items: [

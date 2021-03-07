@@ -42,10 +42,10 @@
 	   components: {
 		'v-topics': topicList
 	   },
+       auth: true,
 	   data () {
 	    return {
 	      text: "",
-          auth: false,
           group_id: 13,
           categories: [
        

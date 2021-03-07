@@ -4,8 +4,8 @@
       v-model="drawer"
       :mini-variant="miniVariant"
       :clipped="clipped"
-      absolute
       left
+      fixed
       temporary
     >
       <v-list>
@@ -40,6 +40,11 @@
       </v-toolbar-title>
       <v-spacer />
       <v-toolbar-title height="30" to="/" v-text="subtitle" />
+      <div v-if="!auth.loggedIn">
+          <NuxtLink to="/signup">
+            Sign Up
+          </NuxtLink>
+      </div>
       <v-btn v-if="!auth.loggedIn" icon to="/" nuxt>
         <v-icon>mdi-account</v-icon>
       </v-btn>
@@ -97,13 +102,8 @@ export default {
         },
         {
           icon: "mdi-send",
-          title: "お問い合わせ",
-          to: "/inquiry",
-        },
-        {
-          icon: "mdi-send",
           title: "inquiry form",
-          to: "/testkuroschema"
+          to: "/inquiry"
         },
         {
           icon: "mdi-newspaper-variant",

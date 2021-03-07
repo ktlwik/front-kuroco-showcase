@@ -39,10 +39,12 @@
   </v-card>
   </v-container>
   
+  <v-container fluid 
+    v-else-if="pattern==3"
+  >
   <v-card
     class="mx-auto"
     max-width="7000"
-    v-else-if="pattern==3"
   >
     <v-card-text>
       <div class="text--primary">
@@ -53,11 +55,14 @@
     </v-card-text>
 
   </v-card>
-  
+  </v-container>
+
+  <v-container fluid 
+    v-else-if="pattern==4"
+  >
   <v-card
     class="mx-auto"
     max-width="7000"
-    v-else-if="pattern==4"
   >
      <v-card-title
         class="text-h4"
@@ -78,10 +83,14 @@
     </v-card-text>
 
   </v-card>
+  </v-container>
+
+  <v-container fluid 
+    v-else-if="pattern==5"
+  >
    <v-card
     class="mx-auto"
     max-width="7000"
-    v-else-if="pattern==5"
   >
      <v-card-title
         class="text-h5"
@@ -102,16 +111,21 @@
     </v-container>
 
   </v-card>
+  </v-container>
+
+  <v-container fluid 
+    v-else-if="pattern==6"
+  >
   <v-card
     class="mx-auto"
     max-width="7000"
-    v-else
   >
   <v-card-text> 
      <v-img fluid class="mx-auto" :aspect-ration="16/9" :src="image_url" width="33%" max-height="900" max-width="900">
      </v-img>
  </v-card-text>
   </v-card>
+</v-container>
 
 </template>
 
