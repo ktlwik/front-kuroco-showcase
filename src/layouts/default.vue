@@ -31,11 +31,14 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
+
     <v-app-bar :clipped-left="clipped" color="#1414A0" dense dark fixed app>
       <v-app-bar-nav-icon v-if="auth.loggedIn" @click.stop="drawer = !drawer" />
       <v-toolbar-title>
         <a href="/">
-          Logo
+         <v-btn disable align>
+          Logo Diverta Inc.
+         </v-btn>
         </a>
       </v-toolbar-title>
       <v-spacer />
@@ -54,6 +57,13 @@
       </v-btn>
     </v-app-bar>
     <v-main>
+      <br/>
+      <div align="center">
+          <v-btn disable align>
+            Logo Diverta Inc.
+          </v-btn>
+      </div>
+      <br/>
       <v-container>
         <nuxt />
       </v-container>

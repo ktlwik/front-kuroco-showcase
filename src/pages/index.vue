@@ -4,13 +4,6 @@
       <div v-if="!auth.loggedIn">
         <form class="login-page" @submit.prevent="login">
           <div class="login-screen lgn-left">
-            <br/>
-            <div align="center">
-            <v-btn disable align>
-              Logo Diverta Inc.
-            </v-btn>
-            </div>
-            <br/>
             <h2 align="center">
               Login
             </h2>
@@ -37,7 +30,7 @@
                 </p>
                 <p>
                 If you can not remember your password click
-                <NuxtLink to="/reminder">
+                <NuxtLink to="/password_reminder">
                     here
                 </NuxtLink>
                 </p>
