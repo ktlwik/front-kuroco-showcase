@@ -1,14 +1,14 @@
 <template>
 	<div>
 		topics
-		  <v-btn
-              icon
-              :color="color"
-              @click="onClick()"
-              class = "mr-auto"
-            >
-              <v-icon x-large>mdi-heart</v-icon>
-            </v-btn>
+		<v-btn
+			icon
+			:color="color"
+			@click="onClick()"
+			class = "mr-auto"
+        >
+            <v-icon x-large>mdi-heart</v-icon>
+        </v-btn>
 	</div>
 </template>
 

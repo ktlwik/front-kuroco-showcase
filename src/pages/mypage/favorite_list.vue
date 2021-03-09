@@ -41,7 +41,6 @@
        		this.$store.$auth.ctx.$axios
 	    		.get(favoritesUrl)
 	    		.then(function (response) {
-	    			console.log(response.data)
 	    			var topic_ids = []
 	    			for (var key in response.data.list) {
 						var item = response.data.list[key]
@@ -58,7 +57,6 @@
 		    				url += "&id[]=" + topic_ids[i]
 		    			}
 
-		    			console.log(url)
 		    			self.$store.$auth.ctx.$axios
 			            .get(url)
 			            .then(function (response) {
@@ -77,12 +75,11 @@
 			              self.topics = topics
 			              
 			            }).catch(function (error) {
-			                  console.log(error)
-			                    self.$store.dispatch(
-			                      "snackbar/setError",
-			                      error.response.data.errors?.[0]
-			                    )
-			                    self.$store.dispatch("snackbar/snackOn")
+		                    self.$store.dispatch(
+		                      "snackbar/setError",
+		                      error.response.data.errors?.[0]
+		                    )
+		                    self.$store.dispatch("snackbar/snackOn")
 			            })
 					}
 	    		}).catch(function (error) {

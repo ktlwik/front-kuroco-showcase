@@ -18,7 +18,6 @@ export default function createTextSchema(json, key) {
 	    	if (result['texttype'] == 'regex' && json['validate'].hasOwnProperty('regex')) {
 	    		result['regex'] = json['validate']['regex']
 	    	}
-	    	console.log(result['texttype'])
 		}
 
 	    if (json['attribute']['max_length'] != '') {

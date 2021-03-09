@@ -216,7 +216,7 @@ export default {
         "新しいパスワードを入力してください。"
       )
       this.$store.dispatch("snackbar/snackOn")
-      this.e1 = 3
+      this.e1 = 2
       console.log(this.e1)
     }
   },
@@ -240,13 +240,14 @@ export default {
             )
             self.$store.dispatch("snackbar/snackOn")
           }
-          this.e1 = 3
+          self.e1 = 3
           self.loading1 = false
         })
         .catch(function (error) {
+          console.log(error)
           self.$store.dispatch(
             "snackbar/setError",
-            "Error"
+            "Invalid email address."
           )
           self.$store.dispatch("snackbar/snackOn")
           self.loading1 = false
@@ -270,7 +271,7 @@ export default {
             self.$store.dispatch("snackbar/snackOn")
             self.$router.push("/")
             self.loading2 = false
-            this.e1 = 4
+            self.e1 = 4
           })
           .catch(function (error) {
             self.$store.dispatch(

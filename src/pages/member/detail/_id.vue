@@ -5,7 +5,9 @@
 		<v-col>
 			<v-row>
 			<v-col>
-  				<v-img fluid class="mx-auto" :aspect-ration="16/9" :src="detail.url" width="33%" max-height="900" max-width="900"></v-img>
+  				<v-img fluid class="mx-auto" :lazy-src="placeholder" 
+  				:aspect-ration="16/9" :src="detail.url"
+  				 width="33%" max-height="400" max-width="400"></v-img>
 			</v-col>
 			<v-col class="mx-auto">
 				<v-row class="headline">
@@ -76,6 +78,7 @@
 		},
 		data() {
 			return {
+				placeholder: require("@/assets/images/avatar-placeholder.png"),
 				member_id: null,
 		        detail: {
 		        	"name": "", 
@@ -130,11 +133,9 @@
 	        .then(function (response) {
 	          var detail = {}
 	          var profile = []
-	          console.log(response)
+	          // console.log(response)
 	          var details_obj = response.data.list[0]
 	          detail['name'] = details_obj.name1 + ' ' + details_obj.name2
-	          detail['department'] = "Computer Department" 
-		      detail['position'] = "Programmer"
 		      detail['zip'] = details_obj.zip_code
 		      if (details_obj.address1 == null) {
 		      	detail['location'] = ''
@@ -143,17 +144,19 @@
 		      }
 		      detail['phone'] = details_obj.tel
 		      detail['email'] = details_obj.email
-		      detail['url'] = 'https://dev-nuxt-auth.a.kuroco-img.app/v=1614168758' + 
+		      if (details_obj.profileimage.url != undefined) {
+		      	detail['url'] = 'https://dev-nuxt-auth.a.kuroco-img.app/v=1614168758' + 
 		      	details_obj.profileimage.url
-		      if (details_obj.hasOwnProperty(0) && details_obj[0].hasOwnProperty('role')) {
-		    	detail['position'] = details_obj[0].role
+		      }
+		      if (details_obj.hasOwnProperty('role')) {
+		    	detail['position'] = details_obj.role
 		  	  }
-		  	  if (details_obj.hasOwnProperty(0) && details_obj[0].hasOwnProperty('department')) {
-	          	detail['department'] = details_obj[0].department
+		  	  if (details_obj.hasOwnProperty('department')) {
+	          	detail['department'] = details_obj.department
 		  	  }
 
-		  	  if (details_obj.hasOwnProperty(0) && details_obj[0].hasOwnProperty('notes')) {
-	          	detail['text'] =  details_obj[0].notes
+		  	  if (details_obj.hasOwnProperty('notes')) {
+	          	detail['text'] =  details_obj.notes
 	      	  }
 		      self.detail = detail
 		      self.profile[0]['value'] = detail['zip']
@@ -163,12 +166,12 @@
 		      self.profile[6]['value'] = detail['text']
 	          console.log(response.data)
 	        }).catch(function (error) {
-	            console.log(error)
-	              self.$store.dispatch(
-	                "snackbar/setError",
-	                error.response.data.errors?.[0]
-	              )
-	              self.$store.dispatch("snackbar/snackOn")
+	        //  console.log(error)
+              self.$store.dispatch(
+                "snackbar/setError",
+                error.response.data.errors?.[0]
+              )
+              self.$store.dispatch("snackbar/snackOn")
 	        })
 		}
 	}

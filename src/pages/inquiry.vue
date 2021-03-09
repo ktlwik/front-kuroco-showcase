@@ -1,11 +1,11 @@
 <template>
   <div>
   <v-progress-linear
-        :active="loading"
-        :indeterminate="loading"
-        absolute
-        top
-        color="orange white-4"
+    :active="loading"
+    :indeterminate="loading"
+    absolute
+    top
+    color="orange white-4"
   ></v-progress-linear>
   <h1>Inquiry</h1>
   <br/>
@@ -36,19 +36,19 @@
     class="white--text"
     @click="submitF()"
     :disabled="!disabled"
-  >SUBMIT</v-btn>
+  >Submit</v-btn>
   </v-container>
   </div>
   </div>
 </template>
 
 <script>
+  import '../assets/form.css'
   import Vue from 'vue'
   import VueFormGenerator from 'vue-form-generator'
   import KurocoParser from '../plugins/parser.js';
-  import '../assets/form.css'
   import fieldUploadFile from '../components/vuetify_file_upload.vue';
-  import fieldVuetifyText from '../components/vuetify_input.vue';
+  import fieldVuetifyText from '../components/vuetify_text.vue';
   import fieldVuetifyTextArea from '../components/vuetify_textarea.vue';
   import fieldVuetifyDate from '../components/vuetify_date.vue';
   import fieldVuetifyJson from '../components/vuetify_json.vue';
@@ -75,7 +75,7 @@
      "vue-form-generator": VueFormGenerator.component
     },
     mounted() {
-      this.getModel(),
+      //this.getModel(),
       this.getSchema()
     },
     methods: {
@@ -134,7 +134,7 @@
                 console.log(error)
                 self.$store.dispatch(
                   "snackbar/setError",
-                  error.response.data.errors?.[0]
+                  "error"
                 )
                 self.$store.dispatch("snackbar/snackOn")
               })
@@ -172,7 +172,14 @@
                 self.$store.dispatch("snackbar/snackOn")
                 self.$router.push("/")
               }
-            })
+            }).catch(function (error) {
+                console.log(error)
+                self.$store.dispatch(
+                  "snackbar/setError",
+                  "Invalid form fields."
+                )
+                self.$store.dispatch("snackbar/snackOn")
+              })
 
           console.log("Form submitted!", self.model);
         } else {

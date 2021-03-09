@@ -1,5 +1,4 @@
 <template>
-  
   <v-container fluid 
     v-if="pattern==1"
   >

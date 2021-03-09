@@ -19,7 +19,6 @@ export default function createMultipleChoiceSchema(json, key) {
 	    	}
 	    }
 	    result['type'] = 'vuetifyMultipleChoice'
- 		console.log(result['contents'])
  	}
 
 	console.log(result)

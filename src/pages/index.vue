@@ -163,25 +163,25 @@ export default {
               self.items.push({src:item['ext_col_08']['url']})
             }
             topics.push({
-                "date": item['inst_ymdhi'].substring(0, 10).replaceAll("-", "/"),
-                "label": item['contents_type_nm'],
-                "link": item['subject'],
-                'icon': "",
-                "id": item['topics_id'],
-                'icon': item['ext_col_01']['key'],
-                'fileurl': fileurl,
-                'linkurl': linkurl
+              "date": item['inst_ymdhi'].substring(0, 10).replaceAll("-", "/"),
+              "label": item['contents_type_nm'],
+              "link": item['subject'],
+              'icon': "",
+              "id": item['topics_id'],
+              'icon': item['ext_col_01']['key'],
+              'fileurl': fileurl,
+              'linkurl': linkurl
             })
           }
           self.topics = topics
           
         }).catch(function (error) {
-                self.$store.dispatch(
-                  "snackbar/setError",
-                  error.response.data.errors?.[0]
-                )
-                self.$store.dispatch("snackbar/snackOn")
-          })
+          self.$store.dispatch(
+            "snackbar/setError",
+            error.response.data.errors?.[0]
+          )
+          self.$store.dispatch("snackbar/snackOn")
+        })
     },
     getInfo() {
       if (this.$auth.loggedIn) {
@@ -205,7 +205,6 @@ export default {
           this.$store.dispatch("snackbar/setMessage", "ログインしました")
           this.$store.dispatch("snackbar/snackOn")
           this.loading = false
-          this.$router.push("/")
         })
         .catch(() => {
           console.log(this.$route)

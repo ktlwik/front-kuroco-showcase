@@ -6,6 +6,7 @@ export default function createSingleOptionSchema(json, key) {
 	    result['model'] = key
 	    result['label'] = json['title']
 	    result['contents'] = json['contents']
+
 	  	if (json['required'] == '2') {
 	    	result['required'] = true
 		} else {

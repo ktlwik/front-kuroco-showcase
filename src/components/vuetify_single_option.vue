@@ -1,14 +1,14 @@
 <template>
   <v-form v-model="formValid" ref="myForm">
    <v-select
-       v-model="option"
-       :items="schema.contents"
-       menu-props="auto"
-       item-text="value"
-       item-value="key"
-       :rules="[v => (schema.required == false || (schema.required == true && !!v)) || 'required field']"
-       @change="check($event)"
-       return-object
+     v-model="option"
+     :items="schema.contents"
+     menu-props="auto"
+     item-text="value"
+     item-value="key"
+     :rules="[v => (schema.required == false || (schema.required == true && !!v)) || 'required field']"
+     @change="check($event)"
+     return-object
    ></v-select>
   </v-form>
 </template>
@@ -30,10 +30,10 @@
           this.formValid = this.$refs.myForm.validate()
           console.log(this.option)
           if (this.formValid) {
-            this.$emit('model-updated', {
+            this.$emit('model-updated', /*{
               "key": this.option.key,
               "label": this.option.value
-            }, this.schema.model)
+            }*/ this.option.key.toString(), this.schema.model)
           }
         }
       },

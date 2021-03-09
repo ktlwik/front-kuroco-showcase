@@ -28,7 +28,7 @@
 					{{date}}
 				</v-card>
 			</v-card>
-			<v-row v-for="item in items">
+			<v-row v-for="item in items" v-bind:key="item.id">
 				<v-item 
 					:text="item.text" 
 					:image_url="item.image_url" 
@@ -84,7 +84,6 @@
 						  module_id: parseInt(this.topic_id)
 						})
 		    			.then(function (response) {
-		    				console.log("added")
 							self.color = "red"
 		    			}).catch(function (error) {
 				            console.log(error)
@@ -161,7 +160,6 @@
 		          	} else if (positions[i].label == 'Top' && textSize == 'No level') {
 		          		pattern = 6
 		          	}
-		          	console.log(pattern)
  		          	items.push({
 		          		"text":texts[i] ,
 		          		"pattern": pattern,
@@ -170,7 +168,6 @@
 		          		"subtitle": subtitle[i]
 					})
 		          }
-		          console.log(items)
 		          self.items = items
 		          self.loading = false
 		    }).catch(function (error) {
@@ -184,7 +181,6 @@
         	this.$store.$auth.ctx.$axios
 	    			.get(favoritesUrl)
 	    			.then(function (response) {
-	    				console.log(response.data)
 	    				if (response.data.pageInfo.totalCnt > 0) {
 							self.color = "red"
 						} else {

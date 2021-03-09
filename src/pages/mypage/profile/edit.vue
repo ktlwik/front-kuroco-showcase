@@ -1,11 +1,11 @@
 <template>
   <div>
   <v-progress-linear
-        :active="loading"
-        :indeterminate="loading"
-        absolute
-        top
-        color="orange white-4"
+    :active="loading"
+    :indeterminate="loading"
+    absolute
+    top
+    color="orange white-4"
   ></v-progress-linear>
   <br/>
   <br/>
@@ -47,7 +47,7 @@
   import KurocoParser from '~/plugins/parser.js';
   import '~/assets/form.css'
   import fieldUploadFile from '~/components/vuetify_file_upload.vue';
-  import fieldVuetifyText from '~/components/vuetify_input.vue';
+  import fieldVuetifyText from '~/components/vuetify_text.vue';
   import fieldVuetifyTextArea from '~/components/vuetify_textarea.vue';
   import fieldVuetifyDate from '~/components/vuetify_date.vue';
   import fieldVuetifyJson from '~/components/vuetify_json.vue';
@@ -78,40 +78,35 @@
     },
     methods: {
        onInput: function(value, fieldName) {
-        console.log("fieldName: ", fieldName)
-        console.log("value: ", value)
+        // console.log("fieldName: ", fieldName)
+        // console.log("value: ", value)
         this.$set(this.model, fieldName, value)
       },
       submitF: function() {
         let self = this
-        console.log(this.model)
         this.validForm = true
         for (var key in self.$children[1].$children) {
           if (self.$children[1].$children[key].$children[0].formValid == false) {
             this.validForm = false
-            console.log("invalid key", key)
+            // console.log("invalid key", key)
           }
         }
-        console.log(this.validForm)
        
         if (this.validForm) {
           var send_model = JSON.parse(JSON.stringify(self.model))
-          console.log(send_model)
           self.$store.$auth.ctx.$axios
             .post("/rcms-api/1/member/update", send_model)
             .then(function (response) { 
-              console.log(response.data)
                if (response.data.errors.length == 0) {
                 self.$store.dispatch(
                   "snackbar/setMessage",
-                  "Thanks! Your inquiry submitted."
+                  "Your profile is changed."
                 )
                 self.$store.dispatch("snackbar/snackOn")
                 self.$router.push("/")
               }
             })
-
-          console.log("Form submitted!", self.model);
+            // console.log("Form submitted!", self.model);
         } else {
           self.$store.dispatch(
             "snackbar/setError",
@@ -128,16 +123,29 @@
         this.$auth.ctx.$axios
           .get("/rcms-api/1/members/" + this.$auth.user.member_id)
           .then(function (response) {
-            console.log(response.data)
-            self.schema.fields[2].text = response.data.details.email
-            self.schema.fields[0].text = response.data.details.name1
-            self.schema.fields[1].text = response.data.details.name2
-            self.schema.fields[4].text = response.data.details.zip_code
-            self.schema.fields[7].text = response.data.details.tel
-            if (response.data.details.hasOwnProperty(0)) {
-            	self.schema.fields[8].text = response.data.details[0].department
-            	self.schema.fields[11].text = response.data.details[0].notes
+          	console.log(response.data)
+            if (response.data.details.hasOwnProperty('email')) {
+            	self.schema.fields[2].text = response.data.details.email
         	}
+            if (response.data.details.hasOwnProperty('name1')) {
+            	self.schema.fields[0].text = response.data.details.name1
+        	}
+            if (response.data.details.hasOwnProperty('name2')) {
+            	self.schema.fields[1].text = response.data.details.name2
+        	}
+            if (response.data.details.hasOwnProperty('zip_code')) {
+            	self.schema.fields[4].text = response.data.details.zip_code
+        	}
+            if (response.data.details.hasOwnProperty('tel')) {
+            	self.schema.fields[7].text = response.data.details.tel
+        	}
+            if (response.data.details.hasOwnProperty('department')) {
+            	self.schema.fields[8].text = response.data.details.department
+        	}
+            if (response.data.details.hasOwnProperty('notes')) {
+            	self.schema.fields[11].text = response.data.details.notes
+        	}
+            	
             for (var i = 0; i < self.schema.fields[5].options.length; ++i) {
               if (self.schema.fields[5].options[i].value == response.data.details.tdfk_cd) {
                 self.schema.fields[5].option = self.schema.fields[5].options[i]
@@ -157,7 +165,6 @@
         name2: "",
         zip_code: "",
         tel: "",
-        //
         inquirySubmitUrl: '/rcms-api/1/inquiry/9',
         inquirySchemaUrl: '/rcms-api/1/inquiry/get/9',
         auth: false,
@@ -204,7 +211,7 @@
               inputType: 'text',
               label: 'Password',
               text: '',
-              model: 'password',
+              model: 'login_pwd',
               required: true
             },
             {

@@ -19,7 +19,6 @@ export default function createTextAreaSchema(json, key) {
 	    		result['texttype'] = json['validate']['type']
 	    		result['regex'] = json['validate']['regex']
 	    	}
-	    	console.log(result['texttype'])
 		}
 		
 	    if (json['attribute']['max_length'] != '') {

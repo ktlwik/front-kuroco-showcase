@@ -27,10 +27,10 @@
           console.log(this.radioGroup)
           this.formValid = this.$refs.myForm.validate()
           if (this.formValid) {
-            this.$emit('model-updated', {
+            this.$emit('model-updated', /*{
               "key": this.radioGroup.key,
               "label": this.radioGroup.value
-            }, this.schema.model)
+            }*/ this.radioGroup.key.toString(), this.schema.model)
           }
         }
       },

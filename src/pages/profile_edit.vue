@@ -1,11 +1,11 @@
 <template>
   <div>
   <v-progress-linear
-        :active="loading"
-        :indeterminate="loading"
-        absolute
-        top
-        color="orange white-4"
+    :active="loading"
+    :indeterminate="loading"
+    absolute
+    top
+    color="orange white-4"
   ></v-progress-linear>
   <br/>
   <br/>
@@ -42,12 +42,12 @@
 </template>
 
 <script>
+  import '../assets/form.css'
   import Vue from 'vue'
   import VueFormGenerator from 'vue-form-generator'
   import KurocoParser from '../plugins/parser.js';
-  import '../assets/form.css'
   import fieldUploadFile from '../components/vuetify_file_upload.vue';
-  import fieldVuetifyText from '../components/vuetify_input.vue';
+  import fieldVuetifyText from '../components/vuetify_text.vue';
   import fieldVuetifyTextArea from '../components/vuetify_textarea.vue';
   import fieldVuetifyDate from '../components/vuetify_date.vue';
   import fieldVuetifyJson from '../components/vuetify_json.vue';
@@ -76,13 +76,14 @@
      "vue-form-generator": VueFormGenerator.component
     },
     methods: {
-       onInput: function(value, fieldName) {
+      onInput: function(value, fieldName) {
         console.log("fieldName: ", fieldName)
         console.log("value: ", value)
         this.$set(this.model, fieldName, value)
       },
       submitF: function() {
         let self = this
+        
         console.log(this.model)
         this.validForm = true
         for (var key in self.$children[1].$children) {
@@ -91,6 +92,7 @@
             console.log("invalid key", key)
           }
         }
+
         console.log(this.validForm)
        
         if (this.validForm) {
@@ -100,7 +102,7 @@
             .post("/rcms-api/1/member/update", send_model)
             .then(function (response) { 
               console.log(response.data)
-               if (response.data.errors.length == 0) {
+              if (response.data.errors.length == 0) {
                 self.$store.dispatch(
                   "snackbar/setMessage",
                   "Thanks! Your inquiry submitted."
@@ -118,7 +120,6 @@
           )
           self.$store.dispatch("snackbar/snackOn")
         }
-
       }
     },
     mounted() {
@@ -133,8 +134,14 @@
             self.schema.fields[1].text = response.data.details.name2
             self.schema.fields[4].text = response.data.details.zip_code
             self.schema.fields[7].text = response.data.details.tel
-            self.schema.fields[8].text = response.data.details[0].department
-            self.schema.fields[11].text = response.data.details[0].notes
+            if (response.data.details.hasOwnProperty(0)) {
+              if (response.data.details[0].hasOwnProperty('department')) {
+                self.schema.fields[8].text = response.data.details[0].department
+              }
+              if (response.data.details[0].hasOwnProperty('notes')) {
+                self.schema.fields[11].text = response.data.details[0].notes
+              }
+            }
             for (var i = 0; i < self.schema.fields[5].options.length; ++i) {
               if (self.schema.fields[5].options[i].value == response.data.details.tdfk_cd) {
                 self.schema.fields[5].option = self.schema.fields[5].options[i]
@@ -154,7 +161,6 @@
         name2: "",
         zip_code: "",
         tel: "",
-        //
         inquirySubmitUrl: '/rcms-api/1/inquiry/9',
         inquirySchemaUrl: '/rcms-api/1/inquiry/get/9',
         auth: false,

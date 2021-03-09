@@ -31,7 +31,7 @@
     <v-data-table
       :headers="headers"
       :items="filteredItems"
-      :items-per-page="10"
+      :items-per-page="perpage"
       class="elevation-1"
     > 
 
@@ -62,6 +62,7 @@ export default {
       filteredItems: [],
       members: [],
       departments: [],
+      perpage: 10, 
       member: '',
       department: ''
     }
@@ -93,7 +94,7 @@ export default {
         })
       }
 
-      console.log(this.filteredItems)
+      // console.log(this.filteredItems)
     },
   },
   mounted() {
@@ -105,18 +106,29 @@ export default {
           var items = []
           var members = []
           var departments = []
-          console.log(response.data.list)
+          // console.log(response.data.list)
           for (var key in response.data.list) {
             var item = response.data.list[key]
+            console.log(item)
+            var department = ''
+            var role = ''
+            if (item.hasOwnProperty('department')) {
+              department = item.department
+            }
+            if (item.hasOwnProperty('role')) {
+              role = item.role
+            }
             items.push({
                 "name": item['name1'] + ' ' + item['name2'],
-                "department": 'Diverta Inc',
-                "position": 'Engineer',
+                "department": department,
+                "position": role,
                 'phone': item['tel'],
                 'id': item['member_id']
             })
             members.push(item['name1'] + ' ' + item['name2'])
-            departments.push('Diverta Inc')
+            if (department != '') {
+              departments.push(department)
+            }
           }
           self.filteredItems = items
           self.items = items

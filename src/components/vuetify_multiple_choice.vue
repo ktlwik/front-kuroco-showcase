@@ -1,12 +1,12 @@
 <template>
-  
   <v-form v-model="formValid" ref="myForm">
     <v-checkbox
       v-for="item in schema.contents"
+      v-bind:key="item.key"
       ref="mul"
       v-model="checkedCategories"
       :label="item.value"
-      :value="item.value"
+      :value="item.key"
       :rules="rules"
       @change="check($event)"
       return-object
@@ -36,8 +36,12 @@
         check: function(e) {
           this.formValid = this.$refs.myForm.validate()
           var checkedJson = []
+          console.log(this.checkedCategories)
           for (var key in this.checkedCategories) {
-            checkedJson.push({"key": key, "label": this.checkedCategories[key]})
+            checkedJson.push(
+              //{"key": key, "label": this.checkedCategories[key]}
+              this.checkedCategories[key].toString()
+            )
           }
           if (this.formValid) {
             this.$emit('model-updated', checkedJson, this.schema.model)

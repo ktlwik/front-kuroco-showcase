@@ -58,10 +58,10 @@
     </v-app-bar>
     <v-main>
       <br/>
-      <div align="center">
-          <v-btn disable align>
-            Logo Diverta Inc.
-          </v-btn>
+      <div align="center" v-if="!auth.loggedIn">
+        <v-btn disable align>
+          Logo Diverta Inc.
+        </v-btn>
       </div>
       <br/>
       <v-container>

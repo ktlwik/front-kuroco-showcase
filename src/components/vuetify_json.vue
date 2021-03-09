@@ -1,5 +1,4 @@
 <template>
- 
   <v-form v-model="formValid" ref="myForm">
 	<v-textarea
       v-model="jsonstr"

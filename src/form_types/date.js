@@ -26,10 +26,7 @@ export default function createDateSchema(json, key) {
 		} else {
 			result['maxYear'] = undefined
 		}
-	 }
-
-	 console.log(toString(parseInt(json['attribute']['maxYear']) + 1))
-
+	}
 
 	console.log("min: ", result['minYear'])
 	console.log("max: ", result['maxYear'])

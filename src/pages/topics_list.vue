@@ -16,7 +16,7 @@
         <v-btn @change="changeCategoryAll()">
         	ALL
         </v-btn>
-      	<v-btn v-for="item in categories" :value="item.key" @change="changeCategory(item)">
+      	<v-btn v-for="item in categories" :value="item.key" @change="changeCategory(item)" v-bind:key="item.key">
           {{item.value}}
         </v-btn>
       </v-btn-toggle>
@@ -110,7 +110,7 @@
      				self.topics = topics
      				
      			}).catch(function (error) {
-		            console.log(error)
+		            // console.log(error)
 	                self.$store.dispatch(
 	                  "snackbar/setError",
 	                  error.response.data.errors?.[0]
@@ -135,7 +135,7 @@
 	  				self.categories = categories
 	  			}
 	        }).catch(function (error) {
-	            console.log(error)
+	            // console.log(error)
                 self.$store.dispatch(
                   "snackbar/setError",
                   error.response.data.errors?.[0]

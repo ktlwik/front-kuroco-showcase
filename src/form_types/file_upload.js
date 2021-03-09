@@ -13,7 +13,6 @@ export default function createUploadFileSchema(json, key) {
 	    result['type'] = 'uploadFile'
 	 }
 
-	console.log(result)
 	return result
 };
 

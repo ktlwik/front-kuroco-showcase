@@ -67,7 +67,6 @@
         },
         updateTopics() {
           var url = '/rcms-api/1/topics?topics_group_id=' + this.group_id + '&cnt=5' 
-          console.log(url)
           let self = this
           this.$store.$auth.ctx.$axios
             .get(url)
@@ -102,12 +101,12 @@
               self.topics = topics
               
             }).catch(function (error) {
-                  console.log(error)
-                    self.$store.dispatch(
-                      "snackbar/setError",
-                      error.response.data.errors?.[0]
-                    )
-                    self.$store.dispatch("snackbar/snackOn")
+                //console.log(error)
+                self.$store.dispatch(
+                  "snackbar/setError",
+                  error.response.data.errors?.[0]
+                )
+                self.$store.dispatch("snackbar/snackOn")
               })
        }
     },

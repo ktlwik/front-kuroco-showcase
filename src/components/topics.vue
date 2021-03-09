@@ -1,6 +1,6 @@
 <template>
 <div>
- <v-row v-for="item in topics">
+ <v-row v-for="item in topics" v-bind:key="item.id">
 	<br/>
 	<v-col>
 	{{item.date}}
