@@ -28,12 +28,12 @@
     <br/>
     <v-col class="text-right">
       <v-btn
-          type="submit"
-          block
-          x-large
-          color="success"
-          class="white--text"
-          @click="favorite_list()"
+        type="submit"
+        block
+        x-large
+        color="success"
+        class="white--text"
+        @click="favorite_list()"
       > View more
       </v-btn>
     </v-col>
@@ -48,26 +48,8 @@
     },
     data () {
       return {
-        items: [
-          {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg',
-          },
-          {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg',
-          },
-          {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg',
-          },
-          {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg',
-          }, 
-          {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg',
-          },
-        ],
-        topics: [
-   
-        ],
+        items: [],
+        topics: [],
         group_id: 13,
       }
     },
@@ -110,22 +92,22 @@
                         for (var key in response.data.list) {
                           var item = response.data.list[key]
                           topics.push({
-                              "date": item['inst_ymdhi'].substring(0, 10),
-                              "label": item['contents_type_nm'],
-                              "link": item['subject'],
-                              'icon': "",
-                              "id": item['topics_id']
+                            "date": item['inst_ymdhi'].substring(0, 10),
+                            "label": item['contents_type_nm'],
+                            "link": item['subject'],
+                            'icon': "",
+                            "id": item['topics_id']
                           })
                         }
                         self.topics = topics
                         
                       }).catch(function (error) {
-                            console.log(error)
-                              self.$store.dispatch(
-                                "snackbar/setError",
-                                error.response.data.errors?.[0]
-                              )
-                              self.$store.dispatch("snackbar/snackOn")
+                        console.log(error)
+                        self.$store.dispatch(
+                          "snackbar/setError",
+                          error.response.data.errors?.[0]
+                        )
+                        self.$store.dispatch("snackbar/snackOn")
                       })
                 }
               }).catch(function (error) {
