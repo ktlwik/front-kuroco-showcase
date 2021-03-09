@@ -1,5 +1,5 @@
 <template>
-  <v-app light >
+  <v-app light>
     <v-navigation-drawer
       v-model="drawer"
       :mini-variant="miniVariant"
@@ -36,17 +36,13 @@
       <v-app-bar-nav-icon v-if="auth.loggedIn" @click.stop="drawer = !drawer" />
       <v-toolbar-title>
         <a href="/">
-         <v-btn disable align>
-          Logo Diverta Inc.
-         </v-btn>
+          <v-btn disable align> Logo Diverta Inc. </v-btn>
         </a>
       </v-toolbar-title>
       <v-spacer />
       <v-toolbar-title height="30" to="/" v-text="subtitle" />
       <div v-if="!auth.loggedIn">
-          <NuxtLink to="/signup">
-            Sign Up
-          </NuxtLink>
+        <NuxtLink to="/signup"> Sign Up </NuxtLink>
       </div>
       <v-btn v-if="!auth.loggedIn" icon to="/" nuxt>
         <v-icon>mdi-account</v-icon>
@@ -57,13 +53,11 @@
       </v-btn>
     </v-app-bar>
     <v-main>
-      <br/>
+      <br />
       <div align="center" v-if="!auth.loggedIn">
-        <v-btn disable align>
-          Logo Diverta Inc.
-        </v-btn>
+        <v-btn disable align> Logo Diverta Inc. </v-btn>
       </div>
-      <br/>
+      <br />
       <v-container>
         <nuxt />
       </v-container>
@@ -71,11 +65,8 @@
 
     <v-footer color="#1414A0" padless app absolute inset>
       <v-row justify="center" no-gutters>
-        <v-btn color="white" text rounded class="my-2">
-          Copy right
-        </v-btn>
-        <v-col class="#1414A0 text-center white--text" cols="12">
-        </v-col>
+        <v-btn color="white" text rounded class="my-2"> Copy right </v-btn>
+        <v-col class="#1414A0 text-center white--text" cols="12"> </v-col>
       </v-row>
     </v-footer>
 
@@ -119,7 +110,7 @@ export default {
           icon: "mdi-newspaper-variant",
           title: "topics",
           to: "/topics_list"
-        }, 
+        },
         {
           icon: "mdi-account-tie",
           title: "member",
@@ -127,7 +118,7 @@ export default {
         },
         {
           icon: "mdi-account-box",
-          title: "mypage", 
+          title: "mypage",
           to: "/mypage"
         }
       ],

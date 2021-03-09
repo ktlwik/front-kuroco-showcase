@@ -1,46 +1,46 @@
 <template>
- <div> 
-
-   <h1>Member list</h1>
-   <br/>
-   <v-row>
-   <v-col cols="6">
-     <v-autocomplete
-        v-model="member"
-        :items="members"
-        dense
-        filled
-        label="Search member"
-      ></v-autocomplete>
-    </v-col>
-    <v-col cols="5">
-      <v-autocomplete
-        v-model="department"
-        :items="departments"
-        dense
-        filled
-        label="Deparment"
-      ></v-autocomplete>
-    </v-col>
-    <v-col>
-      <v-btn @click="filterByMembersDepartment()">
-          search
-      </v-btn>
-    </v-col>
+  <div>
+    <h1>Member list</h1>
+    <br />
+    <v-row>
+      <v-col cols="6">
+        <v-autocomplete
+          v-model="member"
+          :items="members"
+          dense
+          filled
+          label="Search member"
+        ></v-autocomplete>
+      </v-col>
+      <v-col cols="5">
+        <v-autocomplete
+          v-model="department"
+          :items="departments"
+          dense
+          filled
+          label="Deparment"
+        ></v-autocomplete>
+      </v-col>
+      <v-col>
+        <v-btn @click="filterByMembersDepartment()"> search </v-btn>
+      </v-col>
     </v-row>
     <v-data-table
       :headers="headers"
       :items="filteredItems"
       :items-per-page="perpage"
       class="elevation-1"
-    > 
-
-    <template v-slot:item.name="{ item }">
-      <NuxtLink :to="{ path: '/member/detail/' + item.id }" no-prefetch>{{item.name}}</NuxtLink>
-    </template>
-    <template v-slot:item.phone="{ item }">
-      <a :href="'tel:' + item.phone">{{item.phone}}</a>
-    </template>
+    >
+      <template v-slot:item.name="{ item }">
+        <NuxtLink
+          :to="{ path: '/member/detail/' + item.id }"
+          no-prefetch
+          >{{item.name}}</NuxtLink
+        >
+      </template>
+      <template v-slot:item.phone="{ item }">
+        <a :href="'tel:' + item.phone">{{item.phone}}</a>
+      </template>
     </v-data-table>
   </div>
 </template>
@@ -62,7 +62,7 @@ export default {
       filteredItems: [],
       members: [],
       departments: [],
-      perpage: 10, 
+      perpage: 10,
       member: '',
       department: ''
     }
@@ -71,7 +71,7 @@ export default {
     filterByMembersDepartment () {
       if (this.department == undefined) {
         this.department = ''
-      } 
+      }
       if (this.member == undefined) {
         this.member = ''
       }

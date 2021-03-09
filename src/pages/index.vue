@@ -4,10 +4,8 @@
       <div v-if="!auth.loggedIn">
         <form class="login-page" @submit.prevent="login">
           <div class="login-screen lgn-left">
-            <h2 align="center">
-              Login
-            </h2>
-            <br/>
+            <h2 align="center">Login</h2>
+            <br />
             <div class="inner">
               <form @submit.prevent="login">
                 <p>
@@ -29,10 +27,8 @@
                   />
                 </p>
                 <p>
-                If you can not remember your password click
-                <NuxtLink to="/password_reminder">
-                    here
-                </NuxtLink>
+                  If you can not remember your password click
+                  <NuxtLink to="/password_reminder"> here </NuxtLink>
                 </p>
                 <v-btn
                   type="submit"
@@ -51,32 +47,33 @@
       </div>
 
       <div v-else class="mypage">
-          <v-carousel>
-            <v-carousel-item
-              v-for="(item,i) in items"
-              :key="i"
-              :src="item.src"
-              reverse-transition="fade-transition"
-              transition="fade-transition"
-            ></v-carousel-item>
-          </v-carousel>
-          
-          <br/>
-          <h1 class="text-center">Topics</h1>
-          <br/>
-          <v-topics :topics="topics"></v-topics>
-          <br/>
-          <v-col class="text-right">
-            <v-btn
-                type="submit"
-                block
-                x-large
-                color="success"
-                class="white--text"
-                @click="back()"
-            > View more
-            </v-btn>
-          </v-col>
+        <v-carousel>
+          <v-carousel-item
+            v-for="(item,i) in items"
+            :key="i"
+            :src="item.src"
+            reverse-transition="fade-transition"
+            transition="fade-transition"
+          ></v-carousel-item>
+        </v-carousel>
+
+        <br />
+        <h1 class="text-center">Topics</h1>
+        <br />
+        <v-topics :topics="topics"></v-topics>
+        <br />
+        <v-col class="text-right">
+          <v-btn
+            type="submit"
+            block
+            x-large
+            color="success"
+            class="white--text"
+            @click="back()"
+          >
+            View more
+          </v-btn>
+        </v-col>
       </div>
     </client-only>
   </div>
@@ -124,7 +121,7 @@ export default {
       this.$router.push("/topics_list");
     },
     updateTopics() {
-      var url = '/rcms-api/1/topics?topics_group_id=' + this.group_id + '&cnt=5' 
+      var url = '/rcms-api/1/topics?topics_group_id=' + this.group_id + '&cnt=5'
       let self = this
       this.$store.$auth.ctx.$axios
         .get(url)

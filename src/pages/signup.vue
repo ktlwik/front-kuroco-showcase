@@ -1,11 +1,11 @@
 <template>
   <div>
   <v-progress-linear
-        :active="loading"
-        :indeterminate="loading"
-        absolute
-        top
-        color="orange white-4"
+    :active="loading"
+    :indeterminate="loading"
+    absolute
+    top
+    color="orange white-4"
   ></v-progress-linear>
   <br/>
   <br/>
