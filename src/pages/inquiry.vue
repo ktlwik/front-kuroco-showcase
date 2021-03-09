@@ -121,9 +121,8 @@
               if (columns.hasOwnProperty(key)) {
                 result = self.$parse(columns[key], key)
                 if (typeof result != 'undefined' && Object.keys(result).length != 0) {
-
-                    console.log(JSON.stringify(result))
-                   schema['fields'].push(result)
+                  console.log(JSON.stringify(result))
+                  schema['fields'].push(result)
                 }
               }
             }
@@ -131,13 +130,12 @@
             self.schema = schema
             self.loading = false
           }).catch(function (error) {
-                console.log(error)
-                self.$store.dispatch(
-                  "snackbar/setError",
-                  "error"
-                )
-                self.$store.dispatch("snackbar/snackOn")
-              })
+            self.$store.dispatch(
+              "snackbar/setError",
+              "error"
+            )
+            self.$store.dispatch("snackbar/snackOn")
+          })
 
        },
        onInput: function(value, fieldName) {

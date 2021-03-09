@@ -47,12 +47,8 @@
 	    return {
 	      text: "",
           group_id: 13,
-          categories: [
-       
-          ],
-          topics: [
-   
-          ],
+          categories: [],
+          topics: [],
 	      page: 1,
 	      perPage: 10,
 	      category_key: null,

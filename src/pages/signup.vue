@@ -86,7 +86,7 @@
       },
       submitF: function() {
         let self = this
-        console.log(this.model)
+        // console.log(this.model)
         this.validForm = true
         for (var key in self.$children[1].$children) {
           if (self.$children[1].$children[key].$children[0].formValid == false) {
@@ -94,11 +94,11 @@
             console.log("invalid key", key)
           }
         }
-        console.log(this.validForm)
+        // console.log(this.validForm)
        
         if (this.validForm) {
           var send_model = JSON.parse(JSON.stringify(self.model))
-          console.log(send_model)
+          // console.log(send_model)
           this.loading = true
           this.$auth.ctx.$axios
           .post("/rcms-api/1/member/regist", send_model)

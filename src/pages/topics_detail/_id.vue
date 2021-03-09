@@ -95,11 +95,9 @@
 						  module_id: parseInt(this.topic_id),
 						})
 		    			.then(function (response) {
-		    				console.log("deleted")
-							self.color = "gray"
+		    				self.color = "gray"
 		    			}).catch(function (error) {
 				            console.log(error)
-
 				        })
 				}	
 			}
@@ -135,7 +133,7 @@
 		          var text_size = response.data.details.ext_col_06
 		          var texts = response.data.details.ext_col_07
 		          var subtitle = response.data.details.ext_col_09
-				  console.log(response.data.details)
+				  // console.log(response.data.details)
 
 		          for (var i = 0; i < texts.length; i++) {
 		          	var textSize = null
@@ -175,20 +173,20 @@
 	        })
 
 		    var favoritesUrl = '/rcms-api/1/favorites?member_id' + 
-		    			this.$auth.user.member_id +
-		    			'&module_type=topics&module_id=' + 
-		    			this.topic_id
+    			this.$auth.user.member_id +
+    			'&module_type=topics&module_id=' + 
+    			this.topic_id
         	this.$store.$auth.ctx.$axios
-	    			.get(favoritesUrl)
-	    			.then(function (response) {
-	    				if (response.data.pageInfo.totalCnt > 0) {
-							self.color = "red"
-						} else {
-							self.color = "gray"
-						}
-	    			}).catch(function (error) {
+    			.get(favoritesUrl)
+    			.then(function (response) {
+    				if (response.data.pageInfo.totalCnt > 0) {
+						self.color = "red"
+					} else {
 						self.color = "gray"
-					})
+					}
+    			}).catch(function (error) {
+					self.color = "gray"
+				})
 		}
 	}
 </script>

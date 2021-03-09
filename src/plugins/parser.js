@@ -17,29 +17,21 @@ KurocoParser.install = function (Vue, options) {
     		var type_id = json['type']
     		if (type_id == "1") {
 				result = createTextSchema(json, key)
-			}
-			if (type_id == "2") {
+			} else if (type_id == "2") {
 				result = createTextAreaSchema(json, key)
-			}
-			if (type_id == "3") {
+			} else if (type_id == "3") {
 				result = createSingleChoiceSchema(json, key)
-			}
-			if (type_id == "4") {
+			} else if (type_id == "4") {
 				result = createSingleOptionSchema(json, key)
-			}
-			if (type_id == "5") {
+			} else if (type_id == "5") {
 				result = createMultipleChoiceSchema(json, key)
-			}
-			if (type_id == "6") {
+			} else if (type_id == "6") {
 				result = createDateSchema(json, key);
-			}
-			if (type_id == "7") {
+			} else if (type_id == "7") {
 				result = createUploadFileSchema(json, key);
-			}
-			if (type_id == "8") {
+			} else if (type_id == "8") {
 				result = createJsonSchema(json, key);
-			}
-			if (type_id == "9") {
+			} else if (type_id == "9") {
 				result = createPrefectureSchema(json, key);
 			}
 			return result

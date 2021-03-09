@@ -93,8 +93,6 @@ export default {
            return obj.department.includes(self.department) && obj.name.includes(self.member)
         })
       }
-
-      // console.log(this.filteredItems)
     },
   },
   mounted() {
@@ -119,11 +117,11 @@ export default {
               role = item.role
             }
             items.push({
-                "name": item['name1'] + ' ' + item['name2'],
-                "department": department,
-                "position": role,
-                'phone': item['tel'],
-                'id': item['member_id']
+              "name": item['name1'] + ' ' + item['name2'],
+              "department": department,
+              "position": role,
+              'phone': item['tel'],
+              'id': item['member_id']
             })
             members.push(item['name1'] + ' ' + item['name2'])
             if (department != '') {
@@ -135,12 +133,11 @@ export default {
           self.members = members
           self.departments = departments
         }).catch(function (error) {
-            console.log(error)
-              self.$store.dispatch(
-                "snackbar/setError",
-                error.response.data.errors?.[0]
-              )
-              self.$store.dispatch("snackbar/snackOn")
+          self.$store.dispatch(
+            "snackbar/setError",
+            error.response.data.errors?.[0]
+          )
+          self.$store.dispatch("snackbar/snackOn")
         })
   }
 }

@@ -42,10 +42,10 @@
 </template>
 
 <script>
+  import '~/assets/form.css'
   import Vue from 'vue'
   import VueFormGenerator from 'vue-form-generator'
   import KurocoParser from '~/plugins/parser.js';
-  import '~/assets/form.css'
   import fieldUploadFile from '~/components/vuetify_file_upload.vue';
   import fieldVuetifyText from '~/components/vuetify_text.vue';
   import fieldVuetifyTextArea from '~/components/vuetify_textarea.vue';
@@ -151,6 +151,7 @@
                 self.schema.fields[5].option = self.schema.fields[5].options[i]
               }
             }
+            
             self.schema.fields[6].text = response.data.details.address1
             self.schema.fields[5].option.value = response.data.details.tdfk_cd
             self.loading = false

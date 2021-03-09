@@ -82,7 +82,7 @@ export default {
   },
   router: {
     //TODO(nuri): Uncomment after working on auth
-    middleware: ["auth", "upgrade"],
+    middleware: ["auth"],
   },
   axios: {
     baseURL: envSettings.BASE_URL,
@@ -95,8 +95,8 @@ export default {
     redirect: {
       login: "/", // 未ログイン時に認証ルートへアクセスした際のリダイレクトURL
       logout: "/", // ログアウト時のリダイレクトURL(4.9.1ではそのままでは動かない)
-      callback: false,
       home: "/", // ログイン後のリダイレクトURL(4.9.1ではそのままでは動かない)
+      callback: false,
     },
     strategies: {
       local: {

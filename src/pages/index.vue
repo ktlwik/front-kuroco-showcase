@@ -45,7 +45,6 @@
                   Login
                 </v-btn>
               </form>
-             
             </div>
           </div>
         </form>
@@ -94,7 +93,6 @@ export default {
   middleware: "auth",
   auth: false,
   data: () => ({
-    topics_list1: [],
     loading: false,
     show_pwd1: false,
     show_pwd2: false,
@@ -102,11 +100,8 @@ export default {
       email: "",
       password: "",
     },
-    items: [
-    ],
-    topics: [
-
-    ],
+    items: [],
+    topics: [],
     group_id: 13,
   }),
   computed: {
@@ -115,40 +110,27 @@ export default {
     },
     auth() {
       return this.$store.$auth
-    },
-    can_upgrade() {
-      if (this.$auth.loggedIn) {
-        self.can_upgrade = true
-        const group_ids = JSON.parse(JSON.stringify(this.$auth.user.group_ids))
-        Object.keys(group_ids).forEach(function (key) {
-          if (["100"].indexOf(key) !== -1) {
-            self.can_upgrade = false
-          }
-        })
-        return self.can_upgrade
-      }
-      return false
-    },
+    }
   },
   mounted() {
+    console.log(this.$auth)
+    this.topics = []
     if (this.$auth.loggedIn) {
       this.updateTopics()
     }
-    this.getInfo()
   },
   methods: {
     back() {
-        this.$router.push("/topics_list");
+      this.$router.push("/topics_list");
     },
     updateTopics() {
       var url = '/rcms-api/1/topics?topics_group_id=' + this.group_id + '&cnt=5' 
-      console.log(url)
       let self = this
       this.$store.$auth.ctx.$axios
         .get(url)
         .then(function (response) {
-          console.log(response.data.list)
           var topics = []
+          self.items = []
           for (var key in response.data.list) {
             var item = response.data.list[key]
             var fileurl = ''
@@ -174,7 +156,6 @@ export default {
             })
           }
           self.topics = topics
-          
         }).catch(function (error) {
           self.$store.dispatch(
             "snackbar/setError",
@@ -183,33 +164,18 @@ export default {
           self.$store.dispatch("snackbar/snackOn")
         })
     },
-    getInfo() {
-      if (this.$auth.loggedIn) {
-        let self = this
-
-        this.$auth.ctx.$axios
-          .get("/rcms-api/1/infos")
-          .then(function (response) {
-            self.topics_list1 = response.data.list
-          })
-      }
-    },
     async login() {
       this.loading = true
-      console.log(this)
       await this.$auth
         .loginWith("local", { data: this.form })
         .then(() => {
-          this.getInfo()
-          console.log("here")
+          this.updateTopics()
+          this.$router.push("/")
           this.$store.dispatch("snackbar/setMessage", "ログインしました")
           this.$store.dispatch("snackbar/snackOn")
           this.loading = false
         })
         .catch(() => {
-          console.log(this.$route)
-          console.log("asdasdasd")
-          console.log(this.$auth)
           this.$store.dispatch("snackbar/setError", "ログインに失敗しました")
           this.$store.dispatch("snackbar/snackOn")
           this.loading = false

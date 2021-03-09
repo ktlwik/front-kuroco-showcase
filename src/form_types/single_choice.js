@@ -6,7 +6,7 @@ export default function createSingleChoiceSchema(json, key) {
 	    result['model'] = key
 	    result['label'] = json['title']
 	    result['contents'] = json['contents']
-	
+
 	  	if (json['required'] == '2') {
 	    	result['required'] = true
 		} else {
@@ -19,8 +19,8 @@ export default function createSingleChoiceSchema(json, key) {
 	    		result['contents'] = list
 	    	}
 	    }
+
 	    result['type'] = 'vuetifySingleChoice'
- 		console.log(result['contents'])
  	}
 
 	console.log(result)
