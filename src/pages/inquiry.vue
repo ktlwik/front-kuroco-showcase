@@ -200,8 +200,8 @@ export default {
   auth: true,
   data () {
     return {
-      inquirySubmitUrl: '/rcms-api/1/inquiry/9',
-      inquirySchemaUrl: '/rcms-api/1/inquiry/get/9',
+      inquirySubmitUrl: '/rcms-api/1/inquiry/11',
+      inquirySchemaUrl: '/rcms-api/1/inquiry/get/11',
       disabled: false,
       validForm: true,
       loading: true,
