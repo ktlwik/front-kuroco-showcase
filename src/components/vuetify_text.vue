@@ -36,15 +36,15 @@ import validator from 'validator';
     	  	isValid: function(schema, value) {
     			if (schema.texttype == 'email') {
  				if (!validator.isEmail(value)) {
- 					return "Wrong email format."
+ 					return "Wrong email format. Example ******@example.jp"
  				}
 				} else if (schema.texttype == 'tel') {
 					if (!validator.isMobilePhone(value)) {
-						return "Wrong telephone format.";
+						return "Wrong telephone format. Example 0312345678";
 					}
 				} else if (schema.texttype == 'zip') {
 					if (value.length != 7) {
-						return "Wrong zip format for Japan.";
+						return "Wrong zip format for Japan. Example 0212141";
 					}
 				} else if (schema.texttype == 'number') {
 					if (!validator.isNumeric(value)) {

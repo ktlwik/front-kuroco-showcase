@@ -33,16 +33,16 @@
 <script>
 import topicList from '../components/topics'
 export default {
+   auth: true,
    components: {
 	'v-topics': topicList
    },
-      auth: true,
    data () {
     return {
       text: "",
-         group_id: 13,
-         categories: [],
-         topics: [],
+      group_id: 13,
+      categories: [],
+      topics: [],
       page: 1,
       perPage: 10,
       category_key: null,
