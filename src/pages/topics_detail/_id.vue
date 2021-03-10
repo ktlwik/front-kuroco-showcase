@@ -70,7 +70,7 @@ export default {
 			this.$router.go(-1);
 		},
 		onClick() {
-			console.log(this.color)
+			// console.log(this.color)
 			let self = this
 			console.log(this.$auth.user.member_id)
 			if (this.color == "gray") {

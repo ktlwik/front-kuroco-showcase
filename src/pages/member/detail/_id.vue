@@ -127,7 +127,7 @@
 	      this.member_id = this.$route.params.id
 	  	  var url = '/rcms-api/1/members?id=' + this.member_id
 	      let self = this
-	      console.log(url)
+	      //console.log(url)
 	      this.$store.$auth.ctx.$axios
 	        .get(url)
 	        .then(function (response) {
@@ -164,7 +164,7 @@
 		      self.profile[2]['value'] = detail['phone']
 		      self.profile[3]['value'] = detail['email']
 		      self.profile[6]['value'] = detail['text']
-	          console.log(response.data)
+	          // console.log(response.data)
 	        }).catch(function (error) {
 	        //  console.log(error)
               self.$store.dispatch(

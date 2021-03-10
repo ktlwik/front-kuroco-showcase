@@ -107,7 +107,7 @@ export default {
           // console.log(response.data.list)
           for (var key in response.data.list) {
             var item = response.data.list[key]
-            console.log(item)
+            // console.log(item)
             var department = ''
             var role = ''
             if (item.hasOwnProperty('department')) {
