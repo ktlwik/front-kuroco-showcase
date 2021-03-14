@@ -16,46 +16,46 @@
 <script>
 import { abstractField } from "vue-form-generator";
 export default {
-		 data: function() {
+	data: function() {
        return {
     		formValid: true,
     		file: null
        }
-   	 },
-   	 methods: {
+   	},
+   	methods: {
   		check: function(e) {
   			let formData = new FormData();
   			formData.append('file', this.file);
   			let self = this
   			const headers = {
-	  'accept': '*/*',
-      	  'Content-Type': 'multipart/form-data'
-       }
+	  			'accept': '*/*',
+      	  		'Content-Type': 'multipart/form-data'
+       		}
 
-    self.formValid = false
-  			self.$store.$auth.ctx.$axios
-        .post("/rcms-api/1/upload", formData, {
-        	headers: headers
-        })
-        .then(function (response) {
-          console.log(response)
-          self.formValid = true
-		  self.$emit('model-updated', {
-		  	"file_id": response.data.file_id,
-		  	"file_nm": "",
-		  	"desc": ""
-		  }, self.schema.model)
-        }).catch(function (error) {
-          console.log(error)
-          self.$store.dispatch(
-            "snackbar/setError",
-            error.response.data.errors?.[0]
-          )
-          self.$store.dispatch("snackbar/snackOn")
-          self.loading = false
-        })
-      }
-   	 },
+	    	self.formValid = false
+	  			self.$store.$auth.ctx.$axios
+	        .post("/rcms-api/1/upload", formData, {
+	        	headers: headers
+	        })
+	        .then(function (response) {
+	          console.log(response)
+	          self.formValid = true
+			  self.$emit('model-updated', {
+			  	"file_id": response.data.file_id,
+			  	"file_nm": "",
+			  	"desc": ""
+			  }, self.schema.model)
+	        }).catch(function (error) {
+	          console.log(error)
+	          self.$store.dispatch(
+	            "snackbar/setError",
+	            error.response.data.errors?.[0]
+	          )
+	          self.$store.dispatch("snackbar/snackOn")
+	          self.loading = false
+	        })
+      	}
+   	  },
       mixins: [ abstractField ],
       mounted() {
   		this.formValid = this.$refs.myForm.validate()

@@ -55,7 +55,8 @@
 export default {
     methods: {
         edit_topic(topic_id) {
-            console.log(topic_id)
+            //console.log(topic_id)
+            this.$router.push("/mypage/topic_edit/" + topic_id);
         }
     },
     props: {
