@@ -69,7 +69,8 @@ export default {
 	                    "label": item['contents_type_nm'],
 	                    "link": item['subject'],
 	                    'icon': "",
-	        			"id": item['topics_id']
+	        			"id": item['topics_id'], 
+	        			'edit': false
 	                })
 	              }
 	              self.topics = topics

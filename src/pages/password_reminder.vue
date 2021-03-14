@@ -217,7 +217,6 @@ export default {
       )
       this.$store.dispatch("snackbar/snackOn")
       this.e1 = 2
-      console.log(this.e1)
     }
   },
   methods: {

@@ -13,6 +13,7 @@
       <v-tab @click="go_page('/mypage/favorite_list/')"> Favorite List </v-tab>
 
       <v-tab @click="go_page('/mypage/profile/edit/')"> Profile Edit </v-tab>
+      <v-tab @click="go_page('/mypage/posted_list')"> Posted list </v-tab>
     </v-tabs>
 
     <br />

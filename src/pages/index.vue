@@ -149,7 +149,8 @@ export default {
               "id": item['topics_id'],
               'icon': item['ext_col_01']['key'],
               'fileurl': fileurl,
-              'linkurl': linkurl
+              'linkurl': linkurl,
+              'edit': false
             })
           }
           self.topics = topics

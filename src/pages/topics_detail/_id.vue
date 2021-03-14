@@ -168,7 +168,7 @@ export default {
             console.log(error)
         })
 
-	    var favoritesUrl = '/rcms-api/1/favorites?member_id' +
+	    var favoritesUrl = '/rcms-api/1/favorites?member_id=' +
    			this.$auth.user.member_id +
    			'&module_type=topics&module_id=' +
    			this.topic_id

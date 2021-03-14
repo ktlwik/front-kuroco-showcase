@@ -33,12 +33,31 @@
           >
         </div>
       </v-col>
+      <v-col v-if="item.edit==true">
+        <v-btn
+          class="mx-3"
+          fab
+          dark
+          small
+          color="cyan"
+          @click="edit_topic(item.id)"
+        >
+          <v-icon dark>
+            mdi-pencil
+          </v-icon>
+        </v-btn>
+      </v-col>
     </v-row>
   </div>
 </template>
 
 <script>
 export default {
+    methods: {
+        edit_topic(topic_id) {
+            console.log(topic_id)
+        }
+    },
     props: {
         topics: null
     }

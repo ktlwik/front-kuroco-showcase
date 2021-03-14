@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import topicList from '../components/topics'
+import topicList from '~/components/topics'
 export default {
    auth: true,
    components: {
@@ -65,7 +65,7 @@ export default {
   	},
   	updateTopics() {
   		var url = '/rcms-api/1/topics?topics_group_id=' + this.group_id +
-    				'&pageID=' + this.page + '&cnt=' + this.perPage
+    				'&pageID=' + this.page + '&cnt=' + this.perPage 
     	if (this.category_key != null) {
     		url += '&contents_type=' + this.category_key
     	}
@@ -74,8 +74,8 @@ export default {
    		this.$store.$auth.ctx.$axios
     			.get(url)
     			.then(function (response) {
-             		self.totalCnt = response.data.pageInfo.totalCnt
     				var topics = []
+            console.log(response)
     				for (var key in response.data.list) {
     					var item = response.data.list[key]
     					var fileurl = ''
@@ -86,20 +86,21 @@ export default {
     					if (item.hasOwnProperty('ext_col_03') && item['ext_col_03'].hasOwnProperty('url')) {
     						linkurl = item['ext_col_03']['url']
     					}
-
-    					topics.push({
-    						"date": item['inst_ymdhi'].substring(0, 10).replaceAll("-", "/"),
-	       					"label": item['contents_type_nm'],
-	       					"link": item['subject'],
-	       					"id": item['topics_id'],
-	       					'icon': item['ext_col_01']['key'],
-	       					'fileurl': fileurl,
-	       					'linkurl': linkurl,
-	       					'edit': false
-    					})
-    				}
+              if (item.hasOwnProperty('member_id') && item.member_id == self.$auth.user.member_id) {
+      					topics.push({
+      						"date": item['inst_ymdhi'].substring(0, 10).replaceAll("-", "/"),
+         					"label": item['contents_type_nm'],
+         					"link": item['subject'],
+         					"id": item['topics_id'],
+         					'icon': item['ext_col_01']['key'],
+         					'fileurl': fileurl,
+         					'linkurl': linkurl,
+                  'edit': true
+      					})
+      				}
+            }
     				self.topics = topics
-
+            self.totalCnt = topics.length
     			}).catch(function (error) {
 	            // console.log(error)
                 self.$store.dispatch(
