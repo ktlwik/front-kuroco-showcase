@@ -154,7 +154,7 @@ export default {
 	          	} else if (positions[i].label == 'Top' && textSize == 'No level') {
 	          		pattern = 6
 	          	}
-		          	items.push({
+		        items.push({
 	          		"text":texts[i] ,
 	          		"pattern": pattern,
 	          		"image_url": imageUrl,

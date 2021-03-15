@@ -1,11 +1,21 @@
 <template>
+	<div fluid>
 	<v-card>
+		
     <v-toolbar
       flat
       color="primary"
       dark
     >
-      <v-toolbar-title>Select type of the Topic #{{topic_id}} </v-toolbar-title>
+    	<v-toolbar-title>Select type of the Topic #{{topic_id}} </v-toolbar-title>
+    	<v-col class="text-right">
+			<v-btn class="ma-2" color="green" dark>
+				Save
+				<v-icon dark right>
+					mdi-checkbox-marked-circle
+				</v-icon>
+			</v-btn>
+		</v-col>
     </v-toolbar>
     <v-tabs>
       <v-tab>
@@ -72,6 +82,7 @@
       </v-tab-item>
     </v-tabs>
   </v-card>
+  </div>
 </template>
 
 <script>
@@ -80,6 +91,7 @@
 	import VueFormGenerator from 'vue-form-generator'
 	import KurocoParser from '~/plugins/parser.js';
 	import fieldVuetifyUploadFile from '~/components/vuetify_file_upload.vue';
+	import fieldVuetifyUploadImage from '~/components/vuetify_image_upload.vue';
 	import fieldVuetifyText from '~/components/vuetify_text.vue';
 	import fieldVuetifyTextArea from '~/components/vuetify_textarea.vue';
 	import fieldVuetifyDate from '~/components/vuetify_date.vue';
@@ -91,6 +103,7 @@
 	import fieldVuetifyPassword from '~/components/vuetify_password.vue'
 
 	Vue.component('fieldVuetifyUploadFile', fieldVuetifyUploadFile);
+	Vue.component('fieldVuetifyUploadImage', fieldVuetifyUploadImage);
 	Vue.component('fieldVuetifyDate', fieldVuetifyDate);
 	Vue.component('fieldVuetifyText', fieldVuetifyText);
 	Vue.component('fieldVuetifyTextArea', fieldVuetifyTextArea);
@@ -202,25 +215,57 @@
 	      	var schemaDetail = {
 	      	 fields: []
 		  	}
+		  	schemaDetail.fields.push({		 
+				type: 'vuetifyText',
+				inputType: 'text',
+				text: '',
+				min: 0,
+				max: 100,
+				label: 'subtitle_' + i.toString(),
+				model: 'subtitle_' + i.toString(),
+				required: true
+			})
+			schemaDetail.fields.push({
+	            model:"area_" + i.toString(),
+	            type:"vuetifyTextArea",
+	            inputType:"text",
+	            label:"Text_" + i.toString(),
+	            placeholder:"",
+	            text: "",
+	            required:false,
+	            counter:400,
+	            max:400,
+	            min:0
+          	})
 	      	schemaDetail.fields.push({
 	      		model: "level_" + i.toString(),
 				type: 'vuetifySingleOption',
 				label: 'text_size_' + i.toString(),
-				options: [
-					{ value: "01", text: "H2" },
-					{ value: "02", text: "H3" },
-					{ value: "03", text: "H4" },
-					{ value: "04", text: "H5" },
-					{ value: "05", text: "No level" },
+				contents: [
+					{ key: "01", value: "H2" },
+					{ key: "02", value: "H3" },
+					{ key: "03", value: "H4" },
+					{ key: "04", value: "H5" },
+					{ key: "05", value: "No level" },
 				],
 				required: true
 	      	})
 	      	schemaDetail.fields.push({
-	          	model: 'file_' + i.toString(),
-	          	label: 'image_' + i.toString(),
-	            type: 'vuetifyUploadFile',
-	            required: true
-			})
+	      		model: "position_" + i.toString(),
+				type: 'vuetifySingleOption',
+				label: 'position_' + i.toString(),
+				contents: [
+					{ key: "01", value: "Top" },
+					{ key: "02", value: "Left" },
+					{ key: "03", value: "Right" },
+					{ key: "04", value: "Bottom" },
+					{ key: "05", value: "No image" },
+				],
+				required: true
+	      	})
+	      	schemaDetail.fields.push({
+	      		type: 'vuetifyUploadImage'
+	      	})
 			this.schemaDetailList.push(schemaDetail)
 	      }
 		}

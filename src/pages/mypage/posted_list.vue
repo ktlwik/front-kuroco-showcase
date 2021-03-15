@@ -46,7 +46,7 @@ export default {
       page: 1,
       perPage: 10,
       category_key: null,
-         totalCnt: 0
+      totalCnt: 0
     }
   },
   methods: {
@@ -65,7 +65,8 @@ export default {
   	},
   	updateTopics() {
   		var url = '/rcms-api/1/topics?topics_group_id=' + this.group_id +
-    				'&pageID=' + this.page + '&cnt=' + this.perPage 
+    				'&pageID=' + this.page + '&cnt=' + this.perPage + 
+            '&filter=member_id eq ' + this.$auth.user.member_id
     	if (this.category_key != null) {
     		url += '&contents_type=' + this.category_key
     	}
@@ -86,7 +87,7 @@ export default {
     					if (item.hasOwnProperty('ext_col_03') && item['ext_col_03'].hasOwnProperty('url')) {
     						linkurl = item['ext_col_03']['url']
     					}
-              if (item.hasOwnProperty('member_id') && item.member_id == self.$auth.user.member_id) {
+              if (item.hasOwnProperty('member_id')) {
       					topics.push({
       						"date": item['inst_ymdhi'].substring(0, 10).replaceAll("-", "/"),
          					"label": item['contents_type_nm'],
