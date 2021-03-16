@@ -35,7 +35,6 @@ import validator from 'validator';
        },
        methods: {
           isValid: function(schema, value) {
-            console.log(value)
           if (schema.texttype == 'regex') {
               var regex = new RegExp(schema.regex)
               if (!regex.test(value)) {
@@ -54,7 +53,6 @@ import validator from 'validator';
        },
        mounted() {
          this.formValid = this.$refs.myForm.validate()
-         console.log(this.formValid)
              //this.$emit("validated", this.formValid, ["asds"], this)
        }
 };

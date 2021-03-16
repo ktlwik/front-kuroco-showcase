@@ -65,8 +65,9 @@ export default {
   	},
   	updateTopics() {
   		var url = '/rcms-api/1/topics?topics_group_id=' + this.group_id +
-    				'&pageID=' + this.page + '&cnt=' + this.perPage + 
-            '&filter=member_id eq ' + this.$auth.user.member_id
+    				'&pageID=' + this.page + '&cnt=' + this.perPage  
+            + '&filter=member_id eq ' + this.$auth.user.member_id
+      console.log(this.$auth.user.member_id)
     	if (this.category_key != null) {
     		url += '&contents_type=' + this.category_key
     	}

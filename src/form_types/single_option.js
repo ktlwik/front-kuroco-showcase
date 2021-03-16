@@ -6,7 +6,11 @@ export default function createSingleOptionSchema(json, key) {
 	    result['model'] = key
 	    result['label'] = json['title']
 	    result['contents'] = json['contents']
-
+	    if (json.hasOwnProperty('option')) {
+	    	result['option'] = json['option']
+		} else {
+			result['option'] = {}
+		}
 	  	if (json['required'] == '2') {
 	    	result['required'] = true
 		} else {

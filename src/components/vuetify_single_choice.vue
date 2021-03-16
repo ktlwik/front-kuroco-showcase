@@ -1,7 +1,7 @@
 <template>
   <v-form v-model="formValid" ref="myForm">
     <v-radio-group
-      v-model="radioGroup"
+      v-model="schema.radioGroup"
       :rules="[v => (schema.required == false || (schema.required == true && !!v)) || 'required field']"
       @change="check($event)"
     >
@@ -21,23 +21,23 @@ import { abstractField } from "vue-form-generator";
 export default {
    data: function() {
       return {
-         formValid: false,
-         radioGroup: null
+         formValid: false
       }
    },
    methods: {
      check: function(e) {
-       console.log(this.radioGroup)
+       console.log(this.schema.radioGroup)
        this.formValid = this.$refs.myForm.validate()
        if (this.formValid) {
          this.$emit('model-updated', /*{
            "key": this.radioGroup.key,
            "label": this.radioGroup.value
-         }*/ this.radioGroup.key.toString(), this.schema.model)
+         }*/ this.schema.radioGroup.key.toString(), this.schema.model)
        }
      }
    },
    mounted() {
+     console.log(this.schema.radioGroup)
      this.formValid = this.$refs.myForm.validate()
    },
    mixins: [ abstractField ],

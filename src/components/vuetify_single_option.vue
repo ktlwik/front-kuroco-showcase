@@ -1,7 +1,7 @@
 <template>
   <v-form v-model="formValid" ref="myForm">
     <v-select
-      v-model="option"
+      v-model="schema.option"
       :items="schema.contents"
       menu-props="auto"
       item-text="value"
@@ -32,7 +32,7 @@ export default {
          this.$emit('model-updated', /*{
            "key": this.option.key,
            "label": this.option.value
-         }*/ this.option.key.toString(), this.schema.model)
+         }*/ this.schema.option.key.toString(), this.schema.model)
        }
      }
    },

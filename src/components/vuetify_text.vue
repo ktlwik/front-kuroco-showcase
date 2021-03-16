@@ -23,13 +23,13 @@
 
 <script>
    import { abstractField } from "vue-form-generator";
-import validator from 'validator';
+   import validator from 'validator';
 
    export default {
        mixins: [ abstractField ],
        data: function() {
         return {
-     		formValid: true,
+     		  formValid: true,
         }
      	},
        methods: {

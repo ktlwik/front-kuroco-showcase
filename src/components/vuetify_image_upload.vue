@@ -4,12 +4,12 @@
 		<v-file-input 
 		   @change="Preview_image"
 		   v-model="image"
-		   >
+		>
 		</v-file-input>
 		<v-img 
 			class="mx-auto"
 	        :aspect-ration="16/9"
-	        :src="url"
+	        :src="schema.url"
 	        width="33%"
 	        max-height="300"
 	        max-width="300"
@@ -25,7 +25,6 @@ export default {
 	data: function() {
        return {
     		formValid: true,
-    		url: null,
       		image: null,
        }
    	},
@@ -47,14 +46,13 @@ export default {
 	        .then(function (response) {
 	          console.log(response)
 	    	  self.formValid = true
-	          self.url = 'https://dev-nuxt-auth.a.kuroco-img.app/v=1614168758/' + response.data.file_id + '?width=300px'
+	          self.schema.url = 'https://dev-nuxt-auth.a.kuroco-img.app/v=1614168758/' + response.data.file_id + '?width=300px'
 			  self.$emit('model-updated', {
 			  	"file_id": response.data.file_id,
 			  	"file_nm": "",
 			  	"desc": ""
 			  }, self.schema.model)
 	        }).catch(function (error) {
-	          console.log(error)
 	          self.$store.dispatch(
 	            "snackbar/setError",
 	            error.response.data.errors?.[0]
@@ -66,6 +64,7 @@ export default {
    	},
     mixins: [ abstractField ],
     mounted() {
+    	console.log(this.schema.url)
   		this.formValid = this.$refs.myForm.validate()
   	}
 };

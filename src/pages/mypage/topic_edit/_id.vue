@@ -9,7 +9,7 @@
     >
     	<v-toolbar-title>Select type of the Topic #{{topic_id}} </v-toolbar-title>
     	<v-col class="text-right">
-			<v-btn class="ma-2" color="green" dark>
+			<v-btn class="ma-2" color="green" dark @click="submit()">
 				Save
 				<v-icon dark right>
 					mdi-checkbox-marked-circle
@@ -18,19 +18,19 @@
 		</v-col>
     </v-toolbar>
     <v-tabs>
-      <v-tab>
+      <v-tab @click="change_tab(1)">
         <v-icon left>
           mdi-file-excel
         </v-icon>
         File document
       </v-tab>
-      <v-tab>
+      <v-tab @click="change_tab(2)">
         <v-icon left>
       	  mdi-launch
         </v-icon>
         Url link
       </v-tab>
-      <v-tab>
+      <v-tab @click="change_tab(3)">
         <v-icon left>
       	  mdi-details
         </v-icon>
@@ -64,7 +64,7 @@
         </v-card>
       </v-tab-item>
       <v-tab-item>
-      	<v-row v-for="item in schemaDetailList">
+      	<v-row v-for="item in schemaDetailList" v-bind:key="item.id">
         	<v-col>
 		        <v-card outlined>
 		           <v-container>
@@ -124,44 +124,131 @@
 		      console.log("value: ", value)
 		      this.$set(this.model, fieldName, value)
 		    },
+		    submit() {
+
+		    	console.log(this.tab_id)
+		    	let self = this
+		    	var send_model = {}
+		    	if (this.tab_id == 1) {
+		    		var file_type = this.schemaFile.fields[0].radioGroup
+		    		var file = this.model.file
+		    		console.log(this.model)
+	    		    send_model = {
+	    				ext_col_01: {
+	    				    key: file_type.key, 
+	    				    value: file_type.value
+	    				},
+	    				ext_col_02: file
+	    			}
+	    			console.log(send_model)
+		    		if (file_type == null || file == null) {
+		    			this.$store.dispatch(
+				          "snackbar/setError",
+				          "Choose file type/ upload file."
+				        )
+				        this.$store.dispatch("snackbar/snackOn")
+		    		} else {
+		    			var send_model = {
+		    				ext_col_01: {
+		    				    key: file_type.key, 
+		    				    label: file_type.value
+		    				},
+		    				ext_col_02: file
+		    			}
+		    			console.log(send_model)
+		    			
+		    		}
+		    	} else if (this.tab_id == 2) {
+		    		var url = this.model.url
+		    		var to_display = this.model.to_display
+
+		    		if (typeof url == 'string' || typeof to_display == 'string') {
+		    			if (typeof url != 'string') {
+		    				url = this.schemaUrl.fields[0].text
+		    			}
+		    			if (typeof to_display != 'string') {
+		    				to_display = this.schemaUrl.fields[1].text
+		    			}
+		    		    send_model = {
+		    				ext_col_01: {
+		    				    key: 'url', 
+		    				    label: 'url'
+		    				},
+		    				ext_col_03: {
+		    					title: to_display, 
+		    					url: url
+		    				}
+		    			}
+		    		}
+		    	}
+
+		    	self.$store.$auth.ctx.$axios
+		          .post(this.update_url, send_model)
+		          .then(function (response) {
+		            console.log(response.data)
+		             if (response.data.errors.length == 0) {
+		              self.$store.dispatch(
+		                "snackbar/setMessage",
+		                "Thanks! Your topic is updated."
+		              )
+		              self.$store.dispatch("snackbar/snackOn")
+		              self.$router.push("/mypage/posted_list")
+		            }
+		          }).catch(function (error) {
+		              console.log(error)
+		              self.$store.dispatch(
+		                "snackbar/setError",
+		                "Invalid form fields."
+		              )
+		              self.$store.dispatch("snackbar/snackOn")
+		          })
+		    },
+		    change_tab(id) {
+		    	this.tab_id = id
+		    	console.log(this.tab_id)
+		    }
 		},
 		data() {
 			return {
 				topic_id: null,
+				update_url: "",
 				text: "",
+				tab_id: 1,
 				model: {},
 				schemaDetailList: [],
 				schemaFile: {
 			        fields: [
 			          {
-					      model: "ext_01",
+					      model: "type",
 					      label: "File type",
+					      radioGroup: null,
 					      contents: [
 					        {
-					          key: 1,
-					          value: "PDF",
+					          key: "pdf",
+					          value: "pdf",
 					          default: false,
 					          attribute:{"group":"1"}
 					        },
 					        {
-					          key: 2,
-					          value: "Word",
+					          key: "word",
+					          value: "word",
 					          default:false,
 					          attribute:{"group":"1"}
 					        },
 					        {
-					          key:3,
-					          value:"Excel",
+					          key: "excel",
+					          value:"excel",
 					          default:false,
 					          attribute:{"group":"1"}
 					        }
 					      ],
-					      required:false,
+					      required: true,
 					      type:"vuetifySingleChoice"
 					  },
 			          {
 			          	model: 'file',
 			            type: 'vuetifyUploadFile',
+			            file: null,
 			            required: true
 			          },
 		    		]
@@ -195,79 +282,123 @@
 		},
 		mounted() {
 	      this.topic_id = this.$route.params.id
+	      this.update_url = "/rcms-api/1/topics/update/" + this.topic_id
 	  	  var url = '/rcms-api/1/topic/detail/' + this.topic_id
 	      let self = this
 	      //console.log(url)
 	      this.$store.$auth.ctx.$axios
 	        .get(url)
 	        .then(function (response) {
-	          self.text = response.data.details
+	      	  var json = response.data.details
+	      	  console.log(json.ext_col_01.key)
+	      	  console.log(json)
+	      	  if (json.ext_col_01.key == 'url') {
+	      	  	self.schemaUrl.fields[0].text = json.ext_col_03.url
+	      	  	self.schemaUrl.fields[1].text = json.ext_col_03.title
+	      	  } 
+	      	  if (json.ext_col_01.key == 'pdf' || 
+	      	  	json.ext_col_01.key == 'word' ||
+	      	  	json.ext_col_01.key == 'excel') {
+	      	  	var file_format = {}
+	      	  	for (var i = 0; i < 3; ++i) {
+	      	  		if (self.schemaFile.fields[0].contents[i].key == json.ext_col_01.key) {
+	      	  			file_format = self.schemaFile.fields[0].contents[i]
+	      	  		}
+	      	  	}
+	      	  	self.schemaFile.fields[0].radioGroup = file_format
+	      	  	self.schemaFile.fields[1].file = new File([""], json.ext_col_02.url)
+	      	  	console.log(self.schemaFile)
+	      	  }
+		      for (var i = 1; i <= 30; ++i) {
+		      	var schemaDetail = {
+		      	 fields: []
+			  	}
+			  	var label_text = ''
+			  	var textarea = ''
+			  	var url = null
+			  	var image_pos = {}
+			  	var text_size = {}
+
+	      	  	if (json.ext_col_01.key == 'data') {
+				  	if (typeof json.ext_col_09[i] == 'string') {
+				  		label_text = json.ext_col_09[i]
+				  	}
+				  	if (typeof json.ext_col_07[i] == 'string') {
+				  		textarea = json.ext_col_07[i]
+				  	}
+				  	if (json.ext_col_05[i] != undefined && typeof json.ext_col_05[i].url == 'string') {
+				  		url = json.ext_col_05[i].url
+				  	}
+				  	image_pos = json.ext_col_04[i]
+			  		text_size = json.ext_col_06[i]
+			  	}
+			  	schemaDetail.fields.push({		 
+					type: 'vuetifyText',
+					inputType: 'text',
+					text: label_text,
+					min: 0,
+					max: 100,
+					label: 'subtitle_' + i.toString(),
+					model: 'subtitle_' + i.toString(),
+					required: false
+				})
+				schemaDetail.fields.push({
+		            model:"area_" + i.toString(),
+		            type:"vuetifyTextArea",
+		            inputType:"text",
+		            label:"Text_" + i.toString(),
+		            placeholder:"",
+		            text: textarea,
+		            required:false,
+		            counter:1000,
+		            max:1000,
+		            min:0
+	          	})
+		      	schemaDetail.fields.push({
+		      		model: "level_" + i.toString(),
+					type: 'vuetifySingleOption',
+					label: 'text_size_' + i.toString(),
+					option: text_size,
+					contents: [
+						{ key: "1", value: "H2" },
+						{ key: "2", value: "H3" },
+						{ key: "3", value: "H4" },
+						{ key: "4", value: "H5" },
+						{ key: "5", value: "No level" },
+					],
+					required: true
+		      	})
+		      	schemaDetail.fields.push({
+		      		model: "position_" + i.toString(),
+					type: 'vuetifySingleOption',
+					label: 'position_' + i.toString(),
+					option: image_pos,
+					contents: [
+						{ key: "1", value: "Top" },
+						{ key: "2", value: "Left" },
+						{ key: "4", value: "Right" },
+						{ key: "3", value: "Bottom" },
+						{ key: "5", value: "No image" },
+					],
+					required: true
+		      	})
+		      	schemaDetail.fields.push({
+		      		model: 'image_' + i.toString(),
+		      		type: 'vuetifyUploadImage',
+		      		url: url
+		      	})
+				self.schemaDetailList.push(schemaDetail)
+		      }
+		  	  
 	        }).catch(function (error) {
-	        //  console.log(error)
+	          console.log(error)
               self.$store.dispatch(
                 "snackbar/setError",
-                error.response.data.errors?.[0]
+                "error"
               )
               self.$store.dispatch("snackbar/snackOn")
 	        })
-	      
-	      for (var i = 1; i <= 30; ++i) {
-	      	var schemaDetail = {
-	      	 fields: []
-		  	}
-		  	schemaDetail.fields.push({		 
-				type: 'vuetifyText',
-				inputType: 'text',
-				text: '',
-				min: 0,
-				max: 100,
-				label: 'subtitle_' + i.toString(),
-				model: 'subtitle_' + i.toString(),
-				required: true
-			})
-			schemaDetail.fields.push({
-	            model:"area_" + i.toString(),
-	            type:"vuetifyTextArea",
-	            inputType:"text",
-	            label:"Text_" + i.toString(),
-	            placeholder:"",
-	            text: "",
-	            required:false,
-	            counter:400,
-	            max:400,
-	            min:0
-          	})
-	      	schemaDetail.fields.push({
-	      		model: "level_" + i.toString(),
-				type: 'vuetifySingleOption',
-				label: 'text_size_' + i.toString(),
-				contents: [
-					{ key: "01", value: "H2" },
-					{ key: "02", value: "H3" },
-					{ key: "03", value: "H4" },
-					{ key: "04", value: "H5" },
-					{ key: "05", value: "No level" },
-				],
-				required: true
-	      	})
-	      	schemaDetail.fields.push({
-	      		model: "position_" + i.toString(),
-				type: 'vuetifySingleOption',
-				label: 'position_' + i.toString(),
-				contents: [
-					{ key: "01", value: "Top" },
-					{ key: "02", value: "Left" },
-					{ key: "03", value: "Right" },
-					{ key: "04", value: "Bottom" },
-					{ key: "05", value: "No image" },
-				],
-				required: true
-	      	})
-	      	schemaDetail.fields.push({
-	      		type: 'vuetifyUploadImage'
-	      	})
-			this.schemaDetailList.push(schemaDetail)
-	      }
+	
 		}
 	}
 </script>
