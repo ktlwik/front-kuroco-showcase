@@ -29,10 +29,14 @@ export default {
        this.formValid = this.$refs.myForm.validate()
        console.log(this.option)
        if (this.formValid) {
-         this.$emit('model-updated', /*{
-           "key": this.option.key,
-           "label": this.option.value
-         }*/ this.schema.option.key.toString(), this.schema.model)
+         if (this.schema.edit == true) {
+            this.$emit('model-updated', {
+             "key": this.schema.option.key,
+             "label": this.schema.option.value
+           }, this.schema.model)
+         } else {
+            this.$emit('model-updated', this.schema.option.key.toString(), this.schema.model)
+         }
        }
      }
    },

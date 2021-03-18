@@ -148,7 +148,7 @@
 				        )
 				        this.$store.dispatch("snackbar/snackOn")
 		    		} else {
-		    			var send_model = {
+		    		   send_model = {
 		    				ext_col_01: {
 		    				    key: file_type.key, 
 		    				    label: file_type.value
@@ -180,8 +180,35 @@
 		    				}
 		    			}
 		    		}
+		    	} else if (this.tab_id == 3) {
+		    		console.log(this.json)
+		    		console.log(this.model)
+		    		send_model = {
+						ext_col_01: {
+	    				    key: 'data', 
+	    				    label: 'data'
+		    			},
+		    		}
+		    		send_model['ext_col_04'] = this.json.ext_col_04
+		    		send_model['ext_col_06'] = this.json.ext_col_06
+		    		send_model['ext_col_07'] = this.json.ext_col_07
+		    		send_model['ext_col_09'] = this.json.ext_col_09
+		    		for (var key in this.model) {
+    					if (this.model.hasOwnProperty(key)) {
+    						if (key.startsWith('ext_col_04') || 
+    							key.startsWith('ext_col_06') || 
+    							key.startsWith('ext_col_07') || 
+    							key.startsWith('ext_col_09')) {
+    							var arr = key.split('_')
+    							var index_json = arr[0] + '_' + arr[1] + '_' + arr[2]
+    							var index_arr = parseInt(arr[3])
+    							send_model[index_json][index_arr] = this.model[key]
+    						}
+    						console.log(key + ' -> ' + this.model[key])
+    					}
+    				}
 		    	}
-
+		    	console.log(send_model)
 		    	self.$store.$auth.ctx.$axios
 		          .post(this.update_url, send_model)
 		          .then(function (response) {
@@ -214,6 +241,7 @@
 				update_url: "",
 				text: "",
 				tab_id: 1,
+				json: "",
 				model: {},
 				schemaDetailList: [],
 				schemaFile: {
@@ -290,6 +318,7 @@
 	        .get(url)
 	        .then(function (response) {
 	      	  var json = response.data.details
+	      	  self.json = json
 	      	  console.log(json.ext_col_01.key)
 	      	  console.log(json)
 	      	  if (json.ext_col_01.key == 'url') {
@@ -309,7 +338,7 @@
 	      	  	self.schemaFile.fields[1].file = new File([""], json.ext_col_02.url)
 	      	  	console.log(self.schemaFile)
 	      	  }
-		      for (var i = 1; i <= 30; ++i) {
+		      for (var i = 0; i < 30; ++i) {
 		      	var schemaDetail = {
 		      	 fields: []
 			  	}
@@ -339,14 +368,14 @@
 					min: 0,
 					max: 100,
 					label: 'subtitle_' + i.toString(),
-					model: 'subtitle_' + i.toString(),
+					model: 'ext_col_09_' + i.toString(),
 					required: false
 				})
 				schemaDetail.fields.push({
-		            model:"area_" + i.toString(),
+		            model:"ext_col_07_" + i.toString(),
 		            type:"vuetifyTextArea",
 		            inputType:"text",
-		            label:"Text_" + i.toString(),
+		            label:"text_" + i.toString(),
 		            placeholder:"",
 		            text: textarea,
 		            required:false,
@@ -355,7 +384,7 @@
 		            min:0
 	          	})
 		      	schemaDetail.fields.push({
-		      		model: "level_" + i.toString(),
+		      		model: 'ext_col_06_' + i.toString(),
 					type: 'vuetifySingleOption',
 					label: 'text_size_' + i.toString(),
 					option: text_size,
@@ -366,12 +395,13 @@
 						{ key: "4", value: "H5" },
 						{ key: "5", value: "No level" },
 					],
-					required: true
+					required: true,
+					edit: true
 		      	})
 		      	schemaDetail.fields.push({
-		      		model: "position_" + i.toString(),
+		      		model: 'ext_col_04_' + i.toString(),
 					type: 'vuetifySingleOption',
-					label: 'position_' + i.toString(),
+					label: 'image_position_' + i.toString(),
 					option: image_pos,
 					contents: [
 						{ key: "1", value: "Top" },
@@ -380,10 +410,11 @@
 						{ key: "3", value: "Bottom" },
 						{ key: "5", value: "No image" },
 					],
-					required: true
+					required: true,
+					edit: true
 		      	})
 		      	schemaDetail.fields.push({
-		      		model: 'image_' + i.toString(),
+		      		model: 'ext_col_05_' + i.toString(),
 		      		type: 'vuetifyUploadImage',
 		      		url: url
 		      	})
