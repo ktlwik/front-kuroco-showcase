@@ -152,6 +152,7 @@ export default {
       console.log(this.model)
       this.validForm = true
       for (var key in self.$children[1].$children) {
+        self.$children[1].$children[key].$children[0].$refs.myForm.validate()
         if (self.$children[1].$children[key].$children[0].formValid == false) {
           this.validForm = false
           console.log("invalid key", key)
