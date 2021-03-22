@@ -110,7 +110,6 @@ export default {
     }
   },
   mounted() {
-    // console.log(this.$auth)
     this.topics = []
     if (this.$auth.loggedIn) {
       this.updateTopics()

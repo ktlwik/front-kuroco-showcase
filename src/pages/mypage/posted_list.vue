@@ -71,7 +71,6 @@ export default {
     	if (this.category_key != null) {
     		url += '&contents_type=' + this.category_key
     	}
-    	//console.log(url)
     	let self = this
    		this.$store.$auth.ctx.$axios
     			.get(url)
@@ -104,7 +103,6 @@ export default {
     				self.topics = topics
             self.totalCnt = topics.length
     			}).catch(function (error) {
-	            // console.log(error)
                 self.$store.dispatch(
                   "snackbar/setError",
                   error.response.data.errors?.[0]
@@ -129,7 +127,6 @@ export default {
   				self.categories = categories
   			}
         }).catch(function (error) {
-            // console.log(error)
                self.$store.dispatch(
                  "snackbar/setError",
                  error.response.data.errors?.[0]

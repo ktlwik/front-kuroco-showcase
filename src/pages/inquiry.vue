@@ -79,7 +79,6 @@ export default {
    "vue-form-generator": VueFormGenerator.component
   },
   mounted() {
-    //this.getModel(),
     this.getSchema()
   },
   methods: {
@@ -150,16 +149,14 @@ export default {
     },
     submitF: function() {
       let self = this
-      // console.log(this.model)
+
       this.validForm = true
       for (var key in self.$children[1].$children) {
         self.$children[1].$children[key].$children[0].$refs.myForm.validate()
         if (self.$children[1].$children[key].$children[0].formValid == false) {
           this.validForm = false
-          // console.log("invalid key", key)
         }
       }
-      // console.log(this.validForm)
 
       if (this.validForm) {
         var send_model = JSON.parse(JSON.stringify(self.model))
@@ -167,7 +164,6 @@ export default {
         self.$store.$auth.ctx.$axios
           .post(this.inquirySubmitUrl, send_model)
           .then(function (response) {
-             // console.log(response.data)
              if (response.data.errors.length == 0) {
               self.$store.dispatch(
                 "snackbar/setMessage",
