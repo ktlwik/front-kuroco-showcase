@@ -104,64 +104,64 @@ export default {
         {
           icon: "mdi-send",
           title: "inquiry form",
-          to: "/inquiry"
+          to: "/inquiry",
         },
         {
           icon: "mdi-newspaper-variant",
           title: "topics",
-          to: "/topics_list"
+          to: "/topics_list",
         },
         {
           icon: "mdi-account-tie",
           title: "member",
-          to: "/member"
+          to: "/member",
         },
         {
           icon: "mdi-account-box",
           title: "mypage",
-          to: "/mypage"
-        }
+          to: "/mypage",
+        },
       ],
       miniVariant: false,
       right: true,
       rightDrawer: false,
-    }
+    };
   },
   computed: {
     user() {
-      return this.$auth.user
+      return this.$auth.user;
     },
     auth() {
-      return this.$store.$auth
+      return this.$store.$auth;
     },
     subtitle() {
       if (this.$store.$auth.loggedIn) {
-        return this.$auth.user.name1 + "さん、こんにちは"
+        return this.$auth.user.name1 + "さん、こんにちは";
       } else {
-        return ""
+        return "";
       }
     },
     // snackbarが自動でfalseに設定するためセッタを用意して、明示的にdispatchからOffするようにする
     snackbarVisible: {
       get() {
-        return this.$store.state.snackbar.isEnable
+        return this.$store.state.snackbar.isEnable;
       },
       set() {
-        return this.$store.dispatch("snackbar/snackOff")
+        return this.$store.dispatch("snackbar/snackOff");
       },
     },
     snackbarColor() {
-      return this.$store.state.snackbar.color
+      return this.$store.state.snackbar.color;
     },
   },
   methods: {
     async logout() {
       await this.$auth.logout().then((response) => {
-        this.$store.dispatch("snackbar/setMessage", "ログアウトしました")
-        this.$store.dispatch("snackbar/snackOn")
-        this.$router.push("/")
-      })
+        this.$store.dispatch("snackbar/setMessage", "ログアウトしました");
+        this.$store.dispatch("snackbar/snackOn");
+        this.$router.push("/");
+      });
     },
   },
-}
+};
 </script>

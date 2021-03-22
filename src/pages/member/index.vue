@@ -32,14 +32,12 @@
       class="elevation-1"
     >
       <template v-slot:item.name="{ item }">
-        <NuxtLink
-          :to="{ path: '/member/detail/' + item.id }"
-          no-prefetch
-          >{{item.name}}</NuxtLink
-        >
+        <NuxtLink :to="{ path: '/member/detail/' + item.id }" no-prefetch>{{
+          item.name
+        }}</NuxtLink>
       </template>
       <template v-slot:item.phone="{ item }">
-        <a :href="'tel:' + item.phone">{{item.phone}}</a>
+        <a :href="'tel:' + item.phone">{{ item.phone }}</a>
       </template>
     </v-data-table>
   </div>
@@ -48,98 +46,97 @@
 export default {
   auth: true,
   computed: {
-    headers () {
+    headers() {
       return [
-        { text: 'Name', value: 'name', sortable: false },
-        { text: 'Deparment', value: 'department', sortable: false },
-        { text: 'Position', value: 'position', sortable: false, },
-        { text: 'Phone', value: 'phone', sortable: false},
-      ]
-    }
+        { text: "Name", value: "name", sortable: false },
+        { text: "Deparment", value: "department", sortable: false },
+        { text: "Position", value: "position", sortable: false },
+        { text: "Phone", value: "phone", sortable: false },
+      ];
+    },
   },
-  data () {
+  data() {
     return {
       items: [],
       filteredItems: [],
       members: [],
       departments: [],
       perpage: 10,
-      member: '',
-      department: ''
-    }
+      member: "",
+      department: "",
+    };
   },
   methods: {
-    filterByMembersDepartment () {
+    filterByMembersDepartment() {
       if (this.department == undefined) {
-        this.department = ''
+        this.department = "";
       }
       if (this.member == undefined) {
-        this.member = ''
+        this.member = "";
       }
-      if (this.department == '' && this.member == '') {
-        this.filteredItems = this.items
-      } else if (this.department == '') {
-        let self = this
-        this.filteredItems = this.items.filter(function(obj) {
-           return obj.name.includes(self.member)
-        })
-      } else if (this.member == '') {
-        let self = this
-        this.filteredItems = this.items.filter(function(obj) {
-           return obj.department.includes(self.department)
-        })
+      if (this.department == "" && this.member == "") {
+        this.filteredItems = this.items;
+      } else if (this.department == "") {
+        let self = this;
+        this.filteredItems = this.items.filter(function (obj) {
+          return obj.name.includes(self.member);
+        });
+      } else if (this.member == "") {
+        let self = this;
+        this.filteredItems = this.items.filter(function (obj) {
+          return obj.department.includes(self.department);
+        });
       } else {
-        let self = this
-        this.filteredItems = this.items.filter(function(obj) {
-           return obj.department.includes(self.department) && obj.name.includes(self.member)
-        })
+        let self = this;
+        this.filteredItems = this.items.filter(function (obj) {
+          return (
+            obj.department.includes(self.department) &&
+            obj.name.includes(self.member)
+          );
+        });
       }
     },
   },
   mounted() {
-      var url = '/rcms-api/1/members'
-      let self = this
-      this.$store.$auth.ctx.$axios
-        .get(url)
-        .then(function (response) {
-          var items = []
-          var members = []
-          var departments = []
-          // console.log(response.data.list)
-          for (var key in response.data.list) {
-            var item = response.data.list[key]
-            // console.log(item)
-            var department = ''
-            var role = ''
-            if (item.hasOwnProperty('department')) {
-              department = item.department
-            }
-            if (item.hasOwnProperty('role')) {
-              role = item.role
-            }
-            items.push({
-              "name": item['name1'] + ' ' + item['name2'],
-              "department": department,
-              "position": role,
-              'phone': item['tel'],
-              'id': item['member_id']
-            })
-            members.push(item['name1'] + ' ' + item['name2'])
-            if (department != '') {
-              departments.push(department)
-            }
+    var url = "/rcms-api/1/members";
+    let self = this;
+    this.$store.$auth.ctx.$axios
+      .get(url)
+      .then(function (response) {
+        var items = [];
+        var members = [];
+        var departments = [];
+        for (var key in response.data.list) {
+          var item = response.data.list[key];
+          var department = "";
+          var role = "";
+          if (item.hasOwnProperty("department")) {
+            department = item.department;
           }
-          self.filteredItems = items
-          self.items = items
-          self.members = members
-          self.departments = departments
-        }).catch(function (error) {
-          self.$store.dispatch(
-            "snackbar/setError",
-            error.response.data.errors?.[0]
-          )
-          self.$store.dispatch("snackbar/snackOn")
-        })
-  }
-}
+          if (item.hasOwnProperty("role")) {
+            role = item.role;
+          }
+          items.push({
+            name: item["name1"] + " " + item["name2"],
+            department: department,
+            position: role,
+            phone: item["tel"],
+            id: item["member_id"],
+          });
+          members.push(item["name1"] + " " + item["name2"]);
+          if (department != "") {
+            departments.push(department);
+          }
+        }
+        self.filteredItems = items;
+        self.items = items;
+        self.members = members;
+        self.departments = departments;
+      })
+      .catch(function (error) {
+        self.$store.dispatch("snackbar/setError", "error");
+        self.$store.dispatch("snackbar/snackOn");
+      });
+  },
+};
 </script>

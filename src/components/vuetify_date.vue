@@ -14,7 +14,12 @@
             label="Date picker."
             prepend-icon="mdi-calendar"
             readonly
-            :rules='[v => (schema.required == false || (schema.required == true && !!v)) || "required field"]'
+            :rules="[
+              (v) =>
+                schema.required == false ||
+                (schema.required == true && !!v) ||
+                'required field',
+            ]"
             v-bind="attrs"
             v-on="on"
           ></v-text-field>
@@ -46,7 +51,12 @@
           <v-text-field
             v-model="time"
             label="Time picker."
-            :rules='[v => (schema.required == false || (schema.required == true && !!v)) || "required field"]'
+            :rules="[
+              (v) =>
+                schema.required == false ||
+                (schema.required == true && !!v) ||
+                'required field',
+            ]"
             prepend-icon="mdi-clock-time-four-outline"
             readonly
             v-bind="attrs"
@@ -79,7 +89,12 @@
           <v-text-field
             v-model="date"
             label="Date picker."
-            :rules='[v => (schema.required == false || (schema.required == true && !!v)) || "required field"]'
+            :rules="[
+              (v) =>
+                schema.required == false ||
+                (schema.required == true && !!v) ||
+                'required field',
+            ]"
             prepend-icon="mdi-calendar"
             readonly
             v-bind="attrs"
@@ -110,42 +125,50 @@
 import { abstractField } from "vue-form-generator";
 
 export default {
-      mixins: [ abstractField ],
-      data: function() {
-         return {
-            formValid: true,
-            date: null,
-            time: null,
-            modal: false,
-            modal2: false
-         }
-      },
-      methods: {
-         checkdate: function(e) {
-            this.formValid = this.$refs.myForm.validate()
-            if (this.formValid) {
-               if (this.date && this.time) {
-                  console.log(this.date + ' ' + this.time)
-                  this.$emit('model-updated', this.date + ' ' + this.time + ' +0900', this.schema.model)
-               } else {
-                  this.$emit('model-updated', this.date, this.schema.model)
-               }
-            }
-         },
-         checkdatetime: function(e) {
-            this.formValid = this.$refs.myForm.validate()
-            if (this.formValid) {
-               if (this.date && this.time) {
-                  console.log(this.date + ' ' + this.time)
-                  this.$emit('model-updated', this.date + ' ' + this.time + ' +0900', this.schema.model)
-               } else {
-                  this.$emit('model-updated', this.date, this.schema.model)
-               }
-            }
-         }
-      },
-      mounted() {
-         this.formValid = this.$refs.myForm.validate()
+  mixins: [abstractField],
+  data: function () {
+    return {
+      formValid: true,
+      date: null,
+      time: null,
+      modal: false,
+      modal2: false,
+    };
+  },
+  methods: {
+    checkdate: function (e) {
+      this.formValid = this.$refs.myForm.validate();
+      if (this.formValid) {
+        if (this.date && this.time) {
+          console.log(this.date + " " + this.time);
+          this.$emit(
+            "model-updated",
+            this.date + " " + this.time + " +0900",
+            this.schema.model
+          );
+        } else {
+          this.$emit("model-updated", this.date, this.schema.model);
+        }
       }
+    },
+    checkdatetime: function (e) {
+      this.formValid = this.$refs.myForm.validate();
+      if (this.formValid) {
+        if (this.date && this.time) {
+          console.log(this.date + " " + this.time);
+          this.$emit(
+            "model-updated",
+            this.date + " " + this.time + " +0900",
+            this.schema.model
+          );
+        } else {
+          this.$emit("model-updated", this.date, this.schema.model);
+        }
+      }
+    },
+  },
+  mounted() {
+    this.formValid = this.$refs.myForm.validate();
+  },
 };
 </script>

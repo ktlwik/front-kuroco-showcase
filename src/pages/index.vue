@@ -49,7 +49,7 @@
       <div v-else class="mypage">
         <v-carousel>
           <v-carousel-item
-            v-for="(item,i) in items"
+            v-for="(item, i) in items"
             :key="i"
             :src="item.src"
             reverse-transition="fade-transition"
@@ -80,12 +80,12 @@
 </template>
 
 <script>
-import topicList from '../components/topics'
-import Vue from 'vue';
+import topicList from "../components/topics";
+import Vue from "vue";
 
 export default {
   components: {
-    'v-topics': topicList
+    "v-topics": topicList,
   },
   middleware: "auth",
   auth: false,
@@ -103,16 +103,16 @@ export default {
   }),
   computed: {
     user() {
-      return this.$auth.user
+      return this.$auth.user;
     },
     auth() {
-      return this.$store.$auth
-    }
+      return this.$store.$auth;
+    },
   },
   mounted() {
-    this.topics = []
+    this.topics = [];
     if (this.$auth.loggedIn) {
-      this.updateTopics()
+      this.updateTopics();
     }
   },
   methods: {
@@ -120,64 +120,72 @@ export default {
       this.$router.push("/topics_list");
     },
     updateTopics() {
-      var url = '/rcms-api/1/topics?topics_group_id=' + this.group_id + '&cnt=5'
-      let self = this
+      var url =
+        "/rcms-api/1/topics?topics_group_id=" + this.group_id + "&cnt=5";
+      let self = this;
       this.$store.$auth.ctx.$axios
         .get(url)
         .then(function (response) {
-          var topics = []
-          self.items = []
+          var topics = [];
+          self.items = [];
           for (var key in response.data.list) {
-            var item = response.data.list[key]
-            var fileurl = ''
-            var linkurl = ''
-            if (item.hasOwnProperty('ext_col_02') && item['ext_col_02'].hasOwnProperty('url')) {
-              fileurl = item['ext_col_02']['url']
+            var item = response.data.list[key];
+            var fileurl = "";
+            var linkurl = "";
+            if (
+              item.hasOwnProperty("ext_col_02") &&
+              item["ext_col_02"].hasOwnProperty("url")
+            ) {
+              fileurl = item["ext_col_02"]["url"];
             }
-            if (item.hasOwnProperty('ext_col_03') && item['ext_col_03'].hasOwnProperty('url')) {
-              linkurl = item['ext_col_03']['url']
+            if (
+              item.hasOwnProperty("ext_col_03") &&
+              item["ext_col_03"].hasOwnProperty("url")
+            ) {
+              linkurl = item["ext_col_03"]["url"];
             }
-            if (item.hasOwnProperty('ext_col_08') && item['ext_col_08'].hasOwnProperty('url')) {
-              self.items.push({src:item['ext_col_08']['url']})
+            if (
+              item.hasOwnProperty("ext_col_08") &&
+              item["ext_col_08"].hasOwnProperty("url")
+            ) {
+              self.items.push({ src: item["ext_col_08"]["url"] });
             }
             topics.push({
-              "date": item['inst_ymdhi'].substring(0, 10).replaceAll("-", "/"),
-              "label": item['contents_type_nm'],
-              "link": item['subject'],
-              'icon': "",
-              "id": item['topics_id'],
-              'icon': item['ext_col_01']['key'],
-              'fileurl': fileurl,
-              'linkurl': linkurl,
-              'edit': false
-            })
+              date: item["inst_ymdhi"].substring(0, 10).replaceAll("-", "/"),
+              label: item["contents_type_nm"],
+              link: item["subject"],
+              icon: "",
+              id: item["topics_id"],
+              icon: item["ext_col_01"]["key"],
+              fileurl: fileurl,
+              linkurl: linkurl,
+              edit: false,
+            });
           }
-          self.topics = topics
-        }).catch(function (error) {
-          self.$store.dispatch(
-            "snackbar/setError",
-            error.response.data.errors?.[0]
-          )
-          self.$store.dispatch("snackbar/snackOn")
+          self.topics = topics;
         })
+        .catch(function (error) {
+          self.$store.dispatch("snackbar/setError", "error");
+          self.$store.dispatch("snackbar/snackOn");
+        });
     },
     async login() {
-      this.loading = true
+      this.loading = true;
       await this.$auth
         .loginWith("local", { data: this.form })
         .then(() => {
-          this.updateTopics()
-          this.$router.push("/")
-          this.$store.dispatch("snackbar/setMessage", "ログインしました")
-          this.$store.dispatch("snackbar/snackOn")
-          this.loading = false
+          this.updateTopics();
+          this.$router.push("/");
+          this.$store.dispatch("snackbar/setMessage", "ログインしました");
+          this.$store.dispatch("snackbar/snackOn");
+          this.loading = false;
         })
         .catch(() => {
-          this.$store.dispatch("snackbar/setError", "ログインに失敗しました")
-          this.$store.dispatch("snackbar/snackOn")
-          this.loading = false
-        })
+          this.$store.dispatch("snackbar/setError", "ログインに失敗しました");
+          this.$store.dispatch("snackbar/snackOn");
+          this.loading = false;
+        });
     },
   },
-}
+};
 </script>

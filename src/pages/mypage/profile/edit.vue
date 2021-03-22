@@ -43,31 +43,31 @@
 </template>
 
 <script>
-import '~/assets/form.css'
-import Vue from 'vue'
-import VueFormGenerator from 'vue-form-generator'
-import KurocoParser from '~/plugins/parser.js';
-import fieldUploadFile from '~/components/vuetify_file_upload.vue';
-import fieldVuetifyText from '~/components/vuetify_text.vue';
-import fieldVuetifyTextArea from '~/components/vuetify_textarea.vue';
-import fieldVuetifyDate from '~/components/vuetify_date.vue';
-import fieldVuetifyJson from '~/components/vuetify_json.vue';
-import fieldVuetifyPrefecture from '~/components/vuetify_prefecture.vue';
-import fieldVuetifyMultipleChoice from '~/components/vuetify_multiple_choice.vue';
-import fieldVuetifySingleChoice from '~/components/vuetify_single_choice.vue';
-import fieldVuetifySingleOption from '~/components/vuetify_single_option.vue';
-import fieldVuetifyPassword from '~/components/vuetify_password.vue'
+import "~/assets/form.css";
+import Vue from "vue";
+import VueFormGenerator from "vue-form-generator";
+import KurocoParser from "~/plugins/parser.js";
+import fieldUploadFile from "~/components/vuetify_file_upload.vue";
+import fieldVuetifyText from "~/components/vuetify_text.vue";
+import fieldVuetifyTextArea from "~/components/vuetify_textarea.vue";
+import fieldVuetifyDate from "~/components/vuetify_date.vue";
+import fieldVuetifyJson from "~/components/vuetify_json.vue";
+import fieldVuetifyPrefecture from "~/components/vuetify_prefecture.vue";
+import fieldVuetifyMultipleChoice from "~/components/vuetify_multiple_choice.vue";
+import fieldVuetifySingleChoice from "~/components/vuetify_single_choice.vue";
+import fieldVuetifySingleOption from "~/components/vuetify_single_option.vue";
+import fieldVuetifyPassword from "~/components/vuetify_password.vue";
 
-Vue.component('fieldUploadFile', fieldUploadFile);
-Vue.component('fieldVuetifyDate', fieldVuetifyDate);
-Vue.component('fieldVuetifyText', fieldVuetifyText);
-Vue.component('fieldVuetifyTextArea', fieldVuetifyTextArea);
-Vue.component('fieldVuetifyJson', fieldVuetifyJson);
-Vue.component('fieldVuetifyPrefecture', fieldVuetifyPrefecture);
-Vue.component('fieldVuetifySingleOption', fieldVuetifySingleOption);
-Vue.component('fieldVuetifySingleChoice', fieldVuetifySingleChoice);
-Vue.component('fieldVuetifyMultipleChoice', fieldVuetifyMultipleChoice);
-Vue.component('fieldVuetifyPassword', fieldVuetifyPassword);
+Vue.component("fieldUploadFile", fieldUploadFile);
+Vue.component("fieldVuetifyDate", fieldVuetifyDate);
+Vue.component("fieldVuetifyText", fieldVuetifyText);
+Vue.component("fieldVuetifyTextArea", fieldVuetifyTextArea);
+Vue.component("fieldVuetifyJson", fieldVuetifyJson);
+Vue.component("fieldVuetifyPrefecture", fieldVuetifyPrefecture);
+Vue.component("fieldVuetifySingleOption", fieldVuetifySingleOption);
+Vue.component("fieldVuetifySingleChoice", fieldVuetifySingleChoice);
+Vue.component("fieldVuetifyMultipleChoice", fieldVuetifyMultipleChoice);
+Vue.component("fieldVuetifyPassword", fieldVuetifyPassword);
 
 Vue.use(VueFormGenerator);
 Vue.use(KurocoParser);
@@ -75,99 +75,91 @@ Vue.use(KurocoParser);
 export default {
   auth: true,
   components: {
-   "vue-form-generator": VueFormGenerator.component
+    "vue-form-generator": VueFormGenerator.component,
   },
   methods: {
-     onInput: function(value, fieldName) {
-      // console.log("fieldName: ", fieldName)
-      // console.log("value: ", value)
-      this.$set(this.model, fieldName, value)
+    onInput: function (value, fieldName) {
+      this.$set(this.model, fieldName, value);
     },
-    submitF: function() {
-      let self = this
-      this.validForm = true
+    submitF: function () {
+      let self = this;
+      this.validForm = true;
       for (var key in self.$children[1].$children) {
-        self.$children[1].$children[key].$children[0].$refs.myForm.validate()
+        self.$children[1].$children[key].$children[0].$refs.myForm.validate();
         if (self.$children[1].$children[key].$children[0].formValid == false) {
-          this.validForm = false
-          // console.log("invalid key", key)
+          this.validForm = false;
         }
       }
 
       if (this.validForm) {
-        var send_model = JSON.parse(JSON.stringify(self.model))
+        var send_model = JSON.parse(JSON.stringify(self.model));
         self.$store.$auth.ctx.$axios
           .post("/rcms-api/1/member/update", send_model)
           .then(function (response) {
-             if (response.data.errors.length == 0) {
+            if (response.data.errors.length == 0) {
               self.$store.dispatch(
                 "snackbar/setMessage",
                 "Your profile is changed."
-              )
-              self.$store.dispatch("snackbar/snackOn")
-              self.$router.push("/")
+              );
+              self.$store.dispatch("snackbar/snackOn");
+              self.$router.push("/");
             }
-          })
-          // console.log("Form submitted!", self.model);
+          });
       } else {
-        self.$store.dispatch(
-          "snackbar/setError",
-          "Fill fields properly."
-        )
-        self.$store.dispatch("snackbar/snackOn")
+        self.$store.dispatch("snackbar/setError", "Fill fields properly.");
+        self.$store.dispatch("snackbar/snackOn");
       }
-
-    }
+    },
   },
   mounted() {
     if (this.$auth.loggedIn) {
-      let self = this
+      let self = this;
       this.$auth.ctx.$axios
         .get("/rcms-api/1/members/" + this.$auth.user.member_id)
         .then(function (response) {
-        	console.log(response.data)
-         	if (response.data.details.hasOwnProperty('email')) {
-          	    self.schema.fields[2].text = response.data.details.email
-	      	}
-	          if (response.data.details.hasOwnProperty('name1')) {
-	          	self.schema.fields[0].text = response.data.details.name1
-	      	}
-	          if (response.data.details.hasOwnProperty('name2')) {
-	          	self.schema.fields[1].text = response.data.details.name2
-	      	}
-	          if (response.data.details.hasOwnProperty('zip_code')) {
-	          	self.schema.fields[4].text = response.data.details.zip_code
-	      	}
-	          if (response.data.details.hasOwnProperty('tel')) {
-	          	self.schema.fields[7].text = response.data.details.tel
-	      	}
-	          if (response.data.details.hasOwnProperty('department')) {
-	          	self.schema.fields[8].text = response.data.details.department
-	      	}
-	          if (response.data.details.hasOwnProperty('notes')) {
-	          	self.schema.fields[11].text = response.data.details.notes
-	      	}
+          if (response.data.details.hasOwnProperty("email")) {
+            self.schema.fields[2].text = response.data.details.email;
+          }
+          if (response.data.details.hasOwnProperty("name1")) {
+            self.schema.fields[0].text = response.data.details.name1;
+          }
+          if (response.data.details.hasOwnProperty("name2")) {
+            self.schema.fields[1].text = response.data.details.name2;
+          }
+          if (response.data.details.hasOwnProperty("zip_code")) {
+            self.schema.fields[4].text = response.data.details.zip_code;
+          }
+          if (response.data.details.hasOwnProperty("tel")) {
+            self.schema.fields[7].text = response.data.details.tel;
+          }
+          if (response.data.details.hasOwnProperty("department")) {
+            self.schema.fields[8].text = response.data.details.department;
+          }
+          if (response.data.details.hasOwnProperty("notes")) {
+            self.schema.fields[11].text = response.data.details.notes;
+          }
 
-			for (var i = 0; i < self.schema.fields[5].options.length; ++i) {
-				if (self.schema.fields[5].options[i].value == response.data.details.tdfk_cd) {
-					self.schema.fields[5].option = self.schema.fields[5].options[i]
-				}
-			}
+          for (var i = 0; i < self.schema.fields[5].options.length; ++i) {
+            if (
+              self.schema.fields[5].options[i].value ==
+              response.data.details.tdfk_cd
+            ) {
+              self.schema.fields[5].option = self.schema.fields[5].options[i];
+            }
+          }
 
-			self.schema.fields[6].text = response.data.details.address1
-			self.schema.fields[5].option.value = response.data.details.tdfk_cd
-			self.loading = false
-	        }).catch(function (error) {
-          self.$store.dispatch(
-            "snackbar/setError",
-            "error"
-          )
-          self.$store.dispatch("snackbar/snackOn")
-          self.loading = false
+          self.schema.fields[6].text = response.data.details.address1;
+          self.schema.fields[5].option.value = response.data.details.tdfk_cd;
+          self.loading = false;
         })
+        .catch(function (error) {
+          self.$store.dispatch("snackbar/setError", "error");
+          self.$store.dispatch("snackbar/snackOn");
+          self.loading = false;
+        });
     }
   },
-  data () {
+  data() {
     return {
       // form default values
       email: "",
@@ -175,73 +167,73 @@ export default {
       name2: "",
       zip_code: "",
       tel: "",
-      inquirySubmitUrl: '/rcms-api/1/inquiry/9',
-      inquirySchemaUrl: '/rcms-api/1/inquiry/get/9',
+      inquirySubmitUrl: "/rcms-api/1/inquiry/9",
+      inquirySchemaUrl: "/rcms-api/1/inquiry/get/9",
       auth: false,
       validForm: true,
       loading: true,
       disabled: false,
-      model: {
-      },
+      model: {},
       schema: {
         fields: [
           {
-            type: 'vuetifyText',
-            inputType: 'text',
+            type: "vuetifyText",
+            inputType: "text",
             min: 0,
             max: 100,
-            label: 'First Name',
-            model: 'name1',
-            text: '',
-            required: true
+            label: "First Name",
+            model: "name1",
+            text: "",
+            required: true,
           },
           {
-            type: 'vuetifyText',
-            inputType: 'text',
+            type: "vuetifyText",
+            inputType: "text",
             min: 0,
             max: 100,
-            label: 'Last Name',
-            text: '',
-            model: 'name2',
-            required: true
+            label: "Last Name",
+            text: "",
+            model: "name2",
+            required: true,
           },
           {
-            type: 'vuetifyText',
-            inputType: 'text',
+            type: "vuetifyText",
+            inputType: "text",
             min: 0,
             max: 100,
-            label: 'Email address',
-            model: 'email',
-            text: '',
-            texttype: 'email',
-            required: true
+            label: "Email address",
+            model: "email",
+            text: "",
+            texttype: "email",
+            required: true,
           },
           {
-            type: 'vuetifyPassword',
-            inputType: 'text',
-            label: 'Password',
-            text: '',
-            model: 'login_pwd',
-            required: true
+            type: "vuetifyPassword",
+            inputType: "text",
+            label: "Password",
+            text: "",
+            model: "login_pwd",
+            required: true,
           },
           {
-            type: 'vuetifyText',
-            inputType: 'text',
-            label: 'Zip Code',
-            texttype: 'zip',
-            text: '',
+            type: "vuetifyText",
+            inputType: "text",
+            label: "Zip Code",
+            texttype: "zip",
+            text: "",
             min: 0,
             max: 100,
-            model: 'zip_code',
-            required: true
+            model: "zip_code",
+            required: true,
           },
           {
-            type: 'vuetifyPrefecture',
-            inputType: 'text',
-            label: 'Prefecture',
-            model: 'tdfk_cd',
+            type: "vuetifyPrefecture",
+            inputType: "text",
+            label: "Prefecture",
+            model: "tdfk_cd",
             option: {
-              value: "01", text: "北海道"
+              value: "01",
+              text: "北海道",
             },
             options: [
               { value: "01", text: "北海道" },
@@ -292,106 +284,106 @@ export default {
               { value: "46", text: "鹿児島県" },
               { value: "47", text: "沖縄県" },
             ],
-            required: true
+            required: true,
           },
           {
-            type: 'vuetifyText',
-            inputType: 'text',
-            text: '',
+            type: "vuetifyText",
+            inputType: "text",
+            text: "",
             min: 0,
             max: 100,
-            label: 'Address',
-            model: 'address1',
-            required: true
+            label: "Address",
+            model: "address1",
+            required: true,
           },
           {
-            type: 'vuetifyText',
-            inputType: 'text',
-            text: '',
+            type: "vuetifyText",
+            inputType: "text",
+            text: "",
             min: 0,
             max: 100,
-            label: 'Phone',
-            model: 'tel',
-            texttype: 'tel',
-            required: true
+            label: "Phone",
+            model: "tel",
+            texttype: "tel",
+            required: true,
           },
           {
-            type: 'vuetifyText',
-            inputType: 'text',
-            text: '',
+            type: "vuetifyText",
+            inputType: "text",
+            text: "",
             min: 0,
             max: 100,
-            label: 'Department',
-            model: 'department',
-            required: true
+            label: "Department",
+            model: "department",
+            required: true,
           },
           {
-              model: "ext_01",
-              label: "Label",
-              contents: [
-                  {
-                    key: 1,
-                    value: "Radio1",
-                    default: false,
-                    attribute:{"group":"1"}
-                  },
-                  {
-                    key: 2,
-                    value: "Radio2",
-                    default:false,
-                    attribute:{"group":"1"}
-                  },
-                  {
-                    key:3,
-                    value:"Radio3",
-                    default:false,
-                    attribute:{"group":"1"}
-                  }
-              ],
-              required:false,
-              type:"vuetifySingleChoice"
+            model: "ext_01",
+            label: "Label",
+            contents: [
+              {
+                key: 1,
+                value: "Radio1",
+                default: false,
+                attribute: { group: "1" },
+              },
+              {
+                key: 2,
+                value: "Radio2",
+                default: false,
+                attribute: { group: "1" },
+              },
+              {
+                key: 3,
+                value: "Radio3",
+                default: false,
+                attribute: { group: "1" },
+              },
+            ],
+            required: false,
+            type: "vuetifySingleChoice",
           },
           {
             model: "ext_02",
-            label:"Label",
-            contents:[
+            label: "Label",
+            contents: [
               {
-                key:1,
-                value:"Check1",
-                default:false,
-                attribute:{"group":"1"}
+                key: 1,
+                value: "Check1",
+                default: false,
+                attribute: { group: "1" },
               },
               {
-                key:2,
-                value:"Check2",
-                default:false,
-                attribute:{"group":"1"}
+                key: 2,
+                value: "Check2",
+                default: false,
+                attribute: { group: "1" },
               },
               {
-                key:3,
-                value:"Check3",
-                default:false,
-                attribute:{"group":"1"}
-            }],
-            required:false,
-            type:"vuetifyMultipleChoice"
+                key: 3,
+                value: "Check3",
+                default: false,
+                attribute: { group: "1" },
+              },
+            ],
+            required: false,
+            type: "vuetifyMultipleChoice",
           },
           {
-            model:"notes",
-            type:"vuetifyTextArea",
-            inputType:"text",
-            label:"Notes",
-            placeholder:"",
+            model: "notes",
+            type: "vuetifyTextArea",
+            inputType: "text",
+            label: "Notes",
+            placeholder: "",
             text: "",
-            required:false,
-            counter:400,
-            max:400,
-            min:0
-          }
-
-        ]
+            required: false,
+            counter: 400,
+            max: 400,
+            min: 0,
+          },
+        ],
       },
-    }
-  }
-}
+    };
+  },
+};
 </script>

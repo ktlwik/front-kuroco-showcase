@@ -1,5 +1,5 @@
 export default function ({ store, redirect, route }) {
-  // 仮会員の時 / は ページ側でチェック 
+  // 仮会員の時 / は ページ側でチェック
   if (
     store.$auth.loggedIn &&
     route.path !== "/upgrade" &&
@@ -9,6 +9,5 @@ export default function ({ store, redirect, route }) {
     route.path !== "/topic/${id}" &&
     route.path !== "/top"
   ) {
- 
   }
 }

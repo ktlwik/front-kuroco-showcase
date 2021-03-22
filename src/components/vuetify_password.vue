@@ -17,38 +17,37 @@
 </template>
 
 <script>
-  import { abstractField } from "vue-form-generator";
-  import validator from 'validator';
+import { abstractField } from "vue-form-generator";
+import validator from "validator";
 
-  export default {
-      mixins: [ abstractField ],
-      data: function() {
-       return {
-        formValid: true,
-        login_pwd: "",
-        password_show: false,
-        password: "",
-        rules: {
-          required: (value) => !!value || "required password",
-          password_min: (v) =>
-            v.length == 0 || v.length >= 8 || "最低8文字以上を入力してください",
-          password: (v) =>
-            v.length == 0 ||
-            /^[a-zA-Z0-9\-_&=+%#@$*.!:]+$/.test(v) ||
-            "半角英数字と記号(-_&=+%#@$*.!:)でご入力ください",
-        },
-       }
+export default {
+  mixins: [abstractField],
+  data: function () {
+    return {
+      formValid: true,
+      login_pwd: "",
+      password_show: false,
+      password: "",
+      rules: {
+        required: (value) => !!value || "required password",
+        password_min: (v) =>
+          v.length == 0 || v.length >= 8 || "最低8文字以上を入力してください",
+        password: (v) =>
+          v.length == 0 ||
+          /^[a-zA-Z0-9\-_&=+%#@$*.!:]+$/.test(v) ||
+          "半角英数字と記号(-_&=+%#@$*.!:)でご入力ください",
       },
-      methods: {
-        check: function(e) {
-          this.formValid = this.$refs.myForm.validate()
-          if (this.formValid) {
-              this.$emit('model-updated', this.text, this.schema.model)
-            }
-        }
-      },
-      mounted() {
-        //this.formValid = this.$refs.myForm.validate()
+    };
+  },
+  methods: {
+    check: function (e) {
+      this.formValid = this.$refs.myForm.validate();
+      if (this.formValid) {
+        this.$emit("model-updated", this.text, this.schema.model);
       }
+    },
+  },
+  mounted() {
+  },
 };
 </script>
