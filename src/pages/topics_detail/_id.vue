@@ -70,8 +70,7 @@ export default {
       this.$router.go(-1);
     },
     onClick() {
-      let self = this;
-      console.log(this.$auth.user.member_id);
+      let self = this
       if (this.color == "gray") {
         this.$store.$auth.ctx.$axios
           .post("/rcms-api/1/favorites", {
@@ -82,7 +81,6 @@ export default {
             self.color = "red";
           })
           .catch(function (error) {
-            console.log(error);
           });
       } else {
         this.$store.$auth.ctx.$axios
@@ -94,7 +92,6 @@ export default {
             self.color = "gray";
           })
           .catch(function (error) {
-            console.log(error);
           });
       }
     },
