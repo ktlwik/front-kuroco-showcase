@@ -126,36 +126,43 @@ export default {
         .get("/rcms-api/1/members/" + this.$auth.user.member_id)
         .then(function (response) {
         	console.log(response.data)
-          if (response.data.details.hasOwnProperty('email')) {
-          	self.schema.fields[2].text = response.data.details.email
-      	}
-          if (response.data.details.hasOwnProperty('name1')) {
-          	self.schema.fields[0].text = response.data.details.name1
-      	}
-          if (response.data.details.hasOwnProperty('name2')) {
-          	self.schema.fields[1].text = response.data.details.name2
-      	}
-          if (response.data.details.hasOwnProperty('zip_code')) {
-          	self.schema.fields[4].text = response.data.details.zip_code
-      	}
-          if (response.data.details.hasOwnProperty('tel')) {
-          	self.schema.fields[7].text = response.data.details.tel
-      	}
-          if (response.data.details.hasOwnProperty('department')) {
-          	self.schema.fields[8].text = response.data.details.department
-      	}
-          if (response.data.details.hasOwnProperty('notes')) {
-          	self.schema.fields[11].text = response.data.details.notes
-      	}
+         	if (response.data.details.hasOwnProperty('email')) {
+          	    self.schema.fields[2].text = response.data.details.email
+	      	}
+	          if (response.data.details.hasOwnProperty('name1')) {
+	          	self.schema.fields[0].text = response.data.details.name1
+	      	}
+	          if (response.data.details.hasOwnProperty('name2')) {
+	          	self.schema.fields[1].text = response.data.details.name2
+	      	}
+	          if (response.data.details.hasOwnProperty('zip_code')) {
+	          	self.schema.fields[4].text = response.data.details.zip_code
+	      	}
+	          if (response.data.details.hasOwnProperty('tel')) {
+	          	self.schema.fields[7].text = response.data.details.tel
+	      	}
+	          if (response.data.details.hasOwnProperty('department')) {
+	          	self.schema.fields[8].text = response.data.details.department
+	      	}
+	          if (response.data.details.hasOwnProperty('notes')) {
+	          	self.schema.fields[11].text = response.data.details.notes
+	      	}
 
-          for (var i = 0; i < self.schema.fields[5].options.length; ++i) {
-            if (self.schema.fields[5].options[i].value == response.data.details.tdfk_cd) {
-              self.schema.fields[5].option = self.schema.fields[5].options[i]
-            }
-          }
+			for (var i = 0; i < self.schema.fields[5].options.length; ++i) {
+				if (self.schema.fields[5].options[i].value == response.data.details.tdfk_cd) {
+					self.schema.fields[5].option = self.schema.fields[5].options[i]
+				}
+			}
 
-          self.schema.fields[6].text = response.data.details.address1
-          self.schema.fields[5].option.value = response.data.details.tdfk_cd
+			self.schema.fields[6].text = response.data.details.address1
+			self.schema.fields[5].option.value = response.data.details.tdfk_cd
+			self.loading = false
+	        }).catch(function (error) {
+          self.$store.dispatch(
+            "snackbar/setError",
+            "error"
+          )
+          self.$store.dispatch("snackbar/snackOn")
           self.loading = false
         })
     }

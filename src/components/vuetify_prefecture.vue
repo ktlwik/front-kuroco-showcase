@@ -37,7 +37,7 @@ export default {
      }
    },
    mounted() {
-     this.formValid = this.$refs.myForm.validate()
+     // this.formValid = this.$refs.myForm.validate()
    }
 };
 </script>

@@ -1,5 +1,12 @@
 <template>
 	<div fluid>
+	<v-progress-linear
+      :active="loading"
+      :indeterminate="loading"
+      absolute
+      top
+      color="orange white-4"
+    ></v-progress-linear>
 	<v-card>
 		
     <v-toolbar
@@ -17,20 +24,20 @@
 			</v-btn>
 		</v-col>
     </v-toolbar>
-    <v-tabs>
-      <v-tab @click="change_tab(1)">
+    <v-tabs v-model="tab_id">
+      <v-tab @click="change_tab(0)">
         <v-icon left>
           mdi-file-excel
         </v-icon>
         File document
       </v-tab>
-      <v-tab @click="change_tab(2)">
+      <v-tab @click="change_tab(1)">
         <v-icon left>
       	  mdi-launch
         </v-icon>
         Url link
       </v-tab>
-      <v-tab @click="change_tab(3)">
+      <v-tab @click="change_tab(2)">
         <v-icon left>
       	  mdi-details
         </v-icon>
@@ -118,6 +125,7 @@
 	Vue.use(KurocoParser);
 
 	export default {
+  		auth: true,
 		methods: {
 			onInput: function(value, fieldName) {
 		      console.log("fieldName: ", fieldName)
@@ -125,14 +133,11 @@
 		      this.$set(this.model, fieldName, value)
 		    },
 		    submit() {
-
-		    	console.log(this.tab_id)
 		    	let self = this
 		    	var send_model = {}
-		    	if (this.tab_id == 1) {
+		    	if (this.tab_id == 0) {
 		    		var file_type = this.schemaFile.fields[0].radioGroup
 		    		var file = this.model.file
-		    		console.log(this.model)
 	    		    send_model = {
 	    				ext_col_01: {
 	    				    key: file_type.key, 
@@ -140,7 +145,6 @@
 	    				},
 	    				ext_col_02: file
 	    			}
-	    			console.log(send_model)
 		    		if (file_type == null || file == null) {
 		    			this.$store.dispatch(
 				          "snackbar/setError",
@@ -155,10 +159,8 @@
 		    				},
 		    				ext_col_02: file
 		    			}
-		    			console.log(send_model)
-		    			
 		    		}
-		    	} else if (this.tab_id == 2) {
+		    	} else if (this.tab_id == 1) {
 		    		var url = this.model.url
 		    		var to_display = this.model.to_display
 
@@ -180,9 +182,7 @@
 		    				}
 		    			}
 		    		}
-		    	} else if (this.tab_id == 3) {
-		    		console.log(this.json)
-		    		console.log(this.model)
+		    	} else if (this.tab_id == 2) {
 		    		send_model = {
 						ext_col_01: {
 	    				    key: 'data', 
@@ -193,9 +193,16 @@
 		    		send_model['ext_col_06'] = this.json.ext_col_06
 		    		send_model['ext_col_07'] = this.json.ext_col_07
 		    		send_model['ext_col_09'] = this.json.ext_col_09
+		    		send_model['ext_col_05'] = new Array(30).fill({})
+		    		for (var i = 0; i < this.json.ext_col_05.length; ++i) {
+		    			send_model['ext_col_05'][i] = {
+		    				id: this.json.ext_col_05[i].id
+		    			}
+		    		}
 		    		for (var key in this.model) {
     					if (this.model.hasOwnProperty(key)) {
     						if (key.startsWith('ext_col_04') || 
+    							key.startsWith('ext_col_05') || 
     							key.startsWith('ext_col_06') || 
     							key.startsWith('ext_col_07') || 
     							key.startsWith('ext_col_09')) {
@@ -204,15 +211,13 @@
     							var index_arr = parseInt(arr[3])
     							send_model[index_json][index_arr] = this.model[key]
     						}
-    						console.log(key + ' -> ' + this.model[key])
     					}
     				}
 		    	}
-		    	console.log(send_model)
+
 		    	self.$store.$auth.ctx.$axios
 		          .post(this.update_url, send_model)
 		          .then(function (response) {
-		            console.log(response.data)
 		             if (response.data.errors.length == 0) {
 		              self.$store.dispatch(
 		                "snackbar/setMessage",
@@ -222,7 +227,6 @@
 		              self.$router.push("/mypage/posted_list")
 		            }
 		          }).catch(function (error) {
-		              console.log(error)
 		              self.$store.dispatch(
 		                "snackbar/setError",
 		                "Invalid form fields."
@@ -240,7 +244,8 @@
 				topic_id: null,
 				update_url: "",
 				text: "",
-				tab_id: 1,
+      			loading: true,
+				tab_id: null,
 				json: "",
 				model: {},
 				schemaDetailList: [],
@@ -313,19 +318,19 @@
 	      this.update_url = "/rcms-api/1/topics/update/" + this.topic_id
 	  	  var url = '/rcms-api/1/topic/detail/' + this.topic_id
 	      let self = this
-	      //console.log(url)
+
+	      this.loading = true
 	      this.$store.$auth.ctx.$axios
 	        .get(url)
 	        .then(function (response) {
 	      	  var json = response.data.details
 	      	  self.json = json
-	      	  console.log(json.ext_col_01.key)
-	      	  console.log(json)
+
 	      	  if (json.ext_col_01.key == 'url') {
 	      	  	self.schemaUrl.fields[0].text = json.ext_col_03.url
 	      	  	self.schemaUrl.fields[1].text = json.ext_col_03.title
-	      	  } 
-	      	  if (json.ext_col_01.key == 'pdf' || 
+	      	  	self.tab_id = 1
+	      	  } else if (json.ext_col_01.key == 'pdf' || 
 	      	  	json.ext_col_01.key == 'word' ||
 	      	  	json.ext_col_01.key == 'excel') {
 	      	  	var file_format = {}
@@ -336,8 +341,11 @@
 	      	  	}
 	      	  	self.schemaFile.fields[0].radioGroup = file_format
 	      	  	self.schemaFile.fields[1].file = new File([""], json.ext_col_02.url)
-	      	  	console.log(self.schemaFile)
+	      	  	self.tab_id = 0
+	      	  } else {
+	      	  	self.tab_id = 2
 	      	  }
+
 		      for (var i = 0; i < 30; ++i) {
 		      	var schemaDetail = {
 		      	 fields: []
@@ -420,14 +428,14 @@
 		      	})
 				self.schemaDetailList.push(schemaDetail)
 		      }
-		  	  
+		  	  self.loading = false
 	        }).catch(function (error) {
-	          console.log(error)
               self.$store.dispatch(
                 "snackbar/setError",
                 "error"
               )
               self.$store.dispatch("snackbar/snackOn")
+		  	  self.loading = false
 	        })
 	
 		}

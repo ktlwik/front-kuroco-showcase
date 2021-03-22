@@ -133,7 +133,6 @@ export default {
             }
          },
          checkdatetime: function(e) {
-            console.log(e)
             this.formValid = this.$refs.myForm.validate()
             if (this.formValid) {
                if (this.date && this.time) {

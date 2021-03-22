@@ -27,7 +27,6 @@ export default {
    methods: {
      check: function(e) {
        this.formValid = this.$refs.myForm.validate()
-       console.log(this.option)
        if (this.formValid) {
          if (this.schema.edit == true) {
             this.$emit('model-updated', {

@@ -39,6 +39,7 @@
 <script>
 import topicList from '../../components/topics'
 export default {
+  auth: true,
   components: {
     'v-topics': topicList
   },

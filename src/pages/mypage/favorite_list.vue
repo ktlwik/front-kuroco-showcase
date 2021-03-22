@@ -17,6 +17,7 @@
 <script>
 import topicList from '../../components/topics'
 export default {
+  auth: true,
   components: {
     'v-topics': topicList
   },
@@ -84,7 +85,11 @@ export default {
 	            })
 			}
    		}).catch(function (error) {
-   			console.log(error)
+   			self.$store.dispatch(
+              "snackbar/setError",
+              "error"
+            )
+            self.$store.dispatch("snackbar/snackOn")
 		})
 
      }

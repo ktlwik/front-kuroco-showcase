@@ -49,7 +49,6 @@
       },
       mounted() {
         //this.formValid = this.$refs.myForm.validate()
-        console.log(this.formValid)
       }
 };
 </script>

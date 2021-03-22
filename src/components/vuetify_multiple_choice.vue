@@ -27,7 +27,8 @@ export default {
    computed: {
      rules() {
        return [
-         this.schema.required == false || (this.schema.required == true && this.checkedCategories.length > 0) || "At least one item should be selected"
+         this.schema.required == false || (this.schema.required == true 
+          && this.checkedCategories.length > 0) || "At least one item should be selected"
        ];
      }
    },
@@ -35,7 +36,7 @@ export default {
      check: function(e) {
        this.formValid = this.$refs.myForm.validate()
        var checkedJson = []
-       console.log(this.checkedCategories)
+       // console.log(this.checkedCategories)
        for (var key in this.checkedCategories) {
          checkedJson.push(
            //{"key": key, "label": this.checkedCategories[key]}

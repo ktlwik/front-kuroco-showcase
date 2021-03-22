@@ -131,14 +131,14 @@ export default {
 	          var subtitle = response.data.details.ext_col_09
 			  // console.log(response.data.details)
 
-	          for (var i = 0; i < texts.length; i++) {
+	          for (var i = 0; i < text_size.length; i++) {
 	          	var textSize = null
 	          	var imageUrl = null
 	          	if (text_size[i] != undefined && text_size[i].hasOwnProperty('label')) {
 	          		textSize = text_size[i]['label']
 	          	}
 	          	if (image_urls[i] != undefined && image_urls[i].hasOwnProperty('url')) {
-	          		imageUrl = image_urls[i]['url'] + "?width=400&height=300"
+	          		imageUrl = image_urls[i]['url'] + "?width=400&height=400"
 	          	}
 	          	var pattern = 1
 	          	if (textSize == 'H2') {

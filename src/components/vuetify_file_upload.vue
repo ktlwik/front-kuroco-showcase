@@ -58,7 +58,6 @@ export default {
       mixins: [ abstractField ],
       mounted() {
   		this.formValid = this.$refs.myForm.validate()
-  		console.log(this.formValid)
          //this.$emit("validated", this.formValid, ["asds"], this)
   	}
 };

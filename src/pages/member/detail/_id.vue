@@ -71,6 +71,7 @@
 
 <script>
 	export default {
+  		auth: true,
 		methods: {
 			back() {
 				this.$router.go(-1);

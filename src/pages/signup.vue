@@ -86,19 +86,18 @@
       },
       submitF: function() {
         let self = this
-        // console.log(this.model)
+
         this.validForm = true
         for (var key in self.$children[1].$children) {
+          self.$children[1].$children[key].$children[0].$refs.myForm.validate()
           if (self.$children[1].$children[key].$children[0].formValid == false) {
             this.validForm = false
             console.log("invalid key", key)
           }
         }
-        // console.log(this.validForm)
-       
+
         if (this.validForm) {
           var send_model = JSON.parse(JSON.stringify(self.model))
-          // console.log(send_model)
           this.loading = true
           this.$auth.ctx.$axios
           .post("/rcms-api/1/member/regist", send_model)
@@ -126,6 +125,7 @@
             "Fill fields properly."
           )
           self.$store.dispatch("snackbar/snackOn")
+          self.loading = false
         }
 
       }
@@ -142,7 +142,6 @@
         name2: "",
         zip_code: "",
         tel: "",
-        //
         inquirySubmitUrl: '/rcms-api/1/inquiry/9',
         inquirySchemaUrl: '/rcms-api/1/inquiry/get/9',
         validForm: true,

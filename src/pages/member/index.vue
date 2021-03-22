@@ -46,6 +46,7 @@
 </template>
 <script>
 export default {
+  auth: true,
   computed: {
     headers () {
       return [

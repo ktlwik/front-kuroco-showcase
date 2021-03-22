@@ -53,7 +53,6 @@ import validator from 'validator';
        },
        mounted() {
          this.formValid = this.$refs.myForm.validate()
-             //this.$emit("validated", this.formValid, ["asds"], this)
        }
 };
 </script>

@@ -44,7 +44,6 @@ export default {
 	        	headers: headers
 	        })
 	        .then(function (response) {
-	          console.log(response)
 	    	  self.formValid = true
 	          self.schema.url = 'https://dev-nuxt-auth.a.kuroco-img.app/v=1614168758/' + response.data.file_id + '?width=300px'
 			  self.$emit('model-updated', {
@@ -64,7 +63,6 @@ export default {
    	},
     mixins: [ abstractField ],
     mounted() {
-    	console.log(this.schema.url)
   		this.formValid = this.$refs.myForm.validate()
   	}
 };
