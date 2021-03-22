@@ -95,7 +95,6 @@ export default {
         self.$children[1].$children[key].$children[0].$refs.myForm.validate();
         if (self.$children[1].$children[key].$children[0].formValid == false) {
           this.validForm = false;
-          console.log("invalid key", key);
         }
       }
 
@@ -117,8 +116,6 @@ export default {
             self.$store.dispatch("snackbar/snackOn");
             self.loading = false;
           });
-
-        console.log("Form submitted!", self.model);
       } else {
         self.$store.dispatch("snackbar/setError", "Fill fields properly.");
         self.$store.dispatch("snackbar/snackOn");

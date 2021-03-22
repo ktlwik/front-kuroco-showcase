@@ -117,8 +117,6 @@ export default {
   auth: true,
   methods: {
     onInput: function (value, fieldName) {
-      console.log("fieldName: ", fieldName);
-      console.log("value: ", value);
       this.$set(this.model, fieldName, value);
     },
     submit() {
@@ -225,7 +223,6 @@ export default {
     },
     change_tab(id) {
       this.tab_id = id;
-      console.log(this.tab_id);
     },
   },
   data() {

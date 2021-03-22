@@ -92,6 +92,8 @@ export default {
             self.color = "gray";
           })
           .catch(function (error) {
+            self.$store.dispatch("snackbar/setError", "error");
+            self.$store.dispatch("snackbar/snackOn");
           });
       }
     },
@@ -179,7 +181,8 @@ export default {
         self.loading = false;
       })
       .catch(function (error) {
-        console.log(error);
+        self.$store.dispatch("snackbar/setError", "error");
+        self.$store.dispatch("snackbar/snackOn");
       });
 
     var favoritesUrl =
@@ -197,6 +200,8 @@ export default {
         }
       })
       .catch(function (error) {
+        self.$store.dispatch("snackbar/setError", "error");
+        self.$store.dispatch("snackbar/snackOn");
         self.color = "gray";
       });
   },
