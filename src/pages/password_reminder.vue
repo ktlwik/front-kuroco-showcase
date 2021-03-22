@@ -216,7 +216,6 @@ export default {
     async reminder() {
       this.loading1 = true;
       let self = this;
-      console.log(this.email);
       this.$store.$auth.ctx.$axios
         .post("/rcms-api/1/reminder", {
           email: this.email,
@@ -233,7 +232,6 @@ export default {
           self.loading1 = false;
         })
         .catch(function (error) {
-          console.log(error);
           self.$store.dispatch("snackbar/setError", "Invalid email address.");
           self.$store.dispatch("snackbar/snackOn");
           self.loading1 = false;
