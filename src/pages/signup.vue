@@ -110,7 +110,6 @@ export default {
             self.$router.push("/");
           })
           .catch(function (error) {
-            console.log(error)
             self.$store.dispatch("snackbar/setError", error.response.data.errors?.[0].message);
             self.$store.dispatch("snackbar/snackOn");
             self.loading = false;
