@@ -134,7 +134,7 @@ export default {
         self.departments = departments;
       })
       .catch(function (error) {
-        self.$store.dispatch("snackbar/setError", "error");
+        self.$store.dispatch("snackbar/setError", error.response.data.errors?.[0].message);
         self.$store.dispatch("snackbar/snackOn");
       });
   },

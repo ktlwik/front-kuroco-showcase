@@ -258,7 +258,7 @@ export default {
             self.e1 = 4;
           })
           .catch(function (error) {
-            self.$store.dispatch("snackbar/setError", "Error");
+            self.$store.dispatch("snackbar/setError", error.response.data.errors?.[0].message);
             self.$store.dispatch("snackbar/snackOn");
             self.loading2 = false;
           });

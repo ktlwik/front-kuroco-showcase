@@ -115,7 +115,7 @@ export default {
           self.totalCnt = topics.length;
         })
         .catch(function (error) {
-          self.$store.dispatch("snackbar/setError", "error");
+          self.$store.dispatch("snackbar/setError", error.response.data.errors?.[0].message);
           self.$store.dispatch("snackbar/snackOn");
         });
     },
@@ -137,7 +137,7 @@ export default {
         }
       })
       .catch(function (error) {
-        self.$store.dispatch("snackbar/setError", "error");
+        self.$store.dispatch("snackbar/setError", error.response.data.errors?.[0].message);
         self.$store.dispatch("snackbar/snackOn");
       });
 

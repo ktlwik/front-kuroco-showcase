@@ -83,8 +83,6 @@ export default {
   },
   methods: {
     onInput: function (value, fieldName) {
-      console.log("fieldName: ", fieldName);
-      console.log("value: ", value);
       this.$set(this.model, fieldName, value);
     },
     submitF: function () {
@@ -112,7 +110,8 @@ export default {
             self.$router.push("/");
           })
           .catch(function (error) {
-            self.$store.dispatch("snackbar/setError", "error");
+            console.log(error)
+            self.$store.dispatch("snackbar/setError", error.response.data.errors?.[0].message);
             self.$store.dispatch("snackbar/snackOn");
             self.loading = false;
           });
@@ -136,7 +135,7 @@ export default {
       inquirySubmitUrl: "/rcms-api/1/inquiry/9",
       inquirySchemaUrl: "/rcms-api/1/inquiry/get/9",
       validForm: true,
-      loading: true,
+      loading: false,
       disabled: false,
       model: {},
       schema: {

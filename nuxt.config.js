@@ -58,7 +58,7 @@ export default {
   /*
    ** Nuxt.js modules
    */
-  modules: ["@nuxtjs/axios", "@nuxtjs/auth", "@nuxtjs/pwa"],
+  modules: ["@nuxtjs/axios", "@nuxtjs/auth", ['@nuxtjs/pwa', { workbox: false, autoRegister: false }],],
   /*
    ** vuetify module configuration
    ** https://github.com/nuxt-community/vuetify-module
@@ -81,7 +81,6 @@ export default {
     ignoreNotFoundWarnings: true,
   },
   router: {
-    //TODO(nuri): Uncomment after working on auth
     middleware: ["auth"],
   },
   axios: {

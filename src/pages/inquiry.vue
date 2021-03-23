@@ -101,7 +101,7 @@ export default {
           self.model = model;
         })
         .catch(function (error) {
-          self.$store.dispatch("snackbar/setError", "error");
+          self.$store.dispatch("snackbar/setError", error.response.data.errors?.[0].message);
           self.$store.dispatch("snackbar/snackOn");
         });
     },
@@ -131,7 +131,7 @@ export default {
           self.loading = false;
         })
         .catch(function (error) {
-          self.$store.dispatch("snackbar/setError", "error");
+          self.$store.dispatch("snackbar/setError", error.response.data.errors?.[0].message);
           self.$store.dispatch("snackbar/snackOn");
           self.loading = false;
         });
@@ -166,7 +166,7 @@ export default {
             }
           })
           .catch(function (error) {
-            self.$store.dispatch("snackbar/setError", "Invalid form fields.");
+            self.$store.dispatch("snackbar/setError", error.response.data.errors?.[0].message);
             self.$store.dispatch("snackbar/snackOn");
           });
       } else {
